@@ -2,6 +2,7 @@ module.exports = {
     env: {
         browser: true,
         es2021: true,
+        node: true
     },
     extends: ['plugin:react/recommended', 'airbnb', 'prettier'],
     parser: '@typescript-eslint/parser',
@@ -20,6 +21,7 @@ module.exports = {
         'import/extensions': 'off',
         'import/order': 'off',
         'import/prefer-default-export': 'off',
+        'no-param-reassign': 'off',
         'react/jsx-filename-extension': 'off',
         'react/prop-types': 'off',
         'react/jsx-indent': ['error', 4],
