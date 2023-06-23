@@ -24,6 +24,7 @@ module.exports = {
         'no-param-reassign': 'off',
         'jsx-a11y/click-events-have-key-events': 'off',
         'jsx-a11y/no-static-element-interactions': 'warn',
+        'react/jsx-props-no-spreading': 'off',
         'react/jsx-no-useless-fragment': 'off',
         'react/jsx-filename-extension': 'off',
         'react/prop-types': 'off',

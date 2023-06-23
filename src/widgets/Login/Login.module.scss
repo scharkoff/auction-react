@@ -1,0 +1,56 @@
+@import '../../index.scss';
+
+.wrapper {
+    min-height: calc(100vh - 73px - 57px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loginForm {
+    max-width: 400px;
+    padding: 50px;
+    background-color: $form-color;
+    box-shadow: 0 0 15px $form-shadow-color;
+    border-radius: 15px;
+    margin: 50px auto;
+
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.title {
+    text-align: center !important;
+    font-weight: bold !important;
+    margin-bottom: 30px !important;
+}
+
+.loginButton {
+    margin-top: 20px !important;
+}
+
+.field {
+    margin-top: 20px !important;
+
+    &:first-child {
+        margin-top: 0;
+    }
+}
+
+.haventAccount {
+    color: grey;
+    font-size: 14px;
+    text-align: center;
+    margin: 10px 0 0 0;
+
+    span {
+        // color: $primary-color;
+        cursor: pointer;
+
+        &:hover {
+            // color: $dark-primary-color;
+        }
+    }
+}
