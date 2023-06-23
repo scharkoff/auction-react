@@ -1,0 +1,31 @@
+@import '../../styles/colors/index.scss';
+
+.header {
+    display: flex;
+    padding: 10px 0;
+    width: 100%;
+    background-color: $header-background-color;
+}
+
+.wrapper {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+}
+
+.logo {
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 800;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.menu {
+    display: flex;
+
+    .item {
+        margin-left: 10px;
+    }
+}

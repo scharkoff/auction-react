@@ -1,10 +1,17 @@
 import React from 'react';
-import { Header } from 'widgets';
+import { Footer, Header } from 'widgets';
+import { MainContainer } from 'pages';
 
 interface IApp {
     toggleDarkMode: () => void;
 }
 
 export function App({ toggleDarkMode }: IApp) {
-    return <Header />;
+    return (
+        <>
+            <Header />
+            <MainContainer />
+            <Footer />
+        </>
+    );
 }

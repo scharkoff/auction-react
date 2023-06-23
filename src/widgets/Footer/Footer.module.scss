@@ -1,0 +1,20 @@
+@import '../../styles/colors/index.scss';
+
+.footer {
+    padding: 20px 0;
+    width: 100%;
+    background-color: $footer-background-color;
+    font-size: 14px;
+    font-weight: 300;
+}
+
+.wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+.developer {
+    span {
+        color: $primary-main-color;
+    }
+}
