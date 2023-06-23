@@ -10,7 +10,9 @@ export function App({ toggleDarkMode }: IApp) {
     return (
         <>
             <Header />
-            <MainContainer />
+            <MainContainer>
+                <div></div>
+            </MainContainer>
             <Footer />
         </>
     );
