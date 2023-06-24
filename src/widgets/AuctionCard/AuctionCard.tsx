@@ -28,10 +28,12 @@ export function AuctionCard({ auction }: IAuctionCard) {
 
                 <div className={styles.bar}>
                     <div className={styles.startTime}>
-                        Начало: {auction?.start_time.replace(/T(\d{2}:\d{2}:\d{2}).*/, ' $1')}
+                        <strong>Начало:</strong>{' '}
+                        {auction?.start_time.replace(/T(\d{2}:\d{2}:\d{2}).*/, ' $1')}
                     </div>
                     <div className={styles.endTime}>
-                        Окончание: {auction?.end_time.replace(/T(\d{2}:\d{2}:\d{2}).*/, ' $1')}
+                        <strong>Окончание:</strong>{' '}
+                        {auction?.end_time.replace(/T(\d{2}:\d{2}:\d{2}).*/, ' $1')}
                     </div>
                     <div className={styles.status}>
                         {auction?.is_closed ? (

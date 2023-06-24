@@ -16,3 +16,14 @@
 .menu {
     width: 33.3333%;
 }
+
+.item {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 20px;
+
+    &:first-child {
+        margin-top: 0;
+    }
+}
