@@ -13,6 +13,7 @@ export function Header() {
     const dispatch = useAppDispatch();
 
     const { authorization } = useSelector((state: RootState) => state.auth);
+    const { data } = useSelector((state: RootState) => state.auth);
     const { username } = useSelector((state: RootState) => state.auth.data);
 
     const onClickLogout = () => {
@@ -36,9 +37,11 @@ export function Header() {
                     {authorization ? (
                         <ul className={styles.menu}>
                             <li className={styles.item}>
-                                <Button variant="text" color="primary" size="medium">
-                                    {username}
-                                </Button>
+                                <Link to={`/profile/${data.id}`}>
+                                    <Button variant="text" color="primary" size="medium">
+                                        {username}
+                                    </Button>
+                                </Link>
                             </li>
                             <li className={styles.item}>
                                 <Button
