@@ -4,8 +4,25 @@ import styles from './Main.module.scss';
 import { AuctionFeed } from 'widgets';
 import Typography from '@mui/material/Typography';
 import { FilterList, SearchField, SortedList } from 'shared';
+import { useSelector } from 'react-redux';
+import { RootState, useAppDispatch } from 'redux/store';
+import { fetchAuctionsBySearchQuery, fetchGetAllAuctions } from 'redux/slices/auctions';
 
 export function Main() {
+    const dispatch = useAppDispatch();
+
+    const auctions = useSelector((state: RootState) => state.auctions.data);
+
+    const [searchQuery, setSearchQuery] = React.useState('');
+
+    React.useEffect(() => {
+        dispatch(fetchGetAllAuctions({ ownerId: null }));
+    }, []);
+
+    React.useEffect(() => {
+        dispatch(fetchAuctionsBySearchQuery({ query: searchQuery }));
+    }, [searchQuery]);
+
     return (
         <div className={styles.wrapper}>
             <Container>
@@ -15,7 +32,7 @@ export function Main() {
 
                 <div className={styles.content}>
                     <div className={styles.feed}>
-                        <AuctionFeed />
+                        <AuctionFeed auctions={auctions} />
                     </div>
 
                     <div className={styles.menu}>
@@ -28,7 +45,10 @@ export function Main() {
                             >
                                 Поиск по названию
                             </Typography>
-                            <SearchField />
+                            <SearchField
+                                searchQuery={searchQuery}
+                                setSearchQuery={setSearchQuery}
+                            />
                         </div>
 
                         <div className={styles.item}>

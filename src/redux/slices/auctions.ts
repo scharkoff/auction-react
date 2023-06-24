@@ -28,12 +28,8 @@ type TGetAllAuctions = {
     ownerId: number | null;
 };
 
-type TAuctionGetById = {
-    id: number | string;
-};
-
 export const fetchGetAllAuctions = createAsyncThunk(
-    '/api/auth/fetchGetAllAuctions',
+    '/api/auth/getAll/',
     async ({ ownerId = null }: TGetAllAuctions) => {
         try {
             let response = null;
@@ -51,13 +47,34 @@ export const fetchGetAllAuctions = createAsyncThunk(
     },
 );
 
+type TAuctionGetById = {
+    id: number | string;
+};
+
 export const fetchAuctionGetById = createAsyncThunk(
-    '/api/auth/fetchAuctionGetById',
+    '/api/auth/getById',
     async ({ id }: TAuctionGetById) => {
         try {
             id = +id;
 
             const response = await customAxios.get(`api/auction/getById/?id=${id}`);
+
+            return response.data;
+        } catch (error: any) {
+            throw new Error(error);
+        }
+    },
+);
+
+type TGetAuctionsBySearchQuery = {
+    query: string;
+};
+
+export const fetchAuctionsBySearchQuery = createAsyncThunk(
+    '/api/auth/search',
+    async ({ query }: TGetAuctionsBySearchQuery) => {
+        try {
+            const response = await customAxios.get(`api/auction/search/?query=${query}`);
 
             return response.data;
         } catch (error: any) {
@@ -131,6 +148,24 @@ const auctionSlice = createSlice({
                 },
             )
             .addCase(fetchAuctionGetById.rejected, (state: ISliceState, action: any) => {
+                state.errorData = action.error;
+                state.loading = false;
+            })
+
+            .addCase(fetchAuctionsBySearchQuery.pending, (state: ISliceState) => {
+                state.loading = true;
+            })
+            .addCase(
+                fetchAuctionsBySearchQuery.fulfilled,
+                (state: ISliceState, action: PayloadAction<IActionPayload>) => {
+                    if (Array.isArray(action.payload?.data)) {
+                        state.data = action.payload?.data;
+                    }
+
+                    state.loading = false;
+                },
+            )
+            .addCase(fetchAuctionsBySearchQuery.rejected, (state: ISliceState, action: any) => {
                 state.errorData = action.error;
                 state.loading = false;
             });

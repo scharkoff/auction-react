@@ -1,20 +1,14 @@
 import React from 'react';
 import styles from './AuctionFeed.module.scss';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
-import { useSelector } from 'react-redux';
-import { RootState, useAppDispatch } from 'redux/store';
 import { AuctionCard } from 'widgets';
-import { fetchGetAllAuctions } from 'redux/slices/auctions';
+import { IAuctionData } from 'redux/slices/auctions';
 
-export function AuctionFeed() {
-    const dispatch = useAppDispatch();
+interface IAuctionFeed {
+    auctions: IAuctionData[];
+}
 
-    const auctions = useSelector((state: RootState) => state.auctions.data);
-
-    React.useEffect(() => {
-        dispatch(fetchGetAllAuctions({ ownerId: null }));
-    }, []);
-
+export function AuctionFeed({ auctions }: IAuctionFeed) {
     return (
         <div className={styles.wrapper}>
             {auctions.length ? (
