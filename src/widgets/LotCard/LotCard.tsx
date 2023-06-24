@@ -31,7 +31,7 @@ export function LotCard({ lot }: ILotCard) {
                         Начало: {lot?.start_time.replace(/T(\d{2}:\d{2}:\d{2}).*/, ' $1')}
                     </div>
                     <div className={styles.endTime}>
-                        Конец: {lot?.end_time.replace(/T(\d{2}:\d{2}:\d{2}).*/, ' $1')}
+                        Окончание: {lot?.end_time.replace(/T(\d{2}:\d{2}:\d{2}).*/, ' $1')}
                     </div>
                 </div>
             </div>

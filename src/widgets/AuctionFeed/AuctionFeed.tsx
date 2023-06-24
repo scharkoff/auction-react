@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './AuctionFeed.module.scss';
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from 'redux/store';
 import { AuctionCard } from 'widgets';
@@ -16,8 +17,14 @@ export function AuctionFeed() {
 
     return (
         <div className={styles.wrapper}>
-            {Array.isArray(auctions) &&
-                auctions?.map((auction) => <AuctionCard auction={auction} key={auction?.id} />)}
+            {auctions.length ? (
+                auctions?.map((auction) => <AuctionCard auction={auction} key={auction?.id} />)
+            ) : (
+                <div className={styles.empty}>
+                    <span>В данный момент никакие аукционы не проходят...</span>
+                    <SentimentVeryDissatisfiedIcon fontSize="medium" />
+                </div>
+            )}
         </div>
     );
 }

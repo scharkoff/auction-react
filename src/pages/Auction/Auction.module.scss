@@ -14,5 +14,14 @@
 }
 
 .menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
     width: 33.3333%;
+}
+
+.timer {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 40px 20px;
 }

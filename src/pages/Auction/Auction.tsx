@@ -39,7 +39,10 @@ export function Auction() {
                     </div>
 
                     <div className={styles.menu}>
-                        <div>
+                        <div className={styles.timer}>
+                            <Typography variant="h5" color="initial" marginBottom={2}>
+                                До окончания аукциона:
+                            </Typography>
                             <Timer
                                 startTime={currentAuctionData?.start_time}
                                 endTime={currentAuctionData?.end_time}
