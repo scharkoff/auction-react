@@ -2,38 +2,36 @@ import customAxios from 'configs/axios';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from 'redux/store';
 
-interface ILotData {
+interface IAuctionData {
     id: number;
     title: string;
-    description: string;
+    description: string | null;
     start_time: string;
     end_time: string;
+    is_closed: boolean;
     owner_id: number;
-    auction_id: number;
-    winner_id: number | null;
-    image: string;
 }
 
 export interface IActionPayload {
     message: string;
-    data: ILotData[] | ILotData;
+    data: IAuctionData[] | IAuctionData;
 }
 
 interface ISliceState {
-    data: ILotData[] | ILotData;
+    data: IAuctionData[] | IAuctionData;
     loading: boolean;
     errorData: Record<string, unknown>;
 }
 
-type TGetAllLots = {
+type TGetAllAuctions = {
     ownerId: number | null;
 };
 
-export const fetchGetAllLots = createAsyncThunk(
-    '/api/auth/fetchGetAllLots',
-    async ({ ownerId = null }: TGetAllLots) => {
+export const fetchGetAllAuctions = createAsyncThunk(
+    '/api/auth/fetchGetAllAuctions',
+    async ({ ownerId = null }: TGetAllAuctions) => {
         try {
-            const response = await customAxios.get(`api/lot/getAll/?owner_id=${ownerId}`);
+            const response = await customAxios.get(`api/auction/getAll/?owner_id=${ownerId}`);
 
             return response.data;
         } catch (error: any) {
@@ -48,23 +46,23 @@ const initialState: ISliceState = {
     errorData: {},
 };
 
-const lotsSlice = createSlice({
+const auctionSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(fetchGetAllLots.pending, (state: ISliceState) => {
+            .addCase(fetchGetAllAuctions.pending, (state: ISliceState) => {
                 state.loading = true;
             })
             .addCase(
-                fetchGetAllLots.fulfilled,
+                fetchGetAllAuctions.fulfilled,
                 (state: ISliceState, action: PayloadAction<IActionPayload>) => {
                     state.data = action.payload?.data;
                     state.loading = false;
                 },
             )
-            .addCase(fetchGetAllLots.rejected, (state: ISliceState, action: any) => {
+            .addCase(fetchGetAllAuctions.rejected, (state: ISliceState, action: any) => {
                 state.errorData = action.error;
                 state.loading = false;
             });
@@ -73,4 +71,4 @@ const lotsSlice = createSlice({
 
 export const selectIsAuth = (state: RootState) => state.auth.authorization;
 
-export const lotsReducer = lotsSlice.reducer;
+export const auctionReducer = auctionSlice.reducer;

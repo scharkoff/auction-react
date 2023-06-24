@@ -8,6 +8,7 @@ import styles from './ProfileTabs.module.scss';
 import { UserLots } from '../UserLots/UserLots';
 import { useSelector } from 'react-redux';
 import { RootState } from 'redux/store';
+import { UserAuctions } from 'shared/UserAuctions/UserLots';
 
 export function ProfileTabs() {
     const [value, setValue] = React.useState('1');
@@ -28,14 +29,16 @@ export function ProfileTabs() {
                     >
                         <Tab label="Лоты" value="1" />
                         <Tab label="Аукционы" value="2" />
-                        <Tab label="Ставки" value="3" />
+                        {/* <Tab label="Ставки" value="3" /> */}
                     </TabList>
                 </Box>
                 <TabPanel value="1">
                     <UserLots user={user} />
                 </TabPanel>
-                <TabPanel value="2"></TabPanel>
-                <TabPanel value="3"></TabPanel>
+                <TabPanel value="2">
+                    <UserAuctions user={user} />
+                </TabPanel>
+                {/* <TabPanel value="3"></TabPanel> */}
             </TabContext>
         </Box>
     );
