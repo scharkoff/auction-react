@@ -1,7 +1,20 @@
 import React from 'react';
 import Typography from '@mui/material/Typography';
+import { IUserData } from 'redux/slices/auth';
+import { useAppDispatch } from 'redux/store';
+import { fetchGetAllLots } from 'redux/slices/lots';
 
-export function UserLots() {
+interface IUserLots {
+    user: IUserData;
+}
+
+export function UserLots({ user }: IUserLots) {
+    const dispatch = useAppDispatch();
+
+    React.useEffect(() => {
+        dispatch(fetchGetAllLots({ ownerId: user?.id }));
+    }, []);
+
     return (
         <div>
             <Typography variant="h6" color="black">

@@ -6,9 +6,17 @@ import Typography from '@mui/material/Typography';
 import { useSelector } from 'react-redux';
 import { RootState } from 'redux/store';
 import { ProfileTabs } from 'shared/ProfileTabs/ProfileTabs';
+import { selectIsAuth } from 'redux/slices/auth';
+import { Navigate } from 'react-router-dom';
 
 export function Profile() {
     const { data } = useSelector((state: RootState) => state.auth);
+
+    const isAuth = useSelector(selectIsAuth);
+
+    if (!isAuth) {
+        return <Navigate to="/" />;
+    }
 
     return (
         <div className={styles.wrapper}>

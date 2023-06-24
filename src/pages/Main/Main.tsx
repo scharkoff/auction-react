@@ -5,7 +5,7 @@ import styles from './Main.module.scss';
 export function Main() {
     return (
         <div className={styles.wrapper}>
-            <Container></Container>
+            <Container>Text</Container>
         </div>
     );
 }

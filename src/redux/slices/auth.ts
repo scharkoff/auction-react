@@ -2,7 +2,7 @@ import customAxios from 'configs/axios';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from 'redux/store';
 
-interface IUserData {
+export interface IUserData {
     id: number;
     username: string;
     email: string;
