@@ -84,7 +84,19 @@ const initialState: ISliceState = {
 const auctionSlice = createSlice({
     name: 'auth',
     initialState,
-    reducers: {},
+    reducers: {
+        cleanAuctionData: (state) => {
+            state.currentAuctionData = {
+                id: 0,
+                title: '',
+                description: '',
+                start_time: '',
+                end_time: '',
+                is_closed: false,
+                owner_id: 0,
+            };
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchGetAllAuctions.pending, (state: ISliceState) => {
@@ -94,7 +106,7 @@ const auctionSlice = createSlice({
                 fetchGetAllAuctions.fulfilled,
                 (state: ISliceState, action: PayloadAction<IActionPayload>) => {
                     if (Array.isArray(action.payload?.data)) {
-                        state.data = action.payload?.data;
+                        state.data = action.payload?.data?.reverse();
                     }
 
                     state.loading = false;
@@ -126,5 +138,7 @@ const auctionSlice = createSlice({
 });
 
 export const selectIsAuth = (state: RootState) => state.auth.authorization;
+
+export const auctionActions = auctionSlice.actions;
 
 export const auctionReducer = auctionSlice.reducer;

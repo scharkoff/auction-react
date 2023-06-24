@@ -12,7 +12,7 @@ export function UserLots({ user }: IUserLots) {
     const dispatch = useAppDispatch();
 
     React.useEffect(() => {
-        dispatch(fetchGetAllLots({ ownerId: user?.id }));
+        dispatch(fetchGetAllLots({ ownerId: user?.id, auctionId: 0 }));
     }, []);
 
     return (

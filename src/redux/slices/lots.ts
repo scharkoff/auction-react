@@ -20,26 +20,24 @@ export interface IActionPayload {
 }
 
 interface ISliceState {
-    data: ILotData[] | ILotData;
+    data: ILotData[];
     loading: boolean;
     errorData: Record<string, unknown>;
+    currentLotData: ILotData;
 }
 
 type TGetAllLots = {
-    ownerId: number | null;
+    ownerId: number;
+    auctionId: number;
 };
 
 export const fetchGetAllLots = createAsyncThunk(
     '/api/auth/fetchGetAllLots',
-    async ({ ownerId = null }: TGetAllLots) => {
+    async ({ ownerId = 0, auctionId = 0 }: TGetAllLots) => {
         try {
-            let response = null;
-
-            if (ownerId) {
-                response = await customAxios.get(`api/lot/getAll/?owner_id=${ownerId}`);
-            } else {
-                response = await customAxios.get(`api/lot/getAll/`);
-            }
+            const response = await customAxios.get(
+                `api/lot/getAll/?owner_id=${ownerId}&auction_id=${auctionId}`,
+            );
 
             return response.data;
         } catch (error: any) {
@@ -52,12 +50,38 @@ const initialState: ISliceState = {
     data: [],
     loading: false,
     errorData: {},
+    currentLotData: {
+        id: 0,
+        title: '',
+        description: '',
+        start_time: '',
+        end_time: '',
+        owner_id: 0,
+        auction_id: 0,
+        winner_id: null,
+        image: '',
+    },
 };
 
 const lotsSlice = createSlice({
     name: 'auth',
     initialState,
-    reducers: {},
+    reducers: {
+        cleanStateData: (state) => {
+            state.data = [];
+            state.currentLotData = {
+                id: 0,
+                title: '',
+                description: '',
+                start_time: '',
+                end_time: '',
+                owner_id: 0,
+                auction_id: 0,
+                winner_id: null,
+                image: '',
+            };
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchGetAllLots.pending, (state: ISliceState) => {
@@ -66,7 +90,9 @@ const lotsSlice = createSlice({
             .addCase(
                 fetchGetAllLots.fulfilled,
                 (state: ISliceState, action: PayloadAction<IActionPayload>) => {
-                    state.data = action.payload?.data;
+                    if (Array.isArray(action.payload?.data)) {
+                        state.data = action.payload?.data?.reverse();
+                    }
                     state.loading = false;
                 },
             )
@@ -78,5 +104,7 @@ const lotsSlice = createSlice({
 });
 
 export const selectIsAuth = (state: RootState) => state.auth.authorization;
+
+export const lotActions = lotsSlice.actions;
 
 export const lotsReducer = lotsSlice.reducer;

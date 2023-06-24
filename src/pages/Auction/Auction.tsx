@@ -4,9 +4,10 @@ import styles from './Auction.module.scss';
 import Typography from '@mui/material/Typography';
 import { LotFeed } from 'widgets';
 import { RootState, useAppDispatch } from 'redux/store';
-import { fetchAuctionGetById } from 'redux/slices/auctions';
+import { auctionActions, fetchAuctionGetById } from 'redux/slices/auctions';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { Timer } from 'shared';
 
 export function Auction() {
     const dispatch = useAppDispatch();
@@ -19,6 +20,10 @@ export function Auction() {
         if (id) {
             dispatch(fetchAuctionGetById({ id }));
         }
+
+        return () => {
+            dispatch(auctionActions.cleanAuctionData());
+        };
     }, []);
 
     return (
@@ -33,7 +38,14 @@ export function Auction() {
                         <LotFeed />
                     </div>
 
-                    <div className={styles.menu}>Text</div>
+                    <div className={styles.menu}>
+                        <div>
+                            <Timer
+                                startTime={currentAuctionData?.start_time}
+                                endTime={currentAuctionData?.end_time}
+                            />
+                        </div>
+                    </div>
                 </div>
             </Container>
         </div>
