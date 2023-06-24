@@ -18,13 +18,18 @@ export interface IActionPayload {
 }
 
 interface ISliceState {
-    data: IAuctionData[] | IAuctionData;
+    data: IAuctionData[];
     loading: boolean;
     errorData: Record<string, unknown>;
+    currentAuctionData: IAuctionData;
 }
 
 type TGetAllAuctions = {
     ownerId: number | null;
+};
+
+type TAuctionGetById = {
+    id: number | string;
 };
 
 export const fetchGetAllAuctions = createAsyncThunk(
@@ -46,10 +51,34 @@ export const fetchGetAllAuctions = createAsyncThunk(
     },
 );
 
+export const fetchAuctionGetById = createAsyncThunk(
+    '/api/auth/fetchAuctionGetById',
+    async ({ id }: TAuctionGetById) => {
+        try {
+            id = +id;
+
+            const response = await customAxios.get(`api/auction/getById/?id=${id}`);
+
+            return response.data;
+        } catch (error: any) {
+            throw new Error(error);
+        }
+    },
+);
+
 const initialState: ISliceState = {
     data: [],
     loading: false,
     errorData: {},
+    currentAuctionData: {
+        id: 0,
+        title: '',
+        description: '',
+        start_time: '',
+        end_time: '',
+        is_closed: false,
+        owner_id: 0,
+    },
 };
 
 const auctionSlice = createSlice({
@@ -64,11 +93,32 @@ const auctionSlice = createSlice({
             .addCase(
                 fetchGetAllAuctions.fulfilled,
                 (state: ISliceState, action: PayloadAction<IActionPayload>) => {
-                    state.data = action.payload?.data;
+                    if (Array.isArray(action.payload?.data)) {
+                        state.data = action.payload?.data;
+                    }
+
                     state.loading = false;
                 },
             )
             .addCase(fetchGetAllAuctions.rejected, (state: ISliceState, action: any) => {
+                state.errorData = action.error;
+                state.loading = false;
+            })
+
+            .addCase(fetchAuctionGetById.pending, (state: ISliceState) => {
+                state.loading = true;
+            })
+            .addCase(
+                fetchAuctionGetById.fulfilled,
+                (state: ISliceState, action: PayloadAction<IActionPayload>) => {
+                    if (!Array.isArray(action.payload?.data)) {
+                        state.currentAuctionData = action.payload?.data;
+                    }
+
+                    state.loading = false;
+                },
+            )
+            .addCase(fetchAuctionGetById.rejected, (state: ISliceState, action: any) => {
                 state.errorData = action.error;
                 state.loading = false;
             });

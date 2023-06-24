@@ -2,7 +2,7 @@ import customAxios from 'configs/axios';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from 'redux/store';
 
-interface ILotData {
+export interface ILotData {
     id: number;
     title: string;
     description: string;
@@ -33,7 +33,13 @@ export const fetchGetAllLots = createAsyncThunk(
     '/api/auth/fetchGetAllLots',
     async ({ ownerId = null }: TGetAllLots) => {
         try {
-            const response = await customAxios.get(`api/lot/getAll/?owner_id=${ownerId}`);
+            let response = null;
+
+            if (ownerId) {
+                response = await customAxios.get(`api/lot/getAll/?owner_id=${ownerId}`);
+            } else {
+                response = await customAxios.get(`api/lot/getAll/`);
+            }
 
             return response.data;
         } catch (error: any) {

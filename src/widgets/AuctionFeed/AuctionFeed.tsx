@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './AuctionFeed.module.scss';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from 'redux/store';
-import { AuctionCard } from 'shared';
+import { AuctionCard } from 'widgets';
 import { fetchGetAllAuctions } from 'redux/slices/auctions';
 
 export function AuctionFeed() {
@@ -17,7 +17,7 @@ export function AuctionFeed() {
     return (
         <div className={styles.wrapper}>
             {Array.isArray(auctions) &&
-                auctions?.map((auction) => <AuctionCard auction={auction} />)}
+                auctions?.map((auction) => <AuctionCard auction={auction} key={auction?.id} />)}
         </div>
     );
 }
