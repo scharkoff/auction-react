@@ -2,7 +2,7 @@ import customAxios from 'configs/axios';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from 'redux/store';
 
-interface IAuctionData {
+export interface IAuctionData {
     id: number;
     title: string;
     description: string | null;
@@ -31,7 +31,13 @@ export const fetchGetAllAuctions = createAsyncThunk(
     '/api/auth/fetchGetAllAuctions',
     async ({ ownerId = null }: TGetAllAuctions) => {
         try {
-            const response = await customAxios.get(`api/auction/getAll/?owner_id=${ownerId}`);
+            let response = null;
+
+            if (ownerId) {
+                response = await customAxios.get(`api/auction/getAll/?owner_id=${ownerId}`);
+            } else {
+                response = await customAxios.get(`api/auction/getAll/`);
+            }
 
             return response.data;
         } catch (error: any) {
