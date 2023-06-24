@@ -1,36 +1,43 @@
 import React from 'react';
-import Container from '@mui/material/Container';
+import styles from './Register.module.scss';
 import Typography from '@mui/material/Typography';
-import styles from './Login.module.scss';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Avatar from '@mui/material/Avatar';
+import Container from '@mui/material/Container';
 import handleInternalOrServerError from 'utils/functions/errors/handleInternalOrServerError';
 import { useForm } from 'react-hook-form';
-import { Button, TextField } from '@mui/material';
 import { useSelector } from 'react-redux';
+import { TRegisterValues, fetchRegister, selectIsAuth } from 'redux/slices/auth';
 import { Link, Navigate } from 'react-router-dom';
-import { TLoginValues, fetchLogin, selectIsAuth } from 'redux/slices/auth';
-import { useAppDispatch } from 'redux/store';
 import { useAlertMessage } from 'hooks';
-import { TSetAlertOptions } from 'hooks/useAlertMessage';
+import { useAppDispatch } from 'redux/store';
 import { AlertMessage } from 'shared';
 import { IResponse } from 'utils/types';
+import { TSetAlertOptions } from 'hooks/useAlertMessage';
 
-export function Login() {
+export function Register() {
     const dispatch = useAppDispatch();
 
     const isAuth = useSelector(selectIsAuth);
 
     const [alertVariables, setAlertOptions] = useAlertMessage();
 
-    const { register, handleSubmit, formState } = useForm<TLoginValues>({
+    const { register, handleSubmit, formState } = useForm<TRegisterValues>({
         defaultValues: {
             username: '',
+            email: '',
             password: '',
         },
         mode: 'onChange',
     });
 
-    const onSubmitAuth = async (values: TLoginValues) => {
-        const response = await dispatch(fetchLogin(values));
+    const onSubmitRegister = async (values: TRegisterValues) => {
+        const response = await dispatch(fetchRegister(values));
+
+        if (response.payload) {
+            localStorage.setItem('token', response.payload.token);
+        }
 
         handleInternalOrServerError(
             response as unknown as IResponse,
@@ -47,31 +54,51 @@ export function Login() {
     }
 
     return (
-        <div className={styles.wrapper}>
+        <section className={styles.wrapper}>
             <Container>
                 <AlertMessage {...alertVariables} />
 
-                <div className={styles.loginForm}>
+                <div className={styles.registerForm}>
                     <Typography classes={{ root: styles.title }} variant="h5">
-                        Авторизация
+                        Регистрация
                     </Typography>
+                    <div className={styles.avatar}>
+                        <Avatar sx={{ width: 100, height: 100 }} />
+                    </div>
 
-                    <form onSubmit={handleSubmit(onSubmitAuth)}>
+                    <form onSubmit={handleSubmit(onSubmitRegister)}>
                         <TextField
                             className={styles.field}
                             label="Логин"
-                            error={Boolean(formState.errors.username?.message)}
-                            helperText={formState.errors.username?.message}
+                            fullWidth
                             {...register('username', {
                                 required: 'Введите логин',
+                                minLength: {
+                                    value: 3,
+                                    message: 'Логин должен содержать минимум 3 символа',
+                                },
                             })}
-                            fullWidth
+                            helperText={formState.errors.username?.message}
+                            error={Boolean(formState.errors.username?.message)}
                         />
                         <TextField
                             className={styles.field}
+                            label="E-Mail"
+                            fullWidth
+                            {...register('email', {
+                                required: 'Укажите почту',
+                                pattern: {
+                                    value: /^\S+@\S+\.\S+$/,
+                                    message: 'Неверный формат почты',
+                                },
+                            })}
+                            helperText={formState.errors.email?.message}
+                            error={Boolean(formState.errors.email?.message)}
+                        />
+                        <TextField
                             type="password"
+                            className={styles.field}
                             label="Пароль"
-                            error={Boolean(formState.errors.password?.message)}
                             fullWidth
                             {...register('password', {
                                 required: 'Введите пароль',
@@ -81,27 +108,28 @@ export function Login() {
                                 },
                             })}
                             helperText={formState.errors.password?.message}
+                            error={Boolean(formState.errors.password?.message)}
                         />
+
                         <Button
-                            className={styles.loginButton}
                             disabled={!formState.isValid}
                             type="submit"
                             size="large"
                             variant="contained"
                             fullWidth
                         >
-                            Войти
+                            Зарегистрироваться
                         </Button>
 
-                        <div className={styles.haventAccount}>
-                            Нет аккаунта?{' '}
-                            <Link to="/register">
-                                <span>Зарегистрироваться</span>
+                        <div className={styles.haveAccount}>
+                            Есть аккаунт?{' '}
+                            <Link to="/login">
+                                <span>Авторизоваться</span>
                             </Link>
                         </div>
                     </form>
                 </div>
             </Container>
-        </div>
+        </section>
     );
 }

@@ -1,13 +1,21 @@
 import React from 'react';
-import { Footer, Header, Login } from 'widgets';
+import { Footer, Header, Login, Register } from 'widgets';
 import { Route, Routes } from 'react-router-dom';
 import { Main } from 'pages';
+import { useAppDispatch } from 'redux/store';
+import { fetchAuth } from 'redux/slices/auth';
 
 interface IApp {
     toggleDarkMode: () => void;
 }
 
 export function App({ toggleDarkMode }: IApp) {
+    const dispatch = useAppDispatch();
+
+    React.useEffect(() => {
+        dispatch(fetchAuth());
+    }, []);
+
     return (
         <>
             <Header />
@@ -15,6 +23,7 @@ export function App({ toggleDarkMode }: IApp) {
             <Routes>
                 <Route path="/" element={<Main />}></Route>
                 <Route path="/login" element={<Login />}></Route>
+                <Route path="/register" element={<Register />}></Route>
             </Routes>
 
             <Footer />
