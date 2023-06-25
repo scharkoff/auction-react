@@ -91,7 +91,7 @@ const lotsSlice = createSlice({
                 fetchGetAllLots.fulfilled,
                 (state: ISliceState, action: PayloadAction<IActionPayload>) => {
                     if (Array.isArray(action.payload?.data)) {
-                        state.data = action.payload?.data?.reverse();
+                        state.data = action.payload?.data;
                     }
                     state.loading = false;
                 },

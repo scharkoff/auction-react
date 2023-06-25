@@ -29,11 +29,11 @@ export function AuctionCard({ auction }: IAuctionCard) {
                 <div className={styles.bar}>
                     <div className={styles.startTime}>
                         <strong>Начало:</strong>{' '}
-                        {auction?.start_time.replace(/T(\d{2}:\d{2}:\d{2}).*/, ' $1')}
+                        {auction?.start_time?.replace(/T(\d{2}:\d{2}:\d{2}).*/, ' $1')}
                     </div>
                     <div className={styles.endTime}>
                         <strong>Окончание:</strong>{' '}
-                        {auction?.end_time.replace(/T(\d{2}:\d{2}:\d{2}).*/, ' $1')}
+                        {auction?.end_time?.replace(/T(\d{2}:\d{2}:\d{2}).*/, ' $1')}
                     </div>
                     <div className={styles.status}>
                         {auction?.is_closed ? (
@@ -41,6 +41,16 @@ export function AuctionCard({ auction }: IAuctionCard) {
                         ) : (
                             <span className={styles.active}>Активный</span>
                         )}
+                    </div>
+                </div>
+
+                <div className={styles.bar}>
+                    <div className={styles.author}>
+                        <strong>Автор:</strong> {auction?.owner?.username}
+                    </div>
+                    <div className={styles.created}>
+                        <strong>Создано:</strong>{' '}
+                        {auction?.created?.replace(/T(\d{2}:\d{2}:\d{2}).*/, ' $1')}
                     </div>
                 </div>
             </div>

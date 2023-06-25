@@ -14,14 +14,22 @@ export function Main() {
     const auctions = useSelector((state: RootState) => state.auctions.data);
 
     const [searchQuery, setSearchQuery] = React.useState('');
+    const [sortType, setSortType] = React.useState('desc');
+    const [filterType, setFilterType] = React.useState('active');
 
     React.useEffect(() => {
-        dispatch(fetchGetAllAuctions({ ownerId: null }));
+        dispatch(fetchGetAllAuctions({ ownerId: null, sort: sortType, filter: filterType }));
     }, []);
 
     React.useEffect(() => {
         dispatch(fetchAuctionsBySearchQuery({ query: searchQuery }));
     }, [searchQuery]);
+
+    React.useEffect(() => {
+        if (sortType || filterType) {
+            dispatch(fetchGetAllAuctions({ ownerId: null, sort: sortType, filter: filterType }));
+        }
+    }, [sortType, filterType]);
 
     return (
         <div className={styles.wrapper}>
@@ -62,7 +70,7 @@ export function Main() {
                             </Typography>
 
                             <ul className={styles.sortList}>
-                                <SortedList />
+                                <SortedList setSortType={setSortType} />
                             </ul>
                         </div>
 
@@ -77,7 +85,7 @@ export function Main() {
                             </Typography>
 
                             <ul className={styles.filterList}>
-                                <FilterList />
+                                <FilterList setFilterType={setFilterType} />
                             </ul>
                         </div>
                     </div>

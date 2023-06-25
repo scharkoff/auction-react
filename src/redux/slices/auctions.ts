@@ -1,6 +1,7 @@
 import customAxios from 'configs/axios';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from 'redux/store';
+import { IUserData } from './auth';
 
 export interface IAuctionData {
     id: number;
@@ -8,8 +9,10 @@ export interface IAuctionData {
     description: string | null;
     start_time: string;
     end_time: string;
+    created: string;
     is_closed: boolean;
     owner_id: number;
+    owner: IUserData;
 }
 
 export interface IActionPayload {
@@ -26,16 +29,24 @@ interface ISliceState {
 
 type TGetAllAuctions = {
     ownerId: number | null;
+    sort: string;
+    filter: string;
 };
 
 export const fetchGetAllAuctions = createAsyncThunk(
     '/api/auth/getAll/',
-    async ({ ownerId = null }: TGetAllAuctions) => {
+    async ({ ownerId = null, sort = '', filter = '' }: TGetAllAuctions) => {
         try {
             let response = null;
 
             if (ownerId) {
-                response = await customAxios.get(`api/auction/getAll/?owner_id=${ownerId}`);
+                response = await customAxios.get(
+                    `api/auction/getAll/?owner_id=${ownerId}&sort=${sort}&filter=${filter}`,
+                );
+            } else if (sort || filter) {
+                response = await customAxios.get(
+                    `api/auction/getAll/?sort=${sort}&filter=${filter}`,
+                );
             } else {
                 response = await customAxios.get(`api/auction/getAll/`);
             }
@@ -93,8 +104,20 @@ const initialState: ISliceState = {
         description: '',
         start_time: '',
         end_time: '',
+        created: '',
         is_closed: false,
         owner_id: 0,
+        owner: {
+            id: 0,
+            username: '',
+            email: '',
+            first_name: '',
+            last_name: '',
+            is_superuser: false,
+            date_joined: '',
+            last_login: '',
+            is_active: false,
+        },
     },
 };
 
@@ -109,8 +132,20 @@ const auctionSlice = createSlice({
                 description: '',
                 start_time: '',
                 end_time: '',
+                created: '',
                 is_closed: false,
                 owner_id: 0,
+                owner: {
+                    id: 0,
+                    username: '',
+                    email: '',
+                    first_name: '',
+                    last_name: '',
+                    is_superuser: false,
+                    date_joined: '',
+                    last_login: '',
+                    is_active: false,
+                },
             };
         },
     },
@@ -123,7 +158,7 @@ const auctionSlice = createSlice({
                 fetchGetAllAuctions.fulfilled,
                 (state: ISliceState, action: PayloadAction<IActionPayload>) => {
                     if (Array.isArray(action.payload?.data)) {
-                        state.data = action.payload?.data?.reverse();
+                        state.data = action.payload?.data;
                     }
 
                     state.loading = false;
