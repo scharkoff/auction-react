@@ -4,6 +4,7 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import styles from './LotSlider.module.scss';
 import classNames from 'classnames';
+import { IconButton } from '@mui/material';
 
 interface ISlider {
     images: string[];
@@ -42,12 +43,17 @@ export function LotSlider({ images }: ISlider) {
             </div>
 
             <div className={styles.buttonsWrapper}>
-                <button type="button" className={styles.btn} onClick={() => goToPrevSlide()}>
-                    <ArrowBackIosIcon fontSize="small" />
-                </button>
-                <button type="button" className={styles.btn} onClick={() => goToNextSlide()}>
-                    <ArrowForwardIosIcon fontSize="small" />
-                </button>
+                <IconButton>
+                    <button type="button" className={styles.btn} onClick={() => goToPrevSlide()}>
+                        <ArrowBackIosIcon fontSize="small" />
+                    </button>
+                </IconButton>
+
+                <IconButton>
+                    <button type="button" className={styles.btn} onClick={() => goToNextSlide()}>
+                        <ArrowForwardIosIcon fontSize="small" />
+                    </button>
+                </IconButton>
             </div>
         </div>
     );

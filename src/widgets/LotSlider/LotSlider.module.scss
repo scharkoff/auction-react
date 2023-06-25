@@ -35,12 +35,7 @@
     width: 40px;
     height: 40px;
     border: none;
-    margin-left: 20px;
     padding: 10px 12px;
-
-    &:first-child {
-        margin-left: 0;
-    }
 
     &:hover {
         background-color: rgba(146, 146, 146, 0.5);
@@ -50,5 +45,5 @@
 .buttonsWrapper {
     display: flex;
     justify-content: center;
-    margin-top: 20px;
+    margin-top: 10px;
 }

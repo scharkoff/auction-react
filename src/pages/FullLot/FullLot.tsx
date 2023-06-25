@@ -6,6 +6,8 @@ import { RootState, useAppDispatch } from 'redux/store';
 import { fetchLotById } from 'redux/slices/lots';
 import { useParams } from 'react-router-dom';
 import { LotSlider } from 'widgets';
+import { Timer } from 'shared';
+import Typography from '@mui/material/Typography';
 
 export function FullLot() {
     const dispatch = useAppDispatch();
@@ -71,6 +73,17 @@ export function FullLot() {
                         </div>
                     </div>
                 </div>
+
+                <div className={styles.bar}>
+                    <Typography variant="h6" color="initial">
+                        До завершения осталось:
+                    </Typography>
+                    <div className={styles.timer}>
+                        <Timer startTime={lot?.start_time} endTime={lot?.end_time} />
+                    </div>
+                </div>
+
+                <div className={styles.bar}></div>
             </Container>
         </div>
     );

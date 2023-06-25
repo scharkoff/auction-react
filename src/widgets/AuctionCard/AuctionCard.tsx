@@ -1,16 +1,56 @@
 import React from 'react';
 import styles from './AuctionCard.module.scss';
 import GavelIcon from '@mui/icons-material/Gavel';
-import { IAuctionData } from 'redux/slices/auctions';
+import DeleteIcon from '@mui/icons-material/Clear';
+import EditIcon from '@mui/icons-material/Edit';
+import { IAuctionData, fetchDeleteAuction } from 'redux/slices/auctions';
 import { Link } from 'react-router-dom';
+import handleInternalOrServerError from 'utils/functions/errors/handleInternalOrServerError';
+import { useSelector } from 'react-redux';
+import { RootState, useAppDispatch } from 'redux/store';
+import { AlertColor, IconButton } from '@mui/material';
+import { useAlertMessage } from 'hooks';
+import { IResponse } from 'utils/types';
+import { TSetAlertOptions } from 'hooks/useAlertMessage';
 
 interface IAuctionCard {
     auction: IAuctionData;
+    setAlertOptions: (visability: boolean, type: AlertColor, text: string) => void;
 }
 
-export function AuctionCard({ auction }: IAuctionCard) {
+export function AuctionCard({ auction, setAlertOptions }: IAuctionCard) {
+    const dispatch = useAppDispatch();
+
+    const user = useSelector((state: RootState) => state.auth.data);
+
+    const onClickDelete = async (id: number) => {
+        if (
+            // eslint-disable-next-line no-alert
+            window.confirm(
+                'Вы действительно хотите удалить данный аукцион? При удалении удалятся все лоты данного аукциона',
+            )
+        ) {
+            const response = await dispatch(fetchDeleteAuction({ id }));
+
+            handleInternalOrServerError(
+                response as unknown as IResponse,
+                setAlertOptions as TSetAlertOptions,
+            );
+        }
+    };
+
     return (
         <div className={styles.card}>
+            {user?.is_superuser || user?.id === auction?.owner_id ? (
+                <div className={styles.editButtons}>
+                    <IconButton onClick={() => onClickDelete(auction?.id)} color="error">
+                        <DeleteIcon color="error" />
+                    </IconButton>
+                </div>
+            ) : (
+                ''
+            )}
+
             <Link to={`/auction/${auction?.id}`}>
                 <div className={styles.image}>
                     <GavelIcon fontSize="large" />

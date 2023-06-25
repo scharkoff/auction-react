@@ -20,6 +20,13 @@ export interface IActionPayload {
     data: IAuctionData[] | IAuctionData;
 }
 
+interface IActionDeletePayload {
+    message: string;
+    data: {
+        id: number;
+    };
+}
+
 interface ISliceState {
     data: IAuctionData[];
     loading: boolean;
@@ -106,6 +113,23 @@ export const fetchCreateAuction = createAsyncThunk(
     async (params: TCreateAuction) => {
         try {
             const response = await customAxios.post('api/auction/create/', params);
+
+            return response.data;
+        } catch (error: any) {
+            throw new Error(error);
+        }
+    },
+);
+
+type TDeleteAuction = {
+    id: number;
+};
+
+export const fetchDeleteAuction = createAsyncThunk(
+    '/api/auction/delete',
+    async ({ id }: TDeleteAuction) => {
+        try {
+            const response = await customAxios.delete(`api/auction/delete/?id=${id}`);
 
             return response.data;
         } catch (error: any) {
@@ -239,6 +263,23 @@ const auctionSlice = createSlice({
                 },
             )
             .addCase(fetchCreateAuction.rejected, (state: ISliceState, action: any) => {
+                state.errorData = action.error;
+                state.loading = false;
+            })
+
+            .addCase(fetchDeleteAuction.pending, (state: ISliceState) => {
+                state.loading = true;
+            })
+            .addCase(
+                fetchDeleteAuction.fulfilled,
+                (state: ISliceState, action: PayloadAction<IActionDeletePayload>) => {
+                    state.data = state.data.filter(
+                        (auction) => auction?.id !== action.payload?.data?.id,
+                    );
+                    state.loading = false;
+                },
+            )
+            .addCase(fetchDeleteAuction.rejected, (state: ISliceState, action: any) => {
                 state.errorData = action.error;
                 state.loading = false;
             });
