@@ -2,6 +2,10 @@ import { TSetAlertOptions } from 'hooks/useAlertMessage';
 import { IResponse } from 'utils/types';
 
 const handleInternalOrServerError = (response: IResponse, setAlertOptions: TSetAlertOptions) => {
+    if (response?.payload) {
+        return setAlertOptions(true, 'success', 'Запрос успешно выполнен');
+    }
+
     if (response?.error) {
         if (response.error.message.includes('401')) {
             return setAlertOptions(true, 'error', 'Неправильный логин или пароль');

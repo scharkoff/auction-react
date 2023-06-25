@@ -3,15 +3,19 @@ import styles from './AddNewAuction.module.scss';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
+import handleInternalOrServerError from 'utils/functions/errors/handleInternalOrServerError';
+import Button from '@mui/material/Button';
 import { AlertMessage } from 'shared';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { useAlertMessage } from 'hooks';
 import { useAppDispatch } from 'redux/store';
-import handleInternalOrServerError from 'utils/functions/errors/handleInternalOrServerError';
 import { IResponse } from 'utils/types';
 import { TSetAlertOptions } from 'hooks/useAlertMessage';
 import { fetchCreateAuction } from 'redux/slices/auctions';
-import Button from '@mui/material/Button';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import dayjs from 'dayjs';
 
 type TAuctionValues = {
     title: string;
@@ -25,7 +29,7 @@ export function AddNewAuction() {
 
     const [alertVariables, setAlertOptions] = useAlertMessage();
 
-    const { register, handleSubmit, formState } = useForm<TAuctionValues>({
+    const { register, handleSubmit, formState, control } = useForm<TAuctionValues>({
         defaultValues: {
             title: '',
             description: '',
@@ -69,7 +73,6 @@ export function AddNewAuction() {
                             })}
                             fullWidth
                         />
-
                         <TextField
                             className={styles.field}
                             label="Описание"
@@ -87,26 +90,44 @@ export function AddNewAuction() {
                             })}
                         />
 
-                        <TextField
-                            className={styles.field}
-                            label="Время начала"
-                            error={Boolean(formState.errors.startTime?.message)}
-                            helperText={formState.errors.startTime?.message}
-                            {...register('startTime', {
-                                required: 'Введите время начала',
-                            })}
-                            fullWidth
+                        <Controller
+                            control={control}
+                            name="startTime"
+                            render={({ field }) => (
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                    <DatePicker
+                                        className={styles.field}
+                                        label="Время начала"
+                                        onChange={(value: Date | null) => {
+                                            if (value) {
+                                                const startTimeInMillis = dayjs(value).valueOf();
+                                                field.onChange(startTimeInMillis);
+                                            }
+                                        }}
+                                        value={field.value ? new Date(Number(field.value)) : null}
+                                    />
+                                </LocalizationProvider>
+                            )}
                         />
 
-                        <TextField
-                            className={styles.field}
-                            label="Время окончания"
-                            error={Boolean(formState.errors.endTime?.message)}
-                            helperText={formState.errors.endTime?.message}
-                            {...register('endTime', {
-                                required: 'Введите время окончания',
-                            })}
-                            fullWidth
+                        <Controller
+                            control={control}
+                            name="endTime"
+                            render={({ field }) => (
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                    <DatePicker
+                                        className={styles.field}
+                                        label="Время окончания"
+                                        onChange={(value: Date | null) => {
+                                            if (value) {
+                                                const startTimeInMillis = dayjs(value).valueOf();
+                                                field.onChange(startTimeInMillis);
+                                            }
+                                        }}
+                                        value={field.value ? new Date(Number(field.value)) : null}
+                                    />
+                                </LocalizationProvider>
+                            )}
                         />
 
                         <div className={styles.buttonWrapper}>

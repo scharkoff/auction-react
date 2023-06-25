@@ -97,8 +97,8 @@ export const fetchAuctionsBySearchQuery = createAsyncThunk(
 type TCreateAuction = {
     title: string;
     description: string;
-    startTime: number;
-    endTime: number;
+    startTime: Date | number | null;
+    endTime: Date | number | null;
 };
 
 export const fetchCreateAuction = createAsyncThunk(
