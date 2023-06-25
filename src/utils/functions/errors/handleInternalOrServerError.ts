@@ -8,7 +8,7 @@ const handleInternalOrServerError = (response: IResponse, setAlertOptions: TSetA
 
     if (response?.error) {
         if (response.error.message.includes('401')) {
-            return setAlertOptions(true, 'error', 'Неправильный логин или пароль');
+            return setAlertOptions(true, 'error', 'Ошибка авторизации');
         }
 
         if (response.error.message.includes('400')) {

@@ -1,3 +1,4 @@
+export { SimpleTable } from './SimpleTable/SimpleTable';
 export { SortedList } from './SortedList/SortedList';
 export { FilterList } from './FilterList/FilterList';
 export { SearchField } from './SearchField/SearchField';
