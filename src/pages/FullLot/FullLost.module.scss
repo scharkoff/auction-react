@@ -1,0 +1,53 @@
+@import '../../index.scss';
+
+.wrapper {
+    min-height: calc(100vh - 73px - 57px);
+    padding: 30px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content {
+    display: flex;
+    justify-content: space-between;
+    min-height: 600px;
+}
+
+.infoBlock {
+    width: 30%;
+}
+
+.imageBlock {
+    margin-left: 20px;
+    width: 70%;
+}
+
+.info,
+.slider {
+    height: 100%;
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+.infoTitle {
+    text-align: center;
+    font-size: 18px;
+    color: $light-grey-text-color;
+}
+
+.list {
+    line-height: 1.5;
+    font-size: 14px;
+    margin-top: 50px;
+}
+
+.item {
+    margin-top: 10px;
+
+    span {
+        color: $light-grey-text-color;
+        display: block;
+    }
+}

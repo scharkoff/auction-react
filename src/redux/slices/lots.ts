@@ -50,6 +50,23 @@ export const fetchGetAllLots = createAsyncThunk(
     },
 );
 
+type TGetLotById = {
+    id: number;
+};
+
+export const fetchLotById = createAsyncThunk(
+    '/api/lot/getById/',
+    async ({ id = 0 }: TGetLotById) => {
+        try {
+            const response = await customAxios.get(`api/lot/getById/?id=${id}`);
+
+            return response.data;
+        } catch (error: any) {
+            throw new Error(error);
+        }
+    },
+);
+
 type TCreateLot = {
     title: string;
     description: string;
@@ -122,6 +139,23 @@ const lotsSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
+            .addCase(fetchLotById.pending, (state: ISliceState) => {
+                state.loading = true;
+            })
+            .addCase(
+                fetchLotById.fulfilled,
+                (state: ISliceState, action: PayloadAction<IActionPayload>) => {
+                    if (!Array.isArray(action.payload?.data)) {
+                        state.currentLotData = action.payload?.data;
+                    }
+                    state.loading = false;
+                },
+            )
+            .addCase(fetchLotById.rejected, (state: ISliceState, action: any) => {
+                state.errorData = action.error;
+                state.loading = false;
+            })
+
             .addCase(fetchGetAllLots.pending, (state: ISliceState) => {
                 state.loading = true;
             })

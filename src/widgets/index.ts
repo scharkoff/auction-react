@@ -5,3 +5,4 @@ export { Register } from './Register/Register';
 export { AuctionFeed } from './AuctionFeed/AuctionFeed';
 export { AuctionCard } from './AuctionCard/AuctionCard';
 export { LotFeed } from './LotFeed/LotFeed';
+export { LotSlider } from './LotSlider/LotSlider';
