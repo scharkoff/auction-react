@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './AddNewAuction.module.scss';
+import styles from './AddNewLot.module.scss';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
@@ -9,32 +9,36 @@ import dayjs from 'dayjs';
 import { AlertMessage } from 'shared';
 import { Controller, useForm } from 'react-hook-form';
 import { useAlertMessage } from 'hooks';
-import { useAppDispatch } from 'redux/store';
+import { RootState, useAppDispatch } from 'redux/store';
 import { IResponse } from 'utils/types';
 import { TSetAlertOptions } from 'hooks/useAlertMessage';
-import { fetchCreateAuction } from 'redux/slices/auctions';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useSelector } from 'react-redux';
 import { selectIsAuth } from 'redux/slices/auth';
 import { Navigate } from 'react-router-dom';
+import { fetchCreateLot } from 'redux/slices/lots';
 
-type TAuctionValues = {
+type TLotValues = {
+    auctionId: number;
     title: string;
     description: string;
     startTime: number;
     endTime: number;
 };
 
-export function AddNewAuction() {
+export function AddNewLot() {
     const dispatch = useAppDispatch();
 
     const isAuth = useSelector(selectIsAuth);
 
+    const auction = useSelector((state: RootState) => state.auctions.currentAuctionData);
+
     const [alertVariables, setAlertOptions] = useAlertMessage();
 
-    const { register, handleSubmit, formState, control } = useForm<TAuctionValues>({
+    const { register, handleSubmit, formState, control } = useForm<TLotValues>({
         defaultValues: {
+            auctionId: auction?.id,
             title: '',
             description: '',
             startTime: 0,
@@ -43,8 +47,8 @@ export function AddNewAuction() {
         mode: 'onChange',
     });
 
-    const onSubmitAuctionForm = async (values: TAuctionValues) => {
-        const response = await dispatch(fetchCreateAuction(values));
+    const onSubmitAuctionForm = async (values: TLotValues) => {
+        const response = await dispatch(fetchCreateLot(values));
 
         handleInternalOrServerError(
             response as unknown as IResponse,
@@ -63,7 +67,8 @@ export function AddNewAuction() {
 
                 <div className={styles.form}>
                     <Typography classes={{ root: styles.title }} variant="h5">
-                        Создание нового аукциона
+                        Создание нового лота для аукциона{' '}
+                        <strong>&#171;{auction?.title}&#187;</strong>
                     </Typography>
 
                     <form onSubmit={handleSubmit(onSubmitAuctionForm)}>

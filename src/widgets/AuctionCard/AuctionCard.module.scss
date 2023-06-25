@@ -63,7 +63,12 @@
 .endTime,
 .author,
 .created {
+    margin-left: 4px;
     font-size: 12px;
+
+    &:first-child {
+        margin-left: 0;
+    }
 }
 
 .status {

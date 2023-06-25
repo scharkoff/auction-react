@@ -6,7 +6,7 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import { LotFeed } from 'widgets';
 import { RootState, useAppDispatch } from 'redux/store';
 import { auctionActions, fetchAuctionGetById } from 'redux/slices/auctions';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Timer } from 'shared';
 import Button from '@mui/material/Button';
@@ -25,10 +25,6 @@ export function Auction() {
         if (id) {
             dispatch(fetchAuctionGetById({ id }));
         }
-
-        return () => {
-            dispatch(auctionActions.cleanAuctionData());
-        };
     }, []);
 
     return (
@@ -59,14 +55,27 @@ export function Auction() {
                                 Добавить свой лот в аукцион:
                             </Typography>
 
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                disabled={!isAuth}
-                                startIcon={<AddBoxIcon fontSize="small" />}
-                            >
-                                Добавить лот
-                            </Button>
+                            {isAuth ? (
+                                <Link to={`/add-new-lot/auction/${currentAuctionData?.id}`}>
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        startIcon={<AddBoxIcon fontSize="small" />}
+                                    >
+                                        Добавить лот
+                                    </Button>
+                                </Link>
+                            ) : (
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    disabled
+                                    startIcon={<AddBoxIcon fontSize="small" />}
+                                >
+                                    Добавить лот
+                                </Button>
+                            )}
+
                             {!isAuth && (
                                 <p className={styles.needAuthText}>Необходимо авторизоваться</p>
                             )}

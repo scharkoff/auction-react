@@ -1,6 +1,5 @@
 import React from 'react';
 import styles from './LotCard.module.scss';
-import PriceChangeIcon from '@mui/icons-material/PriceChange';
 import { Link } from 'react-router-dom';
 import { ILotData } from 'redux/slices/lots';
 
@@ -13,7 +12,7 @@ export function LotCard({ lot }: ILotCard) {
         <div className={styles.card}>
             <Link to={`/lot/${lot?.id}`}>
                 <div className={styles.image}>
-                    <PriceChangeIcon fontSize="large" />
+                    <p className={styles.lot}>Лот №{lot?.id}</p>
                 </div>
             </Link>
 
@@ -41,6 +40,16 @@ export function LotCard({ lot }: ILotCard) {
                         ) : (
                             <span className={styles.active}>Активный</span>
                         )}
+                    </div>
+                </div>
+
+                <div className={styles.bar}>
+                    <div className={styles.author}>
+                        <strong>Продавец:</strong> {lot?.owner?.username}
+                    </div>
+
+                    <div className={styles.auctionId}>
+                        <strong>Аукцион:</strong> {lot?.auction?.title}
                     </div>
                 </div>
             </div>

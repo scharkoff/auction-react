@@ -1,6 +1,8 @@
 import customAxios from 'configs/axios';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from 'redux/store';
+import { IUserData } from './auth';
+import { IAuctionData } from './auctions';
 
 export interface ILotData {
     id: number;
@@ -9,7 +11,9 @@ export interface ILotData {
     start_time: string;
     end_time: string;
     owner_id: number;
+    owner: IUserData;
     auction_id: number;
+    auction: IAuctionData;
     winner_id: number | null;
     image: string;
 }
@@ -46,6 +50,23 @@ export const fetchGetAllLots = createAsyncThunk(
     },
 );
 
+type TCreateLot = {
+    title: string;
+    description: string;
+    startTime: Date | number | null;
+    endTime: Date | number | null;
+};
+
+export const fetchCreateLot = createAsyncThunk('/api/lot/create', async (params: TCreateLot) => {
+    try {
+        const response = await customAxios.post('api/lot/create/', params);
+
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error);
+    }
+});
+
 const initialState: ISliceState = {
     data: [],
     loading: false,
@@ -57,7 +78,39 @@ const initialState: ISliceState = {
         start_time: '',
         end_time: '',
         owner_id: 0,
+        owner: {
+            id: 0,
+            username: '',
+            email: '',
+            first_name: '',
+            last_name: '',
+            is_superuser: false,
+            date_joined: '',
+            last_login: '',
+            is_active: false,
+        },
         auction_id: 0,
+        auction: {
+            id: 0,
+            title: '',
+            description: '',
+            start_time: '',
+            end_time: '',
+            created: '',
+            is_closed: false,
+            owner_id: 0,
+            owner: {
+                id: 0,
+                username: '',
+                email: '',
+                first_name: '',
+                last_name: '',
+                is_superuser: false,
+                date_joined: '',
+                last_login: '',
+                is_active: false,
+            },
+        },
         winner_id: null,
         image: '',
     },
@@ -66,22 +119,7 @@ const initialState: ISliceState = {
 const lotsSlice = createSlice({
     name: 'auth',
     initialState,
-    reducers: {
-        cleanStateData: (state) => {
-            state.data = [];
-            state.currentLotData = {
-                id: 0,
-                title: '',
-                description: '',
-                start_time: '',
-                end_time: '',
-                owner_id: 0,
-                auction_id: 0,
-                winner_id: null,
-                image: '',
-            };
-        },
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder
             .addCase(fetchGetAllLots.pending, (state: ISliceState) => {
@@ -97,6 +135,23 @@ const lotsSlice = createSlice({
                 },
             )
             .addCase(fetchGetAllLots.rejected, (state: ISliceState, action: any) => {
+                state.errorData = action.error;
+                state.loading = false;
+            })
+
+            .addCase(fetchCreateLot.pending, (state: ISliceState) => {
+                state.loading = true;
+            })
+            .addCase(
+                fetchCreateLot.fulfilled,
+                (state: ISliceState, action: PayloadAction<IActionPayload>) => {
+                    if (!Array.isArray(action.payload?.data)) {
+                        state.currentLotData = action.payload?.data;
+                    }
+                    state.loading = false;
+                },
+            )
+            .addCase(fetchCreateLot.rejected, (state: ISliceState, action: any) => {
                 state.errorData = action.error;
                 state.loading = false;
             });

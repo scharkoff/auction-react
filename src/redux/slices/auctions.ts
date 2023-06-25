@@ -34,7 +34,7 @@ type TGetAllAuctions = {
 };
 
 export const fetchGetAllAuctions = createAsyncThunk(
-    '/api/auth/getAll/',
+    '/api/auction/getAll/',
     async ({ ownerId = null, sort = '', filter = '' }: TGetAllAuctions) => {
         try {
             let response = null;
@@ -63,7 +63,7 @@ type TAuctionGetById = {
 };
 
 export const fetchAuctionGetById = createAsyncThunk(
-    '/api/auth/getById',
+    '/api/auction/getById',
     async ({ id }: TAuctionGetById) => {
         try {
             id = +id;
@@ -82,7 +82,7 @@ type TGetAuctionsBySearchQuery = {
 };
 
 export const fetchAuctionsBySearchQuery = createAsyncThunk(
-    '/api/auth/search',
+    '/api/auction/search',
     async ({ query }: TGetAuctionsBySearchQuery) => {
         try {
             const response = await customAxios.get(`api/auction/search/?query=${query}`);
@@ -102,7 +102,7 @@ type TCreateAuction = {
 };
 
 export const fetchCreateAuction = createAsyncThunk(
-    '/api/auth/create',
+    '/api/auction/create',
     async (params: TCreateAuction) => {
         try {
             const response = await customAxios.post('api/auction/create/', params);

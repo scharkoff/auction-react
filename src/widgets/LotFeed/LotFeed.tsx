@@ -3,7 +3,7 @@ import styles from './LotFeed.module.scss';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import { RootState, useAppDispatch } from 'redux/store';
 import { LotCard } from 'widgets/LotCard/LotCard';
-import { fetchGetAllLots, lotActions } from 'redux/slices/lots';
+import { fetchGetAllLots } from 'redux/slices/lots';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
@@ -18,10 +18,6 @@ export function LotFeed() {
         if (id) {
             dispatch(fetchGetAllLots({ ownerId: 0, auctionId: Number.parseFloat(id) }));
         }
-
-        return () => {
-            dispatch(lotActions.cleanStateData());
-        };
     }, [id]);
 
     return (
