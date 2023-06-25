@@ -5,6 +5,9 @@ export interface IResponse {
         stack: string;
     };
     message: string;
-    payload: Record<string, unknown>;
+    payload: {
+        message: string;
+        data: Record<string, unknown>;
+    };
     type: string;
 }

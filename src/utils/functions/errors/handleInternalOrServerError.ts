@@ -3,7 +3,7 @@ import { IResponse } from 'utils/types';
 
 const handleInternalOrServerError = (response: IResponse, setAlertOptions: TSetAlertOptions) => {
     if (response?.payload) {
-        return setAlertOptions(true, 'success', 'Запрос успешно выполнен');
+        return setAlertOptions(true, 'success', response?.payload?.message);
     }
 
     if (response?.error) {
