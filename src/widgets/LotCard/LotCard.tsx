@@ -28,10 +28,19 @@ export function LotCard({ lot }: ILotCard) {
 
                 <div className={styles.bar}>
                     <div className={styles.startTime}>
-                        Начало: {lot?.start_time.replace(/T(\d{2}:\d{2}:\d{2}).*/, ' $1')}
+                        <strong>Начало:</strong>{' '}
+                        {lot?.start_time.replace(/T(\d{2}:\d{2}:\d{2}).*/, ' $1')}
                     </div>
                     <div className={styles.endTime}>
-                        Окончание: {lot?.end_time.replace(/T(\d{2}:\d{2}:\d{2}).*/, ' $1')}
+                        <strong>Окончание:</strong>{' '}
+                        {lot?.end_time.replace(/T(\d{2}:\d{2}:\d{2}).*/, ' $1')}
+                    </div>
+                    <div className={styles.status}>
+                        {lot?.winner_id ? (
+                            <span className={styles.closed}>Победитель найден</span>
+                        ) : (
+                            <span className={styles.active}>Активный</span>
+                        )}
                     </div>
                 </div>
             </div>

@@ -35,7 +35,7 @@ export function Auction() {
         <div className={styles.wrapper}>
             <Container>
                 <Typography variant="h2" color="black" fontSize={36}>
-                    Аукцион &#171;{currentAuctionData?.title}&#187;
+                    Аукцион <strong>&#171;{currentAuctionData?.title}&#187;</strong>
                 </Typography>
 
                 <div className={styles.content}>

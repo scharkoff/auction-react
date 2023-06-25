@@ -10,6 +10,22 @@ const handleInternalOrServerError = (response: IResponse, setAlertOptions: TSetA
         if (response.error.message.includes('401')) {
             return setAlertOptions(true, 'error', 'Неправильный логин или пароль');
         }
+
+        if (response.error.message.includes('400')) {
+            return setAlertOptions(true, 'error', 'Неправильный формат запроса');
+        }
+
+        if (response.error.message.includes('404')) {
+            return setAlertOptions(true, 'error', 'Запрашиваемый объект не найден (404)');
+        }
+
+        if (response.error.message.includes('403')) {
+            return setAlertOptions(
+                true,
+                'error',
+                'Недостаточно прав для выполнения операции (401)',
+            );
+        }
     }
 
     return setAlertOptions(

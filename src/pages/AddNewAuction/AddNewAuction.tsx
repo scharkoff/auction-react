@@ -16,6 +16,9 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import dayjs from 'dayjs';
+import { useSelector } from 'react-redux';
+import { selectIsAuth } from 'redux/slices/auth';
+import { Navigate } from 'react-router-dom';
 
 type TAuctionValues = {
     title: string;
@@ -26,6 +29,8 @@ type TAuctionValues = {
 
 export function AddNewAuction() {
     const dispatch = useAppDispatch();
+
+    const isAuth = useSelector(selectIsAuth);
 
     const [alertVariables, setAlertOptions] = useAlertMessage();
 
@@ -47,6 +52,10 @@ export function AddNewAuction() {
             setAlertOptions as TSetAlertOptions,
         );
     };
+
+    if (!isAuth) {
+        return <Navigate to="/" />;
+    }
 
     return (
         <div className={styles.wrapper}>

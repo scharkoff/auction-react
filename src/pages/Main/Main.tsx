@@ -35,7 +35,7 @@ export function Main() {
         <div className={styles.wrapper}>
             <Container>
                 <Typography variant="h2" color="black" fontSize={36}>
-                    Лента последних аукционов
+                    Лента аукционов
                 </Typography>
 
                 <div className={styles.content}>
