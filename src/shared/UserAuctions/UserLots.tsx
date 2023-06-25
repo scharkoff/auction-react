@@ -1,5 +1,6 @@
 import React from 'react';
 import Typography from '@mui/material/Typography';
+import styles from './UserAuction.module.scss';
 import { IUserData } from 'redux/slices/auth';
 import { RootState, useAppDispatch } from 'redux/store';
 import { fetchGetAllAuctions } from 'redux/slices/auctions';
@@ -36,12 +37,14 @@ export function UserAuctions({ user }: IUserLots) {
     }, [auctions]);
 
     return (
-        <div>
+        <div className={styles.auctions}>
             <Typography variant="h6" color="black">
                 Ваши аукционы
             </Typography>
 
-            <SimpleTable rows={rows} type="auction" />
+            <div className={styles.table}>
+                <SimpleTable rows={rows} type="auction" />
+            </div>
         </div>
     );
 }

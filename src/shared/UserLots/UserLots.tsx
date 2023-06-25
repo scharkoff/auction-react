@@ -1,5 +1,6 @@
 import React from 'react';
 import Typography from '@mui/material/Typography';
+import styles from './UserLots.module.scss';
 import { IUserData } from 'redux/slices/auth';
 import { RootState, useAppDispatch } from 'redux/store';
 import { fetchGetAllLots } from 'redux/slices/lots';
@@ -36,12 +37,14 @@ export function UserLots({ user }: IUserLots) {
     }, [lots]);
 
     return (
-        <div>
+        <div className={styles.lots}>
             <Typography variant="h6" color="black">
                 Ваши лоты
             </Typography>
 
-            <SimpleTable rows={rows} type="lot" />
+            <div className={styles.table}>
+                <SimpleTable rows={rows} type="lot" />
+            </div>
         </div>
     );
 }
