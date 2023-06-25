@@ -1,3 +1,5 @@
+@import '../../index.scss';
+
 .wrapper {
     min-height: calc(100vh - 73px - 57px);
     padding: 30px 0;
@@ -16,12 +18,22 @@
 .menu {
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
     width: 33.3333%;
 }
 
-.timer {
+.item {
+    margin-top: 20px;
     background-color: #fff;
     border-radius: 5px;
     padding: 40px 20px;
+
+    &:first-child {
+        margin-top: 0;
+    }
+}
+
+.needAuthText {
+    margin-top: 5px;
+    font-size: 12px;
+    color: $light-grey-text-color;
 }

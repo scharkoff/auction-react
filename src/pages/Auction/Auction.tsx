@@ -2,15 +2,20 @@ import React from 'react';
 import Container from '@mui/material/Container';
 import styles from './Auction.module.scss';
 import Typography from '@mui/material/Typography';
+import AddBoxIcon from '@mui/icons-material/AddBox';
 import { LotFeed } from 'widgets';
 import { RootState, useAppDispatch } from 'redux/store';
 import { auctionActions, fetchAuctionGetById } from 'redux/slices/auctions';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Timer } from 'shared';
+import Button from '@mui/material/Button';
+import { selectIsAuth } from 'redux/slices/auth';
 
 export function Auction() {
     const dispatch = useAppDispatch();
+
+    const isAuth = useSelector(selectIsAuth);
 
     const { id } = useParams();
 
@@ -39,7 +44,7 @@ export function Auction() {
                     </div>
 
                     <div className={styles.menu}>
-                        <div className={styles.timer}>
+                        <div className={styles.item}>
                             <Typography variant="h5" color="initial" marginBottom={2}>
                                 До окончания аукциона:
                             </Typography>
@@ -47,6 +52,24 @@ export function Auction() {
                                 startTime={currentAuctionData?.start_time}
                                 endTime={currentAuctionData?.end_time}
                             />
+                        </div>
+
+                        <div className={styles.item}>
+                            <Typography variant="h5" color="initial" marginBottom={2}>
+                                Добавить свой лот в аукцион:
+                            </Typography>
+
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                disabled={!isAuth}
+                                startIcon={<AddBoxIcon fontSize="small" />}
+                            >
+                                Добавить лот
+                            </Button>
+                            {!isAuth && (
+                                <p className={styles.needAuthText}>Необходимо авторизоваться</p>
+                            )}
                         </div>
                     </div>
                 </div>

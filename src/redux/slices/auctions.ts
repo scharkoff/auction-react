@@ -94,6 +94,26 @@ export const fetchAuctionsBySearchQuery = createAsyncThunk(
     },
 );
 
+type TCreateAuction = {
+    title: string;
+    description: string;
+    startTime: number;
+    endTime: number;
+};
+
+export const fetchCreateAuction = createAsyncThunk(
+    '/api/auth/create',
+    async (params: TCreateAuction) => {
+        try {
+            const response = await customAxios.post('api/auction/create/', params);
+
+            return response.data;
+        } catch (error: any) {
+            throw new Error(error);
+        }
+    },
+);
+
 const initialState: ISliceState = {
     data: [],
     loading: false,
@@ -201,6 +221,24 @@ const auctionSlice = createSlice({
                 },
             )
             .addCase(fetchAuctionsBySearchQuery.rejected, (state: ISliceState, action: any) => {
+                state.errorData = action.error;
+                state.loading = false;
+            })
+
+            .addCase(fetchCreateAuction.pending, (state: ISliceState) => {
+                state.loading = true;
+            })
+            .addCase(
+                fetchCreateAuction.fulfilled,
+                (state: ISliceState, action: PayloadAction<IActionPayload>) => {
+                    if (!Array.isArray(action.payload?.data)) {
+                        state.currentAuctionData = action.payload?.data;
+                    }
+
+                    state.loading = false;
+                },
+            )
+            .addCase(fetchCreateAuction.rejected, (state: ISliceState, action: any) => {
                 state.errorData = action.error;
                 state.loading = false;
             });

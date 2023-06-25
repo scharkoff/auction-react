@@ -2,6 +2,7 @@ import React from 'react';
 import Container from '@mui/material/Container';
 import styles from './Header.module.scss';
 import Button from '@mui/material/Button';
+import AddBoxIcon from '@mui/icons-material/AddBox';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from 'redux/store';
@@ -43,6 +44,20 @@ export function Header() {
                                     </Button>
                                 </Link>
                             </li>
+
+                            <li className={styles.item}>
+                                <Link to="/add-new-auction">
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        size="medium"
+                                        startIcon={<AddBoxIcon fontSize="small" />}
+                                    >
+                                        Создать аукцион
+                                    </Button>
+                                </Link>
+                            </li>
+
                             <li className={styles.item}>
                                 <Button
                                     variant="outlined"
@@ -62,6 +77,7 @@ export function Header() {
                                     </Button>
                                 </Link>
                             </li>
+
                             <li className={styles.item}>
                                 <Link to="/register">
                                     <Button variant="contained" color="primary">
