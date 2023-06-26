@@ -110,13 +110,13 @@ type TCreateAuction = {
 
 export const fetchCreateAuction = createAsyncThunk(
     '/api/auction/create',
-    async (params: TCreateAuction) => {
+    async (params: TCreateAuction, thunkAPI) => {
         try {
             const response = await customAxios.post('api/auction/create/', params);
 
             return response.data;
         } catch (error: any) {
-            throw new Error(error);
+            return thunkAPI.rejectWithValue(error);
         }
     },
 );

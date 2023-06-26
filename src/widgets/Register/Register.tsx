@@ -13,7 +13,7 @@ import { Link, Navigate } from 'react-router-dom';
 import { useAlertMessage } from 'hooks';
 import { useAppDispatch } from 'redux/store';
 import { AlertMessage } from 'shared';
-import { IResponse } from 'utils/types';
+import { IRejectedResponse, IResponse } from 'utils/types';
 import { TSetAlertOptions } from 'hooks/useAlertMessage';
 
 export function Register() {
@@ -35,12 +35,8 @@ export function Register() {
     const onSubmitRegister = async (values: TRegisterValues) => {
         const response = await dispatch(fetchRegister(values));
 
-        if (response.payload) {
-            localStorage.setItem('token', response.payload.token);
-        }
-
         handleInternalOrServerError(
-            response as unknown as IResponse,
+            response as unknown as IResponse | IRejectedResponse,
             setAlertOptions as TSetAlertOptions,
         );
     };

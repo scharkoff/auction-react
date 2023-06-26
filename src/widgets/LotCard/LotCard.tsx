@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { ILotData, fetchDeleteLot } from 'redux/slices/lots';
 import { RootState, useAppDispatch } from 'redux/store';
 import { useSelector } from 'react-redux';
-import { IResponse } from 'utils/types';
+import { IRejectedResponse, IResponse } from 'utils/types';
 import { TSetAlertOptions } from 'hooks/useAlertMessage';
 import { AlertColor, IconButton } from '@mui/material';
 
@@ -30,7 +30,7 @@ export function LotCard({ lot, setAlertOptions }: ILotCard) {
             const response = await dispatch(fetchDeleteLot({ id }));
 
             handleInternalOrServerError(
-                response as unknown as IResponse,
+                response as unknown as IResponse | IRejectedResponse,
                 setAlertOptions as TSetAlertOptions,
             );
         }

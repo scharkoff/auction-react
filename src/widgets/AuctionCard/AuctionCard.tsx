@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from 'redux/store';
 import { AlertColor, IconButton } from '@mui/material';
-import { IResponse } from 'utils/types';
+import { IRejectedResponse, IResponse } from 'utils/types';
 import { TSetAlertOptions } from 'hooks/useAlertMessage';
 
 interface IAuctionCard {
@@ -31,7 +31,7 @@ export function AuctionCard({ auction, setAlertOptions }: IAuctionCard) {
             const response = await dispatch(fetchDeleteAuction({ id }));
 
             handleInternalOrServerError(
-                response as unknown as IResponse,
+                response as unknown as IResponse | IRejectedResponse,
                 setAlertOptions as TSetAlertOptions,
             );
         }

@@ -1,31 +1,44 @@
 import { TSetAlertOptions } from 'hooks/useAlertMessage';
-import { IResponse } from 'utils/types';
+import { IRejectedResponse, IResponse } from 'utils/types';
 
-const handleInternalOrServerError = (response: IResponse, setAlertOptions: TSetAlertOptions) => {
-    if (response?.payload) {
-        return setAlertOptions(true, 'success', response?.payload?.message);
-    }
+const handleInternalOrServerError = (
+    response: IResponse | IRejectedResponse,
+    setAlertOptions: TSetAlertOptions,
+) => {
+    if ('error' in response) {
+        if (response.payload.response.status === 400) {
+            if ('non_field_errors' in response.payload.response.data.data) {
+                return setAlertOptions(
+                    true,
+                    'error',
+                    response.payload.response.data.data.non_field_errors[0],
+                );
+            }
 
-    if (response?.error) {
-        if (response.error.message.includes('401')) {
-            return setAlertOptions(true, 'error', 'Ошибка авторизации');
-        }
+            if ('username' in response.payload.response.data.data) {
+                return setAlertOptions(true, 'error', 'Данный логин уже используется');
+            }
 
-        if (response.error.message.includes('400')) {
+            if ('email' in response.payload.response.data.data) {
+                return setAlertOptions(true, 'error', 'Данная почта уже используется');
+            }
+
             return setAlertOptions(true, 'error', 'Неправильный формат запроса');
         }
 
-        if (response.error.message.includes('404')) {
+        if (response.payload.response.status === 404) {
             return setAlertOptions(true, 'error', 'Запрашиваемый объект не найден (404)');
         }
 
-        if (response.error.message.includes('403')) {
+        if (response.payload.response.status === 500) {
             return setAlertOptions(
                 true,
                 'error',
-                'Недостаточно прав для выполнения операции (401)',
+                'Произошла непредвиденная ошибка. Пожалуйста, попробуйте еще раз',
             );
         }
+    } else {
+        return setAlertOptions(true, 'success', response.payload.message);
     }
 
     return setAlertOptions(

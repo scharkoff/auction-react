@@ -34,45 +34,48 @@ export type TRegisterValues = {
 
 export type TLoginValues = Omit<TRegisterValues, 'email'>;
 
-export const fetchLogin = createAsyncThunk('/api/auth/fetchLogin', async (params: TLoginValues) => {
-    try {
-        const response = await customAxios.post('/api/auth/login/', params);
+export const fetchLogin = createAsyncThunk(
+    '/api/auth/fetchLogin',
+    async (params: TLoginValues, thunkAPI) => {
+        try {
+            const response = await customAxios.post('/api/auth/login/', params);
 
-        return response.data;
-    } catch (error: any) {
-        throw new Error(error);
-    }
-});
+            return response.data;
+        } catch (error: any) {
+            return thunkAPI.rejectWithValue(error);
+        }
+    },
+);
 
-export const fetchAuth = createAsyncThunk('/api/auth/fetchAuth', async () => {
+export const fetchAuth = createAsyncThunk('/api/auth/fetchAuth', async (_, thunkAPI) => {
     try {
         const response = await customAxios.get('api/auth/getSessionUserData/');
 
         return response.data;
     } catch (error: any) {
-        throw new Error(error);
+        return thunkAPI.rejectWithValue(error);
     }
 });
 
-export const fetchLogout = createAsyncThunk('/api/auth/fetchLogout', async () => {
+export const fetchLogout = createAsyncThunk('/api/auth/fetchLogout', async (_, thunkAPI) => {
     try {
         const response = await customAxios.get('api/auth/logout/');
 
         return response.data;
     } catch (error: any) {
-        throw new Error(error);
+        return thunkAPI.rejectWithValue(error);
     }
 });
 
 export const fetchRegister = createAsyncThunk(
     '/api/auth/fetchRegister',
-    async (params: TRegisterValues) => {
+    async (params: TRegisterValues, thunkAPI) => {
         try {
             const response = await customAxios.post('api/auth/register/', params);
 
             return response.data;
         } catch (error: any) {
-            throw new Error(error);
+            return thunkAPI.rejectWithValue(error);
         }
     },
 );

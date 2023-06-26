@@ -10,7 +10,7 @@ import { AlertMessage } from 'shared';
 import { Controller, useForm } from 'react-hook-form';
 import { useAlertMessage } from 'hooks';
 import { useAppDispatch } from 'redux/store';
-import { IResponse } from 'utils/types';
+import { IRejectedResponse, IResponse } from 'utils/types';
 import { TSetAlertOptions } from 'hooks/useAlertMessage';
 import { fetchCreateAuction } from 'redux/slices/auctions';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
@@ -47,7 +47,7 @@ export function AddNewAuction() {
         const response = await dispatch(fetchCreateAuction(values));
 
         handleInternalOrServerError(
-            response as unknown as IResponse,
+            response as unknown as IResponse | IRejectedResponse,
             setAlertOptions as TSetAlertOptions,
         );
     };

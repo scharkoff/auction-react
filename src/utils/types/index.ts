@@ -1,17 +1,22 @@
 import { ILotData } from '../../redux/slices/lots';
 
 export interface IResponse {
-    error?: {
-        message: string;
-        name: string;
-        stack: string;
-    };
     message: string;
     payload: {
         message: string;
         data: any;
     };
     type: string;
+}
+
+export interface IRejectedResponse {
+    error: any;
+    payload: {
+        response: {
+            data: any;
+            status: number;
+        };
+    };
 }
 
 export interface ICreateLotResponse extends IResponse {

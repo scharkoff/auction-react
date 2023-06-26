@@ -81,15 +81,18 @@ type TCreateLot = {
     endTime: Date | number | null;
 };
 
-export const fetchCreateLot = createAsyncThunk('/api/lot/create', async (params: TCreateLot) => {
-    try {
-        const response = await customAxios.post('api/lot/create/', params);
+export const fetchCreateLot = createAsyncThunk(
+    '/api/lot/create',
+    async (params: TCreateLot, thunkAPI) => {
+        try {
+            const response = await customAxios.post('api/lot/create/', params);
 
-        return response.data;
-    } catch (error: any) {
-        throw new Error(error);
-    }
-});
+            return response.data;
+        } catch (error: any) {
+            return thunkAPI.rejectWithValue(error);
+        }
+    },
+);
 
 type TDeleteLot = {
     id: number;
@@ -190,7 +193,7 @@ const lotsSlice = createSlice({
                 },
             )
             .addCase(fetchGetAllLots.rejected, (state: ISliceState, action: any) => {
-                state.errorData = action.error;
+                state.errorData = action.payload.response.data;
                 state.loading = false;
             })
 
@@ -207,7 +210,7 @@ const lotsSlice = createSlice({
                 },
             )
             .addCase(fetchCreateLot.rejected, (state: ISliceState, action: any) => {
-                state.errorData = action.error;
+                state.errorData = action.payload.response.data;
                 state.loading = false;
             })
 

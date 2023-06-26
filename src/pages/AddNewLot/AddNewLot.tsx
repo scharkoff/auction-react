@@ -10,14 +10,14 @@ import { AlertMessage } from 'shared';
 import { Controller, useForm } from 'react-hook-form';
 import { useAlertMessage } from 'hooks';
 import { RootState, useAppDispatch } from 'redux/store';
-import { ICreateLotResponse, IResponse } from 'utils/types';
+import { ICreateLotResponse, IRejectedResponse, IResponse } from 'utils/types';
 import { TSetAlertOptions } from 'hooks/useAlertMessage';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useSelector } from 'react-redux';
 import { selectIsAuth } from 'redux/slices/auth';
 import { Navigate, useNavigate } from 'react-router-dom';
-import { IActionPayload, fetchCreateLot } from 'redux/slices/lots';
+import { fetchCreateLot } from 'redux/slices/lots';
 
 type TLotValues = {
     auctionId: number;
@@ -53,7 +53,7 @@ export function AddNewLot() {
         const response = (await dispatch(fetchCreateLot(values))) as unknown as ICreateLotResponse;
 
         handleInternalOrServerError(
-            response as unknown as IResponse,
+            response as unknown as IResponse | IRejectedResponse,
             setAlertOptions as TSetAlertOptions,
         );
 

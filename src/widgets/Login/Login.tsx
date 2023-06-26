@@ -12,7 +12,7 @@ import { useAppDispatch } from 'redux/store';
 import { useAlertMessage } from 'hooks';
 import { TSetAlertOptions } from 'hooks/useAlertMessage';
 import { AlertMessage } from 'shared';
-import { IResponse } from 'utils/types';
+import { IRejectedResponse, IResponse } from 'utils/types';
 
 export function Login() {
     const dispatch = useAppDispatch();
@@ -33,7 +33,7 @@ export function Login() {
         const response = await dispatch(fetchLogin(values));
 
         handleInternalOrServerError(
-            response as unknown as IResponse,
+            response as unknown as IResponse | IRejectedResponse,
             setAlertOptions as TSetAlertOptions,
         );
     };
