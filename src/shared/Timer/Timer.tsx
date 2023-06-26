@@ -43,6 +43,7 @@ export function Timer({ startTime, endTime }: ITimer) {
     return (
         <div className={styles.wrapper}>
             <p className={styles.time}>{remainingTime}</p>
+            <p className={styles.suptitle}>дней : часов : минут : секунд</p>
         </div>
     );
 }
