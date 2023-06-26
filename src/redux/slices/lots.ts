@@ -23,6 +23,13 @@ export interface IActionPayload {
     data: ILotData[] | ILotData;
 }
 
+interface ILotDeletePayload {
+    message: string;
+    data: {
+        id: number;
+    };
+}
+
 interface ISliceState {
     data: ILotData[];
     loading: boolean;
@@ -77,6 +84,20 @@ type TCreateLot = {
 export const fetchCreateLot = createAsyncThunk('/api/lot/create', async (params: TCreateLot) => {
     try {
         const response = await customAxios.post('api/lot/create/', params);
+
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error);
+    }
+});
+
+type TDeleteLot = {
+    id: number;
+};
+
+export const fetchDeleteLot = createAsyncThunk('/api/lot/delete', async ({ id }: TDeleteLot) => {
+    try {
+        const response = await customAxios.delete(`api/lot/delete/?id=${id}`);
 
         return response.data;
     } catch (error: any) {
@@ -186,6 +207,21 @@ const lotsSlice = createSlice({
                 },
             )
             .addCase(fetchCreateLot.rejected, (state: ISliceState, action: any) => {
+                state.errorData = action.error;
+                state.loading = false;
+            })
+
+            .addCase(fetchDeleteLot.pending, (state: ISliceState) => {
+                state.loading = true;
+            })
+            .addCase(
+                fetchDeleteLot.fulfilled,
+                (state: ISliceState, action: PayloadAction<ILotDeletePayload>) => {
+                    state.data = state.data.filter((lot) => lot?.id !== action.payload?.data?.id);
+                    state.loading = false;
+                },
+            )
+            .addCase(fetchDeleteLot.rejected, (state: ISliceState, action: any) => {
                 state.errorData = action.error;
                 state.loading = false;
             });

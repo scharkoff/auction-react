@@ -10,14 +10,14 @@ import { AlertMessage } from 'shared';
 import { Controller, useForm } from 'react-hook-form';
 import { useAlertMessage } from 'hooks';
 import { RootState, useAppDispatch } from 'redux/store';
-import { IResponse } from 'utils/types';
+import { ICreateLotResponse, IResponse } from 'utils/types';
 import { TSetAlertOptions } from 'hooks/useAlertMessage';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useSelector } from 'react-redux';
 import { selectIsAuth } from 'redux/slices/auth';
-import { Navigate } from 'react-router-dom';
-import { fetchCreateLot } from 'redux/slices/lots';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { IActionPayload, fetchCreateLot } from 'redux/slices/lots';
 
 type TLotValues = {
     auctionId: number;
@@ -29,6 +29,8 @@ type TLotValues = {
 
 export function AddNewLot() {
     const dispatch = useAppDispatch();
+
+    const navigate = useNavigate();
 
     const isAuth = useSelector(selectIsAuth);
 
@@ -47,13 +49,17 @@ export function AddNewLot() {
         mode: 'onChange',
     });
 
-    const onSubmitAuctionForm = async (values: TLotValues) => {
-        const response = await dispatch(fetchCreateLot(values));
+    const onSubmitLotForm = async (values: TLotValues) => {
+        const response = (await dispatch(fetchCreateLot(values))) as unknown as ICreateLotResponse;
 
         handleInternalOrServerError(
             response as unknown as IResponse,
             setAlertOptions as TSetAlertOptions,
         );
+
+        if (response?.payload?.data && !Array.isArray(response?.payload?.data)) {
+            navigate(`/lot/${response?.payload?.data?.id}`);
+        }
     };
 
     if (!isAuth) {
@@ -71,7 +77,7 @@ export function AddNewLot() {
                         <strong>&#171;{auction?.title}&#187;</strong>
                     </Typography>
 
-                    <form onSubmit={handleSubmit(onSubmitAuctionForm)}>
+                    <form onSubmit={handleSubmit(onSubmitLotForm)}>
                         <TextField
                             className={styles.field}
                             label="Название"

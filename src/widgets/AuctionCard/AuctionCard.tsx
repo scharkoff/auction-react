@@ -2,14 +2,12 @@ import React from 'react';
 import styles from './AuctionCard.module.scss';
 import GavelIcon from '@mui/icons-material/Gavel';
 import DeleteIcon from '@mui/icons-material/Clear';
-import EditIcon from '@mui/icons-material/Edit';
+import handleInternalOrServerError from 'utils/functions/errors/handleInternalOrServerError';
 import { IAuctionData, fetchDeleteAuction } from 'redux/slices/auctions';
 import { Link } from 'react-router-dom';
-import handleInternalOrServerError from 'utils/functions/errors/handleInternalOrServerError';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from 'redux/store';
 import { AlertColor, IconButton } from '@mui/material';
-import { useAlertMessage } from 'hooks';
 import { IResponse } from 'utils/types';
 import { TSetAlertOptions } from 'hooks/useAlertMessage';
 

@@ -1,3 +1,5 @@
+import { ILotData } from '../../redux/slices/lots';
+
 export interface IResponse {
     error?: {
         message: string;
@@ -7,7 +9,14 @@ export interface IResponse {
     message: string;
     payload: {
         message: string;
-        data: Record<string, unknown>;
+        data: any;
     };
     type: string;
+}
+
+export interface ICreateLotResponse extends IResponse {
+    payload: {
+        message: string;
+        data: ILotData;
+    };
 }

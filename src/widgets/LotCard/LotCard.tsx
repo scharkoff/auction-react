@@ -1,15 +1,53 @@
 import React from 'react';
 import styles from './LotCard.module.scss';
+import DeleteIcon from '@mui/icons-material/Clear';
+import handleInternalOrServerError from 'utils/functions/errors/handleInternalOrServerError';
 import { Link } from 'react-router-dom';
-import { ILotData } from 'redux/slices/lots';
+import { ILotData, fetchDeleteLot } from 'redux/slices/lots';
+import { RootState, useAppDispatch } from 'redux/store';
+import { useSelector } from 'react-redux';
+import { IResponse } from 'utils/types';
+import { TSetAlertOptions } from 'hooks/useAlertMessage';
+import { AlertColor, IconButton } from '@mui/material';
 
 interface ILotCard {
     lot: ILotData;
+    setAlertOptions: (visability: boolean, type: AlertColor, text: string) => void;
 }
 
-export function LotCard({ lot }: ILotCard) {
+export function LotCard({ lot, setAlertOptions }: ILotCard) {
+    const dispatch = useAppDispatch();
+
+    const user = useSelector((state: RootState) => state.auth.data);
+
+    const onClickDelete = async (id: number) => {
+        if (
+            // eslint-disable-next-line no-alert
+            window.confirm(
+                'Вы действительно хотите удалить данный аукцион? При удалении удалятся все лоты данного аукциона',
+            )
+        ) {
+            const response = await dispatch(fetchDeleteLot({ id }));
+
+            handleInternalOrServerError(
+                response as unknown as IResponse,
+                setAlertOptions as TSetAlertOptions,
+            );
+        }
+    };
+
     return (
         <div className={styles.card}>
+            {user?.is_superuser || user?.id === lot?.owner_id ? (
+                <div className={styles.editButtons}>
+                    <IconButton onClick={() => onClickDelete(lot?.id)} color="error">
+                        <DeleteIcon color="error" />
+                    </IconButton>
+                </div>
+            ) : (
+                ''
+            )}
+
             <Link to={`/lot/${lot?.id}`}>
                 <div className={styles.image}>
                     <p className={styles.lot}>Лот №{lot?.id}</p>

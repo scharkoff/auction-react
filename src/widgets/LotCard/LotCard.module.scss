@@ -5,6 +5,7 @@
     max-width: 500px;
     border-radius: 5px;
     margin-top: 20px;
+    position: relative;
 
     &:hover {
         background-color: #fafafa;
@@ -87,4 +88,13 @@
     .active {
         color: rgb(0, 206, 34);
     }
+}
+
+.editButtons {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    border-radius: 10px;
+    opacity: 1;
+    transition: all 0.15s ease-in-out;
 }
