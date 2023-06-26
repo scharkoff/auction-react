@@ -176,7 +176,7 @@ const lotsSlice = createSlice({
                 },
             )
             .addCase(fetchLotById.rejected, (state: ISliceState, action: any) => {
-                state.errorData = action.error;
+                state.errorData = action.payload?.response?.data;
                 state.loading = false;
             })
 
@@ -193,7 +193,7 @@ const lotsSlice = createSlice({
                 },
             )
             .addCase(fetchGetAllLots.rejected, (state: ISliceState, action: any) => {
-                state.errorData = action.payload.response.data;
+                state.errorData = action.payload?.response?.data;
                 state.loading = false;
             })
 
@@ -210,7 +210,7 @@ const lotsSlice = createSlice({
                 },
             )
             .addCase(fetchCreateLot.rejected, (state: ISliceState, action: any) => {
-                state.errorData = action.payload.response.data;
+                state.errorData = action.payload?.response?.data;
                 state.loading = false;
             })
 
@@ -225,7 +225,7 @@ const lotsSlice = createSlice({
                 },
             )
             .addCase(fetchDeleteLot.rejected, (state: ISliceState, action: any) => {
-                state.errorData = action.error;
+                state.errorData = action.payload?.response?.data;
                 state.loading = false;
             });
     },

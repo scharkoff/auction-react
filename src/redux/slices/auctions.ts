@@ -42,7 +42,7 @@ type TGetAllAuctions = {
 
 export const fetchGetAllAuctions = createAsyncThunk(
     '/api/auction/getAll/',
-    async ({ ownerId = null, sort = '', filter = '' }: TGetAllAuctions) => {
+    async ({ ownerId = null, sort = '', filter = '' }: TGetAllAuctions, thunkAPI) => {
         try {
             let response = null;
 
@@ -60,7 +60,7 @@ export const fetchGetAllAuctions = createAsyncThunk(
 
             return response.data;
         } catch (error: any) {
-            throw new Error(error);
+            return thunkAPI.rejectWithValue(error);
         }
     },
 );
@@ -71,7 +71,7 @@ type TAuctionGetById = {
 
 export const fetchAuctionGetById = createAsyncThunk(
     '/api/auction/getById',
-    async ({ id }: TAuctionGetById) => {
+    async ({ id }: TAuctionGetById, thunkAPI) => {
         try {
             id = +id;
 
@@ -79,7 +79,7 @@ export const fetchAuctionGetById = createAsyncThunk(
 
             return response.data;
         } catch (error: any) {
-            throw new Error(error);
+            return thunkAPI.rejectWithValue(error);
         }
     },
 );
@@ -90,13 +90,13 @@ type TGetAuctionsBySearchQuery = {
 
 export const fetchAuctionsBySearchQuery = createAsyncThunk(
     '/api/auction/search',
-    async ({ query }: TGetAuctionsBySearchQuery) => {
+    async ({ query }: TGetAuctionsBySearchQuery, thunkAPI) => {
         try {
             const response = await customAxios.get(`api/auction/search/?query=${query}`);
 
             return response.data;
         } catch (error: any) {
-            throw new Error(error);
+            return thunkAPI.rejectWithValue(error);
         }
     },
 );
@@ -127,13 +127,13 @@ type TDeleteAuction = {
 
 export const fetchDeleteAuction = createAsyncThunk(
     '/api/auction/delete',
-    async ({ id }: TDeleteAuction) => {
+    async ({ id }: TDeleteAuction, thunkAPI) => {
         try {
             const response = await customAxios.delete(`api/auction/delete/?id=${id}`);
 
             return response.data;
         } catch (error: any) {
-            throw new Error(error);
+            return thunkAPI.rejectWithValue(error);
         }
     },
 );
@@ -209,7 +209,7 @@ const auctionSlice = createSlice({
                 },
             )
             .addCase(fetchGetAllAuctions.rejected, (state: ISliceState, action: any) => {
-                state.errorData = action.error;
+                state.errorData = action.payload;
                 state.loading = false;
             })
 
@@ -227,7 +227,7 @@ const auctionSlice = createSlice({
                 },
             )
             .addCase(fetchAuctionGetById.rejected, (state: ISliceState, action: any) => {
-                state.errorData = action.error;
+                state.errorData = action.payload?.response?.data;
                 state.loading = false;
             })
 
@@ -245,7 +245,7 @@ const auctionSlice = createSlice({
                 },
             )
             .addCase(fetchAuctionsBySearchQuery.rejected, (state: ISliceState, action: any) => {
-                state.errorData = action.error;
+                state.errorData = action.payload?.response?.data;
                 state.loading = false;
             })
 
@@ -263,7 +263,7 @@ const auctionSlice = createSlice({
                 },
             )
             .addCase(fetchCreateAuction.rejected, (state: ISliceState, action: any) => {
-                state.errorData = action.error;
+                state.errorData = action.payload?.response?.data;
                 state.loading = false;
             })
 
@@ -280,7 +280,7 @@ const auctionSlice = createSlice({
                 },
             )
             .addCase(fetchDeleteAuction.rejected, (state: ISliceState, action: any) => {
-                state.errorData = action.error;
+                state.errorData = action.payload?.response?.data;
                 state.loading = false;
             });
     },

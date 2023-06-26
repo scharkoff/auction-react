@@ -116,7 +116,7 @@ const authSlice = createSlice({
                 },
             )
             .addCase(fetchLogin.rejected, (state: ISliceState, action: any) => {
-                state.errorData = action.error;
+                state.errorData = action.payload?.response?.data;
                 state.authorization = false;
                 state.loading = false;
             })
@@ -134,7 +134,7 @@ const authSlice = createSlice({
                 },
             )
             .addCase(fetchAuth.rejected, (state: ISliceState, action: any) => {
-                state.errorData = action.error;
+                state.errorData = action.payload?.response?.data;
                 state.authorization = false;
                 state.loading = false;
             })
@@ -152,7 +152,7 @@ const authSlice = createSlice({
                 },
             )
             .addCase(fetchRegister.rejected, (state: ISliceState, action: any) => {
-                state.errorData = action.error;
+                state.errorData = action.payload?.response?.data;
                 state.authorization = false;
                 state.loading = false;
             })
