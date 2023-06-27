@@ -25,18 +25,15 @@ interface ISliceState {
     currentBidData: IBidData;
 }
 
-type TGetAllBids = {
-    ownerId: number;
+type TGetBidsByLotId = {
     lotId: number;
 };
 
 export const fetchGetAllBids = createAsyncThunk(
     '/api/bid/getAll',
-    async ({ ownerId = 0, lotId = 0 }: TGetAllBids) => {
+    async ({ lotId = 0 }: TGetBidsByLotId) => {
         try {
-            const response = await customAxios.get(
-                `api/bid/getAll/?owner_id=${ownerId}&lot_id=${lotId}`,
-            );
+            const response = await customAxios.get(`api/bid/getAll/?lot_id=${lotId}`);
 
             return response.data;
         } catch (error: any) {
@@ -45,11 +42,9 @@ export const fetchGetAllBids = createAsyncThunk(
     },
 );
 
-type TGetUserBidByLotId = Omit<TGetAllBids, 'ownerId'>;
-
 export const fetchGetUserBidByLotId = createAsyncThunk(
     '/api/bid/getUserBidByLotId',
-    async ({ lotId = 0 }: TGetUserBidByLotId) => {
+    async ({ lotId = 0 }: TGetBidsByLotId) => {
         try {
             const response = await customAxios.get(`api/bid/getUserBidByLotId/?lot_id=${lotId}`);
 

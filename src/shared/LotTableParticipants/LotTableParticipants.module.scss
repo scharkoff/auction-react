@@ -1,0 +1,7 @@
+@import '../../index.scss';
+
+.link {
+    &:hover {
+        color: $primary-main-color;
+    }
+}

@@ -1,3 +1,4 @@
+export { LotTableParticipants } from './LotTableParticipants/LotTableParticipants';
 export { SimpleTable } from './SimpleTable/SimpleTable';
 export { SortedList } from './SortedList/SortedList';
 export { FilterList } from './FilterList/FilterList';

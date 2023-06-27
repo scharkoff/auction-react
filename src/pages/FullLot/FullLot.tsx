@@ -7,7 +7,7 @@ import { RootState, useAppDispatch } from 'redux/store';
 import { fetchGetLotById } from 'redux/slices/lots';
 import { Link, useParams } from 'react-router-dom';
 import { LotSlider } from 'widgets';
-import { Timer } from 'shared';
+import { LotTableParticipants, Timer } from 'shared';
 import { selectIsAuth } from 'redux/slices/auth';
 import {
     fetchCreateBid,
@@ -26,6 +26,7 @@ export function FullLot() {
     const isAuth = useSelector(selectIsAuth);
     const lot = useSelector((state: RootState) => state.lots.currentLotData);
     const bid = useSelector((state: RootState) => state.bid.currentBidData);
+    const bids = useSelector((state: RootState) => state.bid.data);
     const user = useSelector((state: RootState) => state.auth.data);
 
     const [currentUserBid, setCurrentUserBid] = React.useState(0);
@@ -34,7 +35,7 @@ export function FullLot() {
         if (id) {
             dispatch(fetchGetUserBidByLotId({ lotId: +id }));
             dispatch(fetchGetLotById({ id: +id }));
-            dispatch(fetchGetAllBids({ ownerId: user?.id, lotId: +id }));
+            dispatch(fetchGetAllBids({ lotId: +id }));
         }
     }, []);
 
@@ -51,6 +52,7 @@ export function FullLot() {
 
         if (id) {
             dispatch(fetchGetLotById({ id: +id }));
+            dispatch(fetchGetAllBids({ lotId: +id }));
         }
     };
 
@@ -72,28 +74,27 @@ export function FullLot() {
                                 <li className={styles.item}>
                                     <span>Название:</span> {lot?.title}
                                 </li>
-
                                 <li className={styles.item}>
                                     <span>Описание:</span> {lot?.description}
                                 </li>
-
                                 <li className={styles.item}>
                                     <span>Продавец:</span> {lot?.owner?.username}
                                 </li>
-
                                 <li className={styles.item}>
                                     <span>Дата начала продажи:</span>{' '}
                                     {lot?.start_time.replace(/T(\d{2}:\d{2}:\d{2}).*/, ' $1')}
                                 </li>
-
                                 <li className={styles.item}>
                                     <span>Дата окончания продажи:</span>{' '}
                                     {lot?.end_time.replace(/T(\d{2}:\d{2}:\d{2}).*/, ' $1')}
                                 </li>
-
                                 <li className={styles.item}>
                                     <span>Победитель:</span>{' '}
                                     {lot?.winner_id ? lot.winner_id : 'Не объявлен'}
+                                </li>
+                                <li className={styles.item}>
+                                    <span>Минимальная ставка:</span>{' '}
+                                    <p className={styles.minPrice}>{lot?.price} руб.</p>
                                 </li>
                             </ul>
                         </div>
@@ -169,6 +170,16 @@ export function FullLot() {
                             </Link>
                         </Typography>
                     )}
+                </div>
+
+                <div className={styles.bar}>
+                    <Typography variant="h6" color="initial">
+                        Участники лота:
+                    </Typography>
+
+                    <div className={styles.users}>
+                        <LotTableParticipants bids={bids} />
+                    </div>
                 </div>
             </Container>
         </div>
