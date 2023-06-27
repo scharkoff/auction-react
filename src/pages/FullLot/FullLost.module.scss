@@ -59,31 +59,6 @@
     margin-top: 20px;
 }
 
-.barWrapper {
-    display: flex;
-    flex-direction: column;
-}
-
-.bidWrapper {
-    margin-top: 30px;
-    display: flex;
-    justify-content: space-between;
-}
-
-.takePart {
-    display: flex;
-    flex-direction: column;
-
-    p {
-        margin-bottom: 20px;
-    }
-}
-
-.priceUp {
-    display: flex;
-    align-items: center;
-}
-
 .needAuth {
     color: $primary-main-color;
 
@@ -100,5 +75,21 @@
 
 .minPrice {
     font-weight: bold;
-    color: rgb(0, 172, 0);
+    color: #00ac00;
+}
+
+.breadcrumbs {
+    margin-bottom: 20px;
+    font-size: 14px;
+
+    span {
+        cursor: pointer;
+        background-color: #e0e0e0;
+        padding: 5px 10px;
+        border-radius: 50px;
+
+        &:hover {
+            background-color: #e7e7e7;
+        }
+    }
 }

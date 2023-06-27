@@ -1,0 +1,29 @@
+@import '../../index.scss';
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.panel {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.bid {
+    font-weight: bold;
+    color: #00ac00;
+}
+
+.warn {
+    font-size: 12px;
+    margin-top: 5px;
+    color: $light-grey-text-color;
+}

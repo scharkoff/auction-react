@@ -43,16 +43,16 @@ export function LotSlider({ images }: ISlider) {
             </div>
 
             <div className={styles.buttonsWrapper}>
-                <IconButton>
-                    <button type="button" className={styles.btn} onClick={() => goToPrevSlide()}>
+                <IconButton onClick={() => goToPrevSlide()}>
+                    <div className={styles.btn}>
                         <ArrowBackIosIcon fontSize="small" />
-                    </button>
+                    </div>
                 </IconButton>
 
-                <IconButton>
-                    <button type="button" className={styles.btn} onClick={() => goToNextSlide()}>
+                <IconButton onClick={() => goToNextSlide()}>
+                    <div className={styles.btn}>
                         <ArrowForwardIosIcon fontSize="small" />
-                    </button>
+                    </div>
                 </IconButton>
             </div>
         </div>

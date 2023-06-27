@@ -4,9 +4,10 @@ import styles from './Timer.module.scss';
 interface ITimer {
     startTime: string;
     endTime: string;
+    finished: boolean;
 }
 
-export function Timer({ startTime, endTime }: ITimer) {
+export function Timer({ startTime, endTime, finished }: ITimer) {
     const [remainingTime, setRemainingTime] = React.useState('00:00:00:00');
 
     React.useEffect(() => {
@@ -37,8 +38,13 @@ export function Timer({ startTime, endTime }: ITimer) {
             }
         }, 1000);
 
+        if (finished) {
+            setRemainingTime('00:00:00:00');
+            clearInterval(interval);
+        }
+
         return () => clearInterval(interval);
-    }, [startTime, endTime]);
+    }, [startTime, endTime, finished]);
 
     return (
         <div className={styles.wrapper}>

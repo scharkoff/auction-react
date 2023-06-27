@@ -26,7 +26,7 @@ export function LotTableParticipants({ bids }: ILotTableParticipants) {
 
     React.useEffect(() => {
         const newRows = bids.map((bid) => createData(bid?.id, bid?.owner?.username, bid?.price));
-        setRows(newRows);
+        setRows(newRows.sort((a, b) => b.price - a.price));
     }, [bids]);
 
     return (

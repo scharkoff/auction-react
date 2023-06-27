@@ -2,6 +2,7 @@ import customAxios from 'configs/axios';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from 'redux/store';
 import { IUserData } from './auth';
+import { emptyAuctionData } from './data';
 
 export interface IAuctionData {
     id: number;
@@ -143,56 +144,14 @@ const initialState: ISliceState = {
     loading: false,
     errorData: {},
     currentAuctionData: {
-        id: 0,
-        title: '',
-        description: '',
-        start_time: '',
-        end_time: '',
-        created: '',
-        is_closed: false,
-        owner_id: 0,
-        owner: {
-            id: 0,
-            username: '',
-            email: '',
-            first_name: '',
-            last_name: '',
-            is_superuser: false,
-            date_joined: '',
-            last_login: '',
-            is_active: false,
-        },
+        ...emptyAuctionData,
     },
 };
 
 const auctionSlice = createSlice({
     name: 'auth',
     initialState,
-    reducers: {
-        cleanAuctionData: (state) => {
-            state.currentAuctionData = {
-                id: 0,
-                title: '',
-                description: '',
-                start_time: '',
-                end_time: '',
-                created: '',
-                is_closed: false,
-                owner_id: 0,
-                owner: {
-                    id: 0,
-                    username: '',
-                    email: '',
-                    first_name: '',
-                    last_name: '',
-                    is_superuser: false,
-                    date_joined: '',
-                    last_login: '',
-                    is_active: false,
-                },
-            };
-        },
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder
             .addCase(fetchGetAllAuctions.pending, (state: ISliceState) => {
@@ -227,6 +186,7 @@ const auctionSlice = createSlice({
                 },
             )
             .addCase(fetchAuctionGetById.rejected, (state: ISliceState, action: any) => {
+                state.currentAuctionData = { ...emptyAuctionData };
                 state.errorData = action.payload?.response?.data;
                 state.loading = false;
             })
@@ -263,6 +223,7 @@ const auctionSlice = createSlice({
                 },
             )
             .addCase(fetchCreateAuction.rejected, (state: ISliceState, action: any) => {
+                state.currentAuctionData = { ...emptyAuctionData };
                 state.errorData = action.payload?.response?.data;
                 state.loading = false;
             })

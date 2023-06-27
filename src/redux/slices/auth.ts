@@ -1,6 +1,7 @@
 import customAxios from 'configs/axios';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from 'redux/store';
+import { emptyUserData } from './data';
 
 export interface IUserData {
     id: number;
@@ -82,15 +83,7 @@ export const fetchRegister = createAsyncThunk(
 
 const initialState: ISliceState = {
     data: {
-        id: 0,
-        username: '',
-        email: '',
-        first_name: '',
-        last_name: '',
-        is_superuser: false,
-        date_joined: '',
-        last_login: '',
-        is_active: false,
+        ...emptyUserData,
     },
     loading: false,
     errorData: {},
@@ -116,6 +109,7 @@ const authSlice = createSlice({
                 },
             )
             .addCase(fetchLogin.rejected, (state: ISliceState, action: any) => {
+                state.data = { ...emptyUserData };
                 state.errorData = action.payload?.response?.data;
                 state.authorization = false;
                 state.loading = false;
@@ -134,6 +128,7 @@ const authSlice = createSlice({
                 },
             )
             .addCase(fetchAuth.rejected, (state: ISliceState, action: any) => {
+                state.data = { ...emptyUserData };
                 state.errorData = action.payload?.response?.data;
                 state.authorization = false;
                 state.loading = false;
@@ -152,6 +147,7 @@ const authSlice = createSlice({
                 },
             )
             .addCase(fetchRegister.rejected, (state: ISliceState, action: any) => {
+                state.data = { ...emptyUserData };
                 state.errorData = action.payload?.response?.data;
                 state.authorization = false;
                 state.loading = false;
@@ -162,17 +158,7 @@ const authSlice = createSlice({
             })
             .addCase(fetchLogout.fulfilled, (state: ISliceState) => {
                 state.loading = false;
-                state.data = {
-                    id: 0,
-                    username: '',
-                    email: '',
-                    first_name: '',
-                    last_name: '',
-                    is_superuser: false,
-                    date_joined: '',
-                    last_login: '',
-                    is_active: false,
-                };
+                state.data = { ...emptyUserData };
                 state.authorization = false;
             })
             .addCase(fetchLogout.rejected, (state: ISliceState, action: any) => {

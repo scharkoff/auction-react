@@ -3,6 +3,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from 'redux/store';
 import { IUserData } from './auth';
 import { ILotData } from './lots';
+import { emptyBidData } from './data';
 
 export interface IBidData {
     id: number;
@@ -96,65 +97,7 @@ const initialState: ISliceState = {
     loading: false,
     errorData: {},
     currentBidData: {
-        id: 0,
-        price: 0,
-        owner_id: 0,
-        owner: {
-            id: 0,
-            username: '',
-            email: '',
-            first_name: '',
-            last_name: '',
-            is_superuser: false,
-            date_joined: '',
-            last_login: '',
-            is_active: false,
-        },
-        lot_id: 0,
-        lot: {
-            id: 0,
-            title: '',
-            description: '',
-            price: 0,
-            start_time: '',
-            end_time: '',
-            owner_id: 0,
-            owner: {
-                id: 0,
-                username: '',
-                email: '',
-                first_name: '',
-                last_name: '',
-                is_superuser: false,
-                date_joined: '',
-                last_login: '',
-                is_active: false,
-            },
-            auction_id: 0,
-            auction: {
-                id: 0,
-                title: '',
-                description: '',
-                start_time: '',
-                end_time: '',
-                created: '',
-                is_closed: false,
-                owner_id: 0,
-                owner: {
-                    id: 0,
-                    username: '',
-                    email: '',
-                    first_name: '',
-                    last_name: '',
-                    is_superuser: false,
-                    date_joined: '',
-                    last_login: '',
-                    is_active: false,
-                },
-            },
-            winner_id: null,
-            image: '',
-        },
+        ...emptyBidData,
     },
 };
 
@@ -177,6 +120,7 @@ const bidSlice = createSlice({
                 },
             )
             .addCase(fetchGetUserBidByLotId.rejected, (state: ISliceState, action: any) => {
+                state.currentBidData = { ...emptyBidData };
                 state.errorData = action.payload?.response?.data;
                 state.loading = false;
             })

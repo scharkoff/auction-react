@@ -47,6 +47,7 @@ export function Auction() {
                             <Timer
                                 startTime={currentAuctionData?.start_time}
                                 endTime={currentAuctionData?.end_time}
+                                finished={false}
                             />
                         </div>
 

@@ -3,6 +3,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from 'redux/store';
 import { IUserData } from './auth';
 import { IAuctionData } from './auctions';
+import { emptyLotData } from './data';
 
 export interface ILotData {
     id: number;
@@ -63,7 +64,7 @@ type TGetLotById = {
 };
 
 export const fetchGetLotById = createAsyncThunk(
-    '/api/lot/getById/',
+    '/api/lot/getById',
     async ({ id = 0 }: TGetLotById) => {
         try {
             const response = await customAxios.get(`api/lot/getById/?id=${id}`);
@@ -95,13 +96,23 @@ export const fetchCreateLot = createAsyncThunk(
     },
 );
 
-type TDeleteLot = {
+type TLotId = {
     id: number;
 };
 
-export const fetchDeleteLot = createAsyncThunk('/api/lot/delete', async ({ id }: TDeleteLot) => {
+export const fetchDeleteLot = createAsyncThunk('/api/lot/delete', async ({ id }: TLotId) => {
     try {
         const response = await customAxios.delete(`api/lot/delete/?id=${id}`);
+
+        return response.data;
+    } catch (error: any) {
+        throw new Error(error);
+    }
+});
+
+export const fetchFinishLot = createAsyncThunk('/api/lot/finish', async ({ id }: TLotId) => {
+    try {
+        const response = await customAxios.delete(`api/lot/finish/?id=${id}`);
 
         return response.data;
     } catch (error: any) {
@@ -114,48 +125,7 @@ const initialState: ISliceState = {
     loading: false,
     errorData: {},
     currentLotData: {
-        id: 0,
-        title: '',
-        description: '',
-        price: 0,
-        start_time: '',
-        end_time: '',
-        owner_id: 0,
-        owner: {
-            id: 0,
-            username: '',
-            email: '',
-            first_name: '',
-            last_name: '',
-            is_superuser: false,
-            date_joined: '',
-            last_login: '',
-            is_active: false,
-        },
-        auction_id: 0,
-        auction: {
-            id: 0,
-            title: '',
-            description: '',
-            start_time: '',
-            end_time: '',
-            created: '',
-            is_closed: false,
-            owner_id: 0,
-            owner: {
-                id: 0,
-                username: '',
-                email: '',
-                first_name: '',
-                last_name: '',
-                is_superuser: false,
-                date_joined: '',
-                last_login: '',
-                is_active: false,
-            },
-        },
-        winner_id: null,
-        image: '',
+        ...emptyLotData,
     },
 };
 
@@ -165,6 +135,24 @@ const lotsSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
+            .addCase(fetchFinishLot.pending, (state: ISliceState) => {
+                state.loading = true;
+            })
+            .addCase(
+                fetchFinishLot.fulfilled,
+                (state: ISliceState, action: PayloadAction<IActionPayload>) => {
+                    if (!Array.isArray(action.payload?.data)) {
+                        state.currentLotData = action.payload?.data;
+                    }
+                    state.loading = false;
+                },
+            )
+            .addCase(fetchFinishLot.rejected, (state: ISliceState, action: any) => {
+                state.currentLotData = { ...emptyLotData };
+                state.errorData = action.payload?.response?.data;
+                state.loading = false;
+            })
+
             .addCase(fetchGetLotById.pending, (state: ISliceState) => {
                 state.loading = true;
             })
@@ -178,6 +166,7 @@ const lotsSlice = createSlice({
                 },
             )
             .addCase(fetchGetLotById.rejected, (state: ISliceState, action: any) => {
+                state.currentLotData = { ...emptyLotData };
                 state.errorData = action.payload?.response?.data;
                 state.loading = false;
             })

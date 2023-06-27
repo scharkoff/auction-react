@@ -1,22 +1,22 @@
 import React from 'react';
 import Container from '@mui/material/Container';
 import styles from './FullLost.module.scss';
+import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from 'redux/store';
-import { fetchGetLotById } from 'redux/slices/lots';
+import { fetchFinishLot, fetchGetLotById } from 'redux/slices/lots';
 import { Link, useParams } from 'react-router-dom';
-import { LotSlider } from 'widgets';
+import { LotSlider, PlaceBid } from 'widgets';
 import { LotTableParticipants, Timer } from 'shared';
 import { selectIsAuth } from 'redux/slices/auth';
+import IconButton from '@mui/material/IconButton';
 import {
     fetchCreateBid,
     fetchGetAllBids,
     fetchGetUserBidByLotId,
     fetchUpdateBid,
 } from 'redux/slices/bid';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
 
 export function FullLot() {
     const dispatch = useAppDispatch();
@@ -56,6 +56,12 @@ export function FullLot() {
         }
     };
 
+    const onSubmitFinish = () => {
+        if (window.confirm('Вы действительно хотите завершить продажу досрочно?')) {
+            dispatch(fetchFinishLot({ id: lot?.id }));
+        }
+    };
+
     const mockImages = [
         'https://ir.ozone.ru/s3/multimedia-g/wc1000/6124805284.jpg',
         'https://ir.ozone.ru/s3/multimedia-d/wc1000/6267495421.jpg',
@@ -65,6 +71,17 @@ export function FullLot() {
     return (
         <div className={styles.wrapper}>
             <Container>
+                <div className={styles.breadcrumbs}>
+                    <Link to="/">
+                        {' '}
+                        <span>Главная</span> /{' '}
+                    </Link>
+                    <span>
+                        <Link to={`/auction/${lot?.auction?.id}`}>{lot?.auction?.title}</Link>
+                    </span>{' '}
+                    / <span>{lot?.title}</span>
+                </div>
+
                 <div className={styles.content}>
                     <div className={styles.infoBlock}>
                         <div className={styles.info}>
@@ -93,7 +110,11 @@ export function FullLot() {
                                     {lot?.winner_id ? lot.winner_id : 'Не объявлен'}
                                 </li>
                                 <li className={styles.item}>
-                                    <span>Минимальная ставка:</span>{' '}
+                                    <span>
+                                        {lot?.winner_id
+                                            ? 'Окончательная цена:'
+                                            : 'Минимальная ставка:'}
+                                    </span>{' '}
                                     <p className={styles.minPrice}>{lot?.price} руб.</p>
                                 </li>
                             </ul>
@@ -108,60 +129,45 @@ export function FullLot() {
                 </div>
 
                 <div className={styles.bar}>
-                    <Typography variant="h6" color="initial">
+                    <Typography variant="h6" color="initial" marginBottom={2}>
                         До завершения осталось:
                     </Typography>
                     <div className={styles.timer}>
-                        <Timer startTime={lot?.start_time} endTime={lot?.end_time} />
+                        <Timer
+                            startTime={lot?.start_time}
+                            endTime={lot?.end_time}
+                            finished={Boolean(lot?.winner_id)}
+                        />
                     </div>
                 </div>
 
                 <div className={styles.bar}>
                     {isAuth ? (
-                        <div className={styles.barWrapper}>
-                            <Typography variant="h6" color="initial">
-                                Принять участие:
-                            </Typography>
+                        <>
+                            {user?.id !== lot?.owner_id ? (
+                                <PlaceBid
+                                    lot={lot}
+                                    bid={bid}
+                                    onSubmitNewBid={onSubmitNewBid}
+                                    currentUserBid={currentUserBid}
+                                    setCurrentUserBid={setCurrentUserBid}
+                                />
+                            ) : (
+                                <>
+                                    <Typography variant="h6" color="initial" marginBottom={2}>
+                                        Досрочное завершение продажи лота:
+                                    </Typography>
 
-                            <div className={styles.bidWrapper}>
-                                <div className={styles.stats}>
-                                    Минимально предложенная цена:{' '}
-                                    <span className={styles.minPrice}>{lot?.price} руб.</span>
-                                </div>
-
-                                <div className={styles.takePart}>
-                                    <p>
-                                        {' '}
-                                        Ваша последняя предложенная цена:{' '}
-                                        <span className={styles.minPrice}>{bid?.price} руб.</span>
-                                    </p>
-
-                                    <div className={styles.priceUp}>
-                                        <TextField
-                                            label="Повысить ставку"
-                                            value={currentUserBid}
-                                            onChange={(e) => setCurrentUserBid(+e.target.value)}
-                                        />
-
-                                        <Button
-                                            disabled={currentUserBid <= lot?.price}
-                                            onClick={() => onSubmitNewBid()}
-                                            variant="contained"
-                                            color="success"
-                                            sx={{ marginLeft: 2 }}
-                                        >
-                                            Повысить
-                                        </Button>
-                                    </div>
-
-                                    {currentUserBid <= lot?.price && (
-                                        <p className={styles.warn}>
-                                            Ставка не может быть меньше или равной текущей
-                                        </p>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={() => onSubmitFinish()}
+                                    >
+                                        Завершить продажу
+                                    </Button>
+                                </>
+                            )}
+                        </>
                     ) : (
                         <Typography variant="h6" color="initial">
                             Чтобы принять участие необходимо{' '}

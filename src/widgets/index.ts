@@ -1,3 +1,4 @@
+export { PlaceBid } from './PlaceBid/PlaceBid';
 export { Header } from './Header/Header';
 export { Footer } from './Footer/Footer';
 export { Login } from './Login/Login';
