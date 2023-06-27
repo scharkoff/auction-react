@@ -1,26 +1,58 @@
 import React from 'react';
 import Container from '@mui/material/Container';
 import styles from './FullLost.module.scss';
+import Typography from '@mui/material/Typography';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from 'redux/store';
-import { fetchLotById } from 'redux/slices/lots';
-import { useParams } from 'react-router-dom';
+import { fetchGetLotById } from 'redux/slices/lots';
+import { Link, useParams } from 'react-router-dom';
 import { LotSlider } from 'widgets';
 import { Timer } from 'shared';
-import Typography from '@mui/material/Typography';
+import { selectIsAuth } from 'redux/slices/auth';
+import {
+    fetchCreateBid,
+    fetchGetAllBids,
+    fetchGetUserBidByLotId,
+    fetchUpdateBid,
+} from 'redux/slices/bid';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 
 export function FullLot() {
     const dispatch = useAppDispatch();
 
     const { id } = useParams();
 
+    const isAuth = useSelector(selectIsAuth);
     const lot = useSelector((state: RootState) => state.lots.currentLotData);
+    const bid = useSelector((state: RootState) => state.bid.currentBidData);
+    const user = useSelector((state: RootState) => state.auth.data);
+
+    const [currentUserBid, setCurrentUserBid] = React.useState(0);
 
     React.useEffect(() => {
         if (id) {
-            dispatch(fetchLotById({ id: +id }));
+            dispatch(fetchGetUserBidByLotId({ lotId: +id }));
+            dispatch(fetchGetLotById({ id: +id }));
+            dispatch(fetchGetAllBids({ ownerId: user?.id, lotId: +id }));
         }
     }, []);
+
+    React.useEffect(() => {
+        setCurrentUserBid(bid?.price);
+    }, [bid]);
+
+    const onSubmitNewBid = async () => {
+        if (bid?.id === 0) {
+            await dispatch(fetchCreateBid({ lotId: lot?.id, price: currentUserBid }));
+        } else {
+            await dispatch(fetchUpdateBid({ bidId: bid?.id, price: currentUserBid }));
+        }
+
+        if (id) {
+            dispatch(fetchGetLotById({ id: +id }));
+        }
+    };
 
     const mockImages = [
         'https://ir.ozone.ru/s3/multimedia-g/wc1000/6124805284.jpg',
@@ -83,7 +115,61 @@ export function FullLot() {
                     </div>
                 </div>
 
-                <div className={styles.bar}></div>
+                <div className={styles.bar}>
+                    {isAuth ? (
+                        <div className={styles.barWrapper}>
+                            <Typography variant="h6" color="initial">
+                                Принять участие:
+                            </Typography>
+
+                            <div className={styles.bidWrapper}>
+                                <div className={styles.stats}>
+                                    Минимально предложенная цена:{' '}
+                                    <span className={styles.minPrice}>{lot?.price} руб.</span>
+                                </div>
+
+                                <div className={styles.takePart}>
+                                    <p>
+                                        {' '}
+                                        Ваша последняя предложенная цена:{' '}
+                                        <span className={styles.minPrice}>{bid?.price} руб.</span>
+                                    </p>
+
+                                    <div className={styles.priceUp}>
+                                        <TextField
+                                            label="Повысить ставку"
+                                            value={currentUserBid}
+                                            onChange={(e) => setCurrentUserBid(+e.target.value)}
+                                        />
+
+                                        <Button
+                                            disabled={currentUserBid <= lot?.price}
+                                            onClick={() => onSubmitNewBid()}
+                                            variant="contained"
+                                            color="success"
+                                            sx={{ marginLeft: 2 }}
+                                        >
+                                            Повысить
+                                        </Button>
+                                    </div>
+
+                                    {currentUserBid <= lot?.price && (
+                                        <p className={styles.warn}>
+                                            Ставка не может быть меньше или равной текущей
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    ) : (
+                        <Typography variant="h6" color="initial">
+                            Чтобы принять участие необходимо{' '}
+                            <Link to="/login">
+                                <span className={styles.needAuth}>авторизоваться</span>
+                            </Link>
+                        </Typography>
+                    )}
+                </div>
             </Container>
         </div>
     );

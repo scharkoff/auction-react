@@ -58,3 +58,47 @@
     border-radius: 5px;
     margin-top: 20px;
 }
+
+.barWrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.bidWrapper {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.takePart {
+    display: flex;
+    flex-direction: column;
+
+    p {
+        margin-bottom: 20px;
+    }
+}
+
+.priceUp {
+    display: flex;
+    align-items: center;
+}
+
+.needAuth {
+    color: $primary-main-color;
+
+    &:hover {
+        color: $primary-dark-color;
+    }
+}
+
+.warn {
+    font-size: 12px;
+    margin-top: 5px;
+    color: $light-grey-text-color;
+}
+
+.minPrice {
+    font-weight: bold;
+    color: rgb(0, 172, 0);
+}

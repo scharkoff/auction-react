@@ -2,53 +2,40 @@ import customAxios from 'configs/axios';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from 'redux/store';
 import { IUserData } from './auth';
-import { IAuctionData } from './auctions';
+import { ILotData } from './lots';
 
-export interface ILotData {
+export interface IBidData {
     id: number;
-    title: string;
-    description: string;
     price: number;
-    start_time: string;
-    end_time: string;
     owner_id: number;
     owner: IUserData;
-    auction_id: number;
-    auction: IAuctionData;
-    winner_id: number | null;
-    image: string;
+    lot_id: number;
+    lot: ILotData;
 }
 
 export interface IActionPayload {
     message: string;
-    data: ILotData[] | ILotData;
-}
-
-interface ILotDeletePayload {
-    message: string;
-    data: {
-        id: number;
-    };
+    data: IBidData[] | IBidData;
 }
 
 interface ISliceState {
-    data: ILotData[];
+    data: IBidData[];
     loading: boolean;
     errorData: Record<string, unknown>;
-    currentLotData: ILotData;
+    currentBidData: IBidData;
 }
 
-type TGetAllLots = {
+type TGetAllBids = {
     ownerId: number;
-    auctionId: number;
+    lotId: number;
 };
 
-export const fetchGetAllLots = createAsyncThunk(
-    '/api/auth/fetchGetAllLots',
-    async ({ ownerId = 0, auctionId = 0 }: TGetAllLots) => {
+export const fetchGetAllBids = createAsyncThunk(
+    '/api/bid/getAll',
+    async ({ ownerId = 0, lotId = 0 }: TGetAllBids) => {
         try {
             const response = await customAxios.get(
-                `api/lot/getAll/?owner_id=${ownerId}&auction_id=${auctionId}`,
+                `api/bid/getAll/?owner_id=${ownerId}&lot_id=${lotId}`,
             );
 
             return response.data;
@@ -58,15 +45,13 @@ export const fetchGetAllLots = createAsyncThunk(
     },
 );
 
-type TGetLotById = {
-    id: number;
-};
+type TGetUserBidByLotId = Omit<TGetAllBids, 'ownerId'>;
 
-export const fetchGetLotById = createAsyncThunk(
-    '/api/lot/getById/',
-    async ({ id = 0 }: TGetLotById) => {
+export const fetchGetUserBidByLotId = createAsyncThunk(
+    '/api/bid/getUserBidByLotId',
+    async ({ lotId = 0 }: TGetUserBidByLotId) => {
         try {
-            const response = await customAxios.get(`api/lot/getById/?id=${id}`);
+            const response = await customAxios.get(`api/bid/getUserBidByLotId/?lot_id=${lotId}`);
 
             return response.data;
         } catch (error: any) {
@@ -75,18 +60,16 @@ export const fetchGetLotById = createAsyncThunk(
     },
 );
 
-type TCreateLot = {
-    title: string;
-    description: string;
-    startTime: Date | number | null;
-    endTime: Date | number | null;
+type TCreateBid = {
+    lotId: number;
+    price: number;
 };
 
-export const fetchCreateLot = createAsyncThunk(
-    '/api/lot/create',
-    async (params: TCreateLot, thunkAPI) => {
+export const fetchCreateBid = createAsyncThunk(
+    '/api/bid/create',
+    async (params: TCreateBid, thunkAPI) => {
         try {
-            const response = await customAxios.post('api/lot/create/', params);
+            const response = await customAxios.post('api/bid/create/', params);
 
             return response.data;
         } catch (error: any) {
@@ -95,31 +78,31 @@ export const fetchCreateLot = createAsyncThunk(
     },
 );
 
-type TDeleteLot = {
-    id: number;
+type TUpdateBid = {
+    bidId: number;
+    price: number;
 };
 
-export const fetchDeleteLot = createAsyncThunk('/api/lot/delete', async ({ id }: TDeleteLot) => {
-    try {
-        const response = await customAxios.delete(`api/lot/delete/?id=${id}`);
+export const fetchUpdateBid = createAsyncThunk(
+    '/api/bid/update',
+    async (params: TUpdateBid, thunkAPI) => {
+        try {
+            const response = await customAxios.patch('api/bid/update/', params);
 
-        return response.data;
-    } catch (error: any) {
-        throw new Error(error);
-    }
-});
+            return response.data;
+        } catch (error: any) {
+            return thunkAPI.rejectWithValue(error);
+        }
+    },
+);
 
 const initialState: ISliceState = {
     data: [],
     loading: false,
     errorData: {},
-    currentLotData: {
+    currentBidData: {
         id: 0,
-        title: '',
-        description: '',
         price: 0,
-        start_time: '',
-        end_time: '',
         owner_id: 0,
         owner: {
             id: 0,
@@ -132,15 +115,14 @@ const initialState: ISliceState = {
             last_login: '',
             is_active: false,
         },
-        auction_id: 0,
-        auction: {
+        lot_id: 0,
+        lot: {
             id: 0,
             title: '',
             description: '',
+            price: 0,
             start_time: '',
             end_time: '',
-            created: '',
-            is_closed: false,
             owner_id: 0,
             owner: {
                 id: 0,
@@ -153,40 +135,62 @@ const initialState: ISliceState = {
                 last_login: '',
                 is_active: false,
             },
+            auction_id: 0,
+            auction: {
+                id: 0,
+                title: '',
+                description: '',
+                start_time: '',
+                end_time: '',
+                created: '',
+                is_closed: false,
+                owner_id: 0,
+                owner: {
+                    id: 0,
+                    username: '',
+                    email: '',
+                    first_name: '',
+                    last_name: '',
+                    is_superuser: false,
+                    date_joined: '',
+                    last_login: '',
+                    is_active: false,
+                },
+            },
+            winner_id: null,
+            image: '',
         },
-        winner_id: null,
-        image: '',
     },
 };
 
-const lotsSlice = createSlice({
+const bidSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(fetchGetLotById.pending, (state: ISliceState) => {
+            .addCase(fetchGetUserBidByLotId.pending, (state: ISliceState) => {
                 state.loading = true;
             })
             .addCase(
-                fetchGetLotById.fulfilled,
+                fetchGetUserBidByLotId.fulfilled,
                 (state: ISliceState, action: PayloadAction<IActionPayload>) => {
                     if (!Array.isArray(action.payload?.data)) {
-                        state.currentLotData = action.payload?.data;
+                        state.currentBidData = action.payload?.data;
                     }
                     state.loading = false;
                 },
             )
-            .addCase(fetchGetLotById.rejected, (state: ISliceState, action: any) => {
+            .addCase(fetchGetUserBidByLotId.rejected, (state: ISliceState, action: any) => {
                 state.errorData = action.payload?.response?.data;
                 state.loading = false;
             })
 
-            .addCase(fetchGetAllLots.pending, (state: ISliceState) => {
+            .addCase(fetchGetAllBids.pending, (state: ISliceState) => {
                 state.loading = true;
             })
             .addCase(
-                fetchGetAllLots.fulfilled,
+                fetchGetAllBids.fulfilled,
                 (state: ISliceState, action: PayloadAction<IActionPayload>) => {
                     if (Array.isArray(action.payload?.data)) {
                         state.data = action.payload?.data;
@@ -194,39 +198,41 @@ const lotsSlice = createSlice({
                     state.loading = false;
                 },
             )
-            .addCase(fetchGetAllLots.rejected, (state: ISliceState, action: any) => {
+            .addCase(fetchGetAllBids.rejected, (state: ISliceState, action: any) => {
                 state.errorData = action.payload?.response?.data;
                 state.loading = false;
             })
 
-            .addCase(fetchCreateLot.pending, (state: ISliceState) => {
+            .addCase(fetchCreateBid.pending, (state: ISliceState) => {
                 state.loading = true;
             })
             .addCase(
-                fetchCreateLot.fulfilled,
+                fetchCreateBid.fulfilled,
                 (state: ISliceState, action: PayloadAction<IActionPayload>) => {
                     if (!Array.isArray(action.payload?.data)) {
-                        state.currentLotData = action.payload?.data;
+                        state.currentBidData = action.payload?.data;
                     }
                     state.loading = false;
                 },
             )
-            .addCase(fetchCreateLot.rejected, (state: ISliceState, action: any) => {
+            .addCase(fetchCreateBid.rejected, (state: ISliceState, action: any) => {
                 state.errorData = action.payload?.response?.data;
                 state.loading = false;
             })
 
-            .addCase(fetchDeleteLot.pending, (state: ISliceState) => {
+            .addCase(fetchUpdateBid.pending, (state: ISliceState) => {
                 state.loading = true;
             })
             .addCase(
-                fetchDeleteLot.fulfilled,
-                (state: ISliceState, action: PayloadAction<ILotDeletePayload>) => {
-                    state.data = state.data.filter((lot) => lot?.id !== action.payload?.data?.id);
+                fetchUpdateBid.fulfilled,
+                (state: ISliceState, action: PayloadAction<IActionPayload>) => {
+                    if (!Array.isArray(action.payload?.data)) {
+                        state.currentBidData = action.payload?.data;
+                    }
                     state.loading = false;
                 },
             )
-            .addCase(fetchDeleteLot.rejected, (state: ISliceState, action: any) => {
+            .addCase(fetchUpdateBid.rejected, (state: ISliceState, action: any) => {
                 state.errorData = action.payload?.response?.data;
                 state.loading = false;
             });
@@ -235,6 +241,6 @@ const lotsSlice = createSlice({
 
 export const selectIsAuth = (state: RootState) => state.auth.authorization;
 
-export const lotActions = lotsSlice.actions;
+export const bidActions = bidSlice.actions;
 
-export const lotsReducer = lotsSlice.reducer;
+export const bidReducer = bidSlice.reducer;
