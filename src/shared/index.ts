@@ -1,3 +1,5 @@
+export { Breadcrumbs } from './Breadcrumbs/Breadcrumbs';
+export { LotInfo } from './LotInfo/LotInfo';
 export { LotTableParticipants } from './LotTableParticipants/LotTableParticipants';
 export { SimpleTable } from './SimpleTable/SimpleTable';
 export { SortedList } from './SortedList/SortedList';

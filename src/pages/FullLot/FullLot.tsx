@@ -8,9 +8,9 @@ import { RootState, useAppDispatch } from 'redux/store';
 import { fetchFinishLot, fetchGetLotById } from 'redux/slices/lots';
 import { Link, useParams } from 'react-router-dom';
 import { LotSlider, PlaceBid } from 'widgets';
-import { LotTableParticipants, Timer } from 'shared';
+import { Breadcrumbs, LotInfo, LotTableParticipants, Timer } from 'shared';
 import { selectIsAuth } from 'redux/slices/auth';
-import IconButton from '@mui/material/IconButton';
+import { mockImages } from './data/data';
 import {
     fetchCreateBid,
     fetchGetAllBids,
@@ -66,63 +66,14 @@ export function FullLot() {
         }
     };
 
-    const mockImages = [
-        'https://ir.ozone.ru/s3/multimedia-g/wc1000/6124805284.jpg',
-        'https://ir.ozone.ru/s3/multimedia-d/wc1000/6267495421.jpg',
-        'https://ir.ozone.ru/s3/multimedia-e/wc1000/6267495422.jpg',
-    ];
-
     return (
         <div className={styles.wrapper}>
             <Container>
-                <div className={styles.breadcrumbs}>
-                    <Link to="/">
-                        {' '}
-                        <span>Главная</span> /{' '}
-                    </Link>
-                    <span>
-                        <Link to={`/auction/${lot?.auction?.id}`}>{lot?.auction?.title}</Link>
-                    </span>{' '}
-                    / <span>{lot?.title}</span>
-                </div>
+                <Breadcrumbs lot={lot} />
 
                 <div className={styles.content}>
                     <div className={styles.infoBlock}>
-                        <div className={styles.info}>
-                            <div className={styles.infoTitle}>Информация о лоте №{lot?.id}</div>
-
-                            <ul className={styles.list}>
-                                <li className={styles.item}>
-                                    <span>Название:</span> {lot?.title}
-                                </li>
-                                <li className={styles.item}>
-                                    <span>Описание:</span> {lot?.description}
-                                </li>
-                                <li className={styles.item}>
-                                    <span>Продавец:</span> {lot?.owner?.username}
-                                </li>
-                                <li className={styles.item}>
-                                    <span>Дата начала продажи:</span>{' '}
-                                    {lot?.start_time.replace(/T(\d{2}:\d{2}:\d{2}).*/, ' $1')}
-                                </li>
-                                <li className={styles.item}>
-                                    <span>Дата окончания продажи:</span>{' '}
-                                    {lot?.end_time.replace(/T(\d{2}:\d{2}:\d{2}).*/, ' $1')}
-                                </li>
-                                <li className={styles.item}>
-                                    <span>Победитель:</span>{' '}
-                                    {lot?.winner_id ? lot.winner?.username : 'Не объявлен'}
-                                </li>
-                                <li className={styles.item}>
-                                    <span>
-                                        {lot?.winner_id
-                                            ? 'Окончательная цена:'
-                                            : 'Минимальная ставка:'}
-                                    </span>{' '}
-                                    <p className={styles.minPrice}>{lot?.price} руб.</p>
-                                </li>
-                            </ul>
-                        </div>
+                        <LotInfo lot={lot} />
                     </div>
 
                     <div className={styles.imageBlock}>

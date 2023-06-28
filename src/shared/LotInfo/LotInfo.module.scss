@@ -1,0 +1,34 @@
+@import '../../index.scss';
+
+.wrapper {
+    height: 100%;
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+.title {
+    text-align: center;
+    font-size: 18px;
+    color: $light-grey-text-color;
+}
+
+.list {
+    line-height: 1.5;
+    font-size: 14px;
+    margin-top: 50px;
+}
+
+.item {
+    margin-top: 10px;
+
+    span {
+        color: $light-grey-text-color;
+        display: block;
+    }
+}
+
+.price {
+    font-weight: bold;
+    color: #00ac00;
+}
