@@ -5,9 +5,10 @@ interface ITimer {
     startTime: string;
     endTime: string;
     finished: boolean;
+    setTimesUp: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export function Timer({ startTime, endTime, finished }: ITimer) {
+export function Timer({ setTimesUp, startTime, endTime, finished }: ITimer) {
     const [remainingTime, setRemainingTime] = React.useState('00:00:00:00');
 
     React.useEffect(() => {
@@ -19,6 +20,7 @@ export function Timer({ startTime, endTime, finished }: ITimer) {
             if (currentTime >= end) {
                 clearInterval(interval);
                 setRemainingTime('00:00:00:00');
+                setTimesUp(true);
             } else if (currentTime >= start) {
                 const difference = end - currentTime;
                 const days = Math.floor(difference / (1000 * 60 * 60 * 24))

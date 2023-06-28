@@ -30,6 +30,7 @@ export function FullLot() {
     const user = useSelector((state: RootState) => state.auth.data);
 
     const [currentUserBid, setCurrentUserBid] = React.useState(0);
+    const [timesUp, setTimesUp] = React.useState(false);
 
     React.useEffect(() => {
         if (id) {
@@ -42,6 +43,12 @@ export function FullLot() {
     React.useEffect(() => {
         setCurrentUserBid(bid?.price);
     }, [bid]);
+
+    React.useEffect(() => {
+        if (timesUp) {
+            dispatch(fetchFinishLot({ id: lot?.id }));
+        }
+    }, [timesUp]);
 
     const onSubmitNewBid = async () => {
         if (bid?.id === 0) {
@@ -89,6 +96,7 @@ export function FullLot() {
                     </Typography>
                     <div className={styles.timer}>
                         <Timer
+                            setTimesUp={setTimesUp}
                             startTime={lot?.start_time}
                             endTime={lot?.end_time}
                             finished={Boolean(lot?.winner_id)}

@@ -41,6 +41,10 @@ type TGetAllAuctions = {
     filter: string;
 };
 
+interface IAuctionId {
+    id: number;
+}
+
 export const fetchGetAllAuctions = createAsyncThunk(
     '/api/auction/fetchGetAllAuctions',
     async ({ ownerId = null, sort = '', filter = '' }: TGetAllAuctions, thunkAPI) => {
@@ -66,16 +70,10 @@ export const fetchGetAllAuctions = createAsyncThunk(
     },
 );
 
-type TAuctionGetById = {
-    id: number | string;
-};
-
 export const fetchAuctionGetById = createAsyncThunk(
     '/api/auction/fetchAuctionGetById',
-    async ({ id }: TAuctionGetById, thunkAPI) => {
+    async ({ id }: IAuctionId, thunkAPI) => {
         try {
-            id = +id;
-
             const response = await customAxios.get(`api/auction/getById/?id=${id}`);
 
             return response.data;
@@ -122,15 +120,24 @@ export const fetchCreateAuction = createAsyncThunk(
     },
 );
 
-type TDeleteAuction = {
-    id: number;
-};
-
 export const fetchDeleteAuction = createAsyncThunk(
     '/api/auction/fetchDeleteAuction',
-    async ({ id }: TDeleteAuction, thunkAPI) => {
+    async ({ id }: IAuctionId, thunkAPI) => {
         try {
             const response = await customAxios.delete(`api/auction/delete/?id=${id}`);
+
+            return response.data;
+        } catch (error: any) {
+            return thunkAPI.rejectWithValue(error);
+        }
+    },
+);
+
+export const fetchCloseAuction = createAsyncThunk(
+    '/api/auction/fetchCloseAuction',
+    async ({ id }: IAuctionId, thunkAPI) => {
+        try {
+            const response = await customAxios.post(`api/auction/close/?id=${id}`);
 
             return response.data;
         } catch (error: any) {

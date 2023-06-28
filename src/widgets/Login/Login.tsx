@@ -32,8 +32,6 @@ export function Login() {
     const onSubmitAuth = async (values: TLoginValues) => {
         const response = await dispatch(fetchLogin(values));
 
-        console.log(response);
-
         handleInternalOrServerError(
             response as unknown as IResponse | IRejectedResponse,
             setAlertOptions as TSetAlertOptions,

@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import { LotFeed } from 'widgets';
 import { RootState, useAppDispatch } from 'redux/store';
-import { auctionActions, fetchAuctionGetById } from 'redux/slices/auctions';
+import { fetchAuctionGetById, fetchCloseAuction } from 'redux/slices/auctions';
 import { Link, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Timer } from 'shared';
@@ -21,11 +21,19 @@ export function Auction() {
 
     const { currentAuctionData } = useSelector((state: RootState) => state.auctions);
 
+    const [timesUp, setTimesUp] = React.useState(false);
+
     React.useEffect(() => {
         if (id) {
-            dispatch(fetchAuctionGetById({ id }));
+            dispatch(fetchAuctionGetById({ id: +id }));
         }
     }, []);
+
+    React.useEffect(() => {
+        if (timesUp && id) {
+            dispatch(fetchCloseAuction({ id: +id }));
+        }
+    }, [timesUp]);
 
     return (
         <div className={styles.wrapper}>
@@ -45,10 +53,25 @@ export function Auction() {
                                 До окончания аукциона:
                             </Typography>
                             <Timer
+                                setTimesUp={setTimesUp}
                                 startTime={currentAuctionData?.start_time}
                                 endTime={currentAuctionData?.end_time}
                                 finished={false}
                             />
+                        </div>
+
+                        <div className={styles.item}>
+                            <Typography variant="h5" color="initial" marginBottom={2}>
+                                Статус аукциона:
+                            </Typography>
+
+                            <div>
+                                {currentAuctionData?.is_closed ? (
+                                    <span className={styles.active}>Закрыт</span>
+                                ) : (
+                                    <span className={styles.active}>Открыт</span>
+                                )}
+                            </div>
                         </div>
 
                         <div className={styles.item}>
@@ -77,9 +100,7 @@ export function Auction() {
                                 </Button>
                             )}
 
-                            {!isAuth && (
-                                <p className={styles.needAuthText}>Необходимо авторизоваться</p>
-                            )}
+                            {!isAuth && <p className={styles.warn}>Необходимо авторизоваться</p>}
                         </div>
                     </div>
                 </div>

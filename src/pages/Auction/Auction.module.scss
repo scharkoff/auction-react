@@ -33,8 +33,12 @@
     }
 }
 
-.needAuthText {
+.warn {
     margin-top: 5px;
     font-size: 12px;
     color: $light-grey-text-color;
+}
+
+.active {
+    color: $active-color;
 }
