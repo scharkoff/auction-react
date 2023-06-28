@@ -26,6 +26,14 @@ const handleInternalOrServerError = (
             return setAlertOptions(true, 'error', 'Неправильный формат запроса');
         }
 
+        if (response.payload.response.status === 401) {
+            return setAlertOptions(
+                true,
+                'error',
+                'Ошибка авторизации (неверные учетные данные или недействительная сессия)',
+            );
+        }
+
         if (response.payload.response.status === 404) {
             return setAlertOptions(true, 'error', 'Запрашиваемый объект не найден (404)');
         }

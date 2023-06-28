@@ -17,6 +17,7 @@ export interface ILotData {
     auction_id: number;
     auction: IAuctionData;
     winner_id: number | null;
+    winner: IUserData;
     image: string;
 }
 
@@ -112,7 +113,7 @@ export const fetchDeleteLot = createAsyncThunk('/api/lot/delete', async ({ id }:
 
 export const fetchFinishLot = createAsyncThunk('/api/lot/finish', async ({ id }: TLotId) => {
     try {
-        const response = await customAxios.delete(`api/lot/finish/?id=${id}`);
+        const response = await customAxios.post(`api/lot/finish/?id=${id}`);
 
         return response.data;
     } catch (error: any) {

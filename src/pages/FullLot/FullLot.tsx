@@ -56,9 +56,13 @@ export function FullLot() {
         }
     };
 
-    const onSubmitFinish = () => {
+    const onSubmitFinish = async () => {
         if (window.confirm('Вы действительно хотите завершить продажу досрочно?')) {
-            dispatch(fetchFinishLot({ id: lot?.id }));
+            await dispatch(fetchFinishLot({ id: lot?.id }));
+
+            if (id) {
+                dispatch(fetchGetLotById({ id: +id }));
+            }
         }
     };
 
@@ -107,7 +111,7 @@ export function FullLot() {
                                 </li>
                                 <li className={styles.item}>
                                     <span>Победитель:</span>{' '}
-                                    {lot?.winner_id ? lot.winner_id : 'Не объявлен'}
+                                    {lot?.winner_id ? lot.winner?.username : 'Не объявлен'}
                                 </li>
                                 <li className={styles.item}>
                                     <span>
@@ -161,10 +165,25 @@ export function FullLot() {
                                     <Button
                                         variant="contained"
                                         color="primary"
+                                        disabled={Boolean(!bids.length) || Boolean(lot?.winner_id)}
                                         onClick={() => onSubmitFinish()}
                                     >
                                         Завершить продажу
                                     </Button>
+
+                                    {!bids.length ? (
+                                        <p className={styles.warn}>
+                                            Нельзя завершить аукцион досрочно без единой ставки
+                                        </p>
+                                    ) : (
+                                        <>
+                                            {lot?.winner_id ? (
+                                                <p className={styles.warn}>Лот закрыт</p>
+                                            ) : (
+                                                ''
+                                            )}
+                                        </>
+                                    )}
                                 </>
                             )}
                         </>

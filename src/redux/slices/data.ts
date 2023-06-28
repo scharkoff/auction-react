@@ -40,6 +40,9 @@ export const emptyLotData = {
         ...emptyAuctionData,
     },
     winner_id: null,
+    winner: {
+        ...emptyUserData,
+    },
     image: '',
 };
 

@@ -7,9 +7,8 @@ import Avatar from '@mui/material/Avatar';
 import Container from '@mui/material/Container';
 import handleInternalOrServerError from 'utils/functions/errors/handleInternalOrServerError';
 import { useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
-import { TRegisterValues, fetchRegister, selectIsAuth } from 'redux/slices/auth';
-import { Link, Navigate } from 'react-router-dom';
+import { TRegisterValues, fetchRegister } from 'redux/slices/auth';
+import { Link } from 'react-router-dom';
 import { useAlertMessage } from 'hooks';
 import { useAppDispatch } from 'redux/store';
 import { AlertMessage } from 'shared';
@@ -18,8 +17,6 @@ import { TSetAlertOptions } from 'hooks/useAlertMessage';
 
 export function Register() {
     const dispatch = useAppDispatch();
-
-    const isAuth = useSelector(selectIsAuth);
 
     const [alertVariables, setAlertOptions] = useAlertMessage();
 
@@ -44,10 +41,6 @@ export function Register() {
     React.useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
-
-    if (isAuth) {
-        return <Navigate to="/" />;
-    }
 
     return (
         <section className={styles.wrapper}>
