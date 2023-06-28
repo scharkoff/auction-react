@@ -46,7 +46,7 @@ type TGetAllLots = {
 };
 
 export const fetchGetAllLots = createAsyncThunk(
-    '/api/auth/fetchGetAllLots',
+    '/api/lot/fetchGetAllLots',
     async ({ ownerId = 0, auctionId = 0 }: TGetAllLots) => {
         try {
             const response = await customAxios.get(
@@ -65,7 +65,7 @@ type TGetLotById = {
 };
 
 export const fetchGetLotById = createAsyncThunk(
-    '/api/lot/getById',
+    '/api/lot/fetchGetLotById',
     async ({ id = 0 }: TGetLotById) => {
         try {
             const response = await customAxios.get(`api/lot/getById/?id=${id}`);
@@ -85,7 +85,7 @@ type TCreateLot = {
 };
 
 export const fetchCreateLot = createAsyncThunk(
-    '/api/lot/create',
+    '/api/lot/fetchCreateLot',
     async (params: TCreateLot, thunkAPI) => {
         try {
             const response = await customAxios.post('api/lot/create/', params);
@@ -101,25 +101,31 @@ type TLotId = {
     id: number;
 };
 
-export const fetchDeleteLot = createAsyncThunk('/api/lot/delete', async ({ id }: TLotId) => {
-    try {
-        const response = await customAxios.delete(`api/lot/delete/?id=${id}`);
+export const fetchDeleteLot = createAsyncThunk(
+    '/api/lot/fetchDeleteLot',
+    async ({ id }: TLotId) => {
+        try {
+            const response = await customAxios.delete(`api/lot/delete/?id=${id}`);
 
-        return response.data;
-    } catch (error: any) {
-        throw new Error(error);
-    }
-});
+            return response.data;
+        } catch (error: any) {
+            throw new Error(error);
+        }
+    },
+);
 
-export const fetchFinishLot = createAsyncThunk('/api/lot/finish', async ({ id }: TLotId) => {
-    try {
-        const response = await customAxios.post(`api/lot/finish/?id=${id}`);
+export const fetchFinishLot = createAsyncThunk(
+    '/api/lot/fetchFinishLot',
+    async ({ id }: TLotId) => {
+        try {
+            const response = await customAxios.post(`api/lot/finish/?id=${id}`);
 
-        return response.data;
-    } catch (error: any) {
-        throw new Error(error);
-    }
-});
+            return response.data;
+        } catch (error: any) {
+            throw new Error(error);
+        }
+    },
+);
 
 const initialState: ISliceState = {
     data: [],

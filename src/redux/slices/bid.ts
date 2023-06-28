@@ -31,7 +31,7 @@ type TGetBidsByLotId = {
 };
 
 export const fetchGetAllBids = createAsyncThunk(
-    '/api/bid/getAll',
+    '/api/bid/fetchGetAllBids',
     async ({ lotId = 0 }: TGetBidsByLotId) => {
         try {
             const response = await customAxios.get(`api/bid/getAll/?lot_id=${lotId}`);
@@ -44,7 +44,7 @@ export const fetchGetAllBids = createAsyncThunk(
 );
 
 export const fetchGetUserBidByLotId = createAsyncThunk(
-    '/api/bid/getUserBidByLotId',
+    '/api/bid/fetchGetUserBidByLotId',
     async ({ lotId = 0 }: TGetBidsByLotId) => {
         try {
             const response = await customAxios.get(`api/bid/getUserBidByLotId/?lot_id=${lotId}`);
@@ -62,7 +62,7 @@ type TCreateBid = {
 };
 
 export const fetchCreateBid = createAsyncThunk(
-    '/api/bid/create',
+    '/api/bid/fetchCreateBid',
     async (params: TCreateBid, thunkAPI) => {
         try {
             const response = await customAxios.post('api/bid/create/', params);
@@ -80,7 +80,7 @@ type TUpdateBid = {
 };
 
 export const fetchUpdateBid = createAsyncThunk(
-    '/api/bid/update',
+    '/api/bid/fetchUpdateBid',
     async (params: TUpdateBid, thunkAPI) => {
         try {
             const response = await customAxios.patch('api/bid/update/', params);
