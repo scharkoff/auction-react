@@ -5,6 +5,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { ILotData } from 'redux/slices/lots';
 import { IBidData } from 'redux/slices/bid';
+import { PlaceBidField } from 'features';
 
 interface IPlaceBid {
     lot: ILotData;
@@ -39,40 +40,23 @@ export function PlaceBid({
                         <span className={styles.bid}>{bid?.price} руб.</span>
                     </p>
 
-                    <div className={styles.panel}>
-                        <TextField
-                            label="Повысить ставку"
-                            value={currentUserBid}
-                            onChange={(e) => setCurrentUserBid(+e.target.value)}
-                        />
+                    <PlaceBidField
+                        lot={lot}
+                        currentUserBid={currentUserBid}
+                        onSubmitNewBid={onSubmitNewBid}
+                        setCurrentUserBid={setCurrentUserBid}
+                    />
 
-                        <Button
-                            disabled={
-                                currentUserBid <= lot?.price ||
-                                Boolean(lot?.winner_id) ||
-                                Number.isNaN(currentUserBid)
-                            }
-                            onClick={() => onSubmitNewBid()}
-                            variant="contained"
-                            color="success"
-                            sx={{ marginLeft: 2 }}
-                        >
-                            Повысить
-                        </Button>
-                    </div>
-
-                    {currentUserBid <= lot?.price ? (
+                    {currentUserBid <= lot?.price && !lot?.winner_id && (
                         <p className={styles.warn}>
                             Ставка не может быть меньше или равной текущей
                         </p>
-                    ) : (
-                        <>
-                            {lot?.winner_id ? (
-                                <p className={styles.warn}>Победитель уже определен</p>
-                            ) : (
-                                <p className={styles.warn}>Значение должно быть числом</p>
-                            )}
-                        </>
+                    )}
+
+                    {lot?.winner_id && <p className={styles.warn}>Победитель уже определен</p>}
+
+                    {Number.isNaN(currentUserBid) && !lot?.winner_id && (
+                        <p className={styles.warn}>Значение должно быть числом</p>
                     )}
                 </div>
             </div>
