@@ -56,7 +56,7 @@ export function Auction() {
                                 setTimesUp={setTimesUp}
                                 startTime={currentAuctionData?.start_time}
                                 endTime={currentAuctionData?.end_time}
-                                finished={false}
+                                finished={Boolean(currentAuctionData?.is_closed)}
                             />
                         </div>
 
@@ -67,7 +67,7 @@ export function Auction() {
 
                             <div>
                                 {currentAuctionData?.is_closed ? (
-                                    <span className={styles.active}>Закрыт</span>
+                                    <span className={styles.closed}>Закрыт</span>
                                 ) : (
                                     <span className={styles.active}>Открыт</span>
                                 )}
