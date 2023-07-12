@@ -1,53 +1,20 @@
 import customAxios from 'configs/axios';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from 'redux/store';
-import { IAuctionData } from './auction/types';
-import { emptyLotData } from './data';
-import { IUserData } from './auth/types';
-
-export interface ILotData {
-    id: number;
-    title: string;
-    description: string;
-    price: number;
-    start_time: string;
-    end_time: string;
-    owner_id: number;
-    owner: IUserData;
-    auction_id: number;
-    auction: IAuctionData;
-    winner_id: number | null;
-    winner: IUserData;
-    image: string;
-}
-
-export interface IActionPayload {
-    message: string;
-    data: ILotData[] | ILotData;
-}
-
-interface ILotDeletePayload {
-    message: string;
-    data: {
-        id: number;
-    };
-}
-
-interface ISliceState {
-    data: ILotData[];
-    loading: boolean;
-    errorData: Record<string, unknown>;
-    currentLotData: ILotData;
-}
-
-type TGetAllLots = {
-    ownerId: number;
-    auctionId: number;
-};
+import { emptyLotData } from '../data';
+import {
+    IActionPayload,
+    ICreateLot,
+    IGetAllLots,
+    IGetLotById,
+    ILotDeletePayload,
+    ILotId,
+    ISliceState,
+} from './types';
 
 export const fetchGetAllLots = createAsyncThunk(
     '/api/lot/fetchGetAllLots',
-    async ({ ownerId = 0, auctionId = 0 }: TGetAllLots, thunkAPI) => {
+    async ({ ownerId = 0, auctionId = 0 }: IGetAllLots, thunkAPI) => {
         try {
             const response = await customAxios.get(
                 `api/lot/getAll/?owner_id=${ownerId}&auction_id=${auctionId}`,
@@ -60,13 +27,9 @@ export const fetchGetAllLots = createAsyncThunk(
     },
 );
 
-type TGetLotById = {
-    id: number;
-};
-
 export const fetchGetLotById = createAsyncThunk(
     '/api/lot/fetchGetLotById',
-    async ({ id = 0 }: TGetLotById, thunkAPI) => {
+    async ({ id = 0 }: IGetLotById, thunkAPI) => {
         try {
             const response = await customAxios.get(`api/lot/getById/?id=${id}`);
 
@@ -77,16 +40,9 @@ export const fetchGetLotById = createAsyncThunk(
     },
 );
 
-type TCreateLot = {
-    title: string;
-    description: string;
-    startTime: Date | number | null;
-    endTime: Date | number | null;
-};
-
 export const fetchCreateLot = createAsyncThunk(
     '/api/lot/fetchCreateLot',
-    async (params: TCreateLot, thunkAPI) => {
+    async (params: ICreateLot, thunkAPI) => {
         try {
             const response = await customAxios.post('api/lot/create/', params);
 
@@ -97,13 +53,9 @@ export const fetchCreateLot = createAsyncThunk(
     },
 );
 
-type TLotId = {
-    id: number;
-};
-
 export const fetchDeleteLot = createAsyncThunk(
     '/api/lot/fetchDeleteLot',
-    async ({ id }: TLotId, thunkAPI) => {
+    async ({ id }: ILotId, thunkAPI) => {
         try {
             const response = await customAxios.delete(`api/lot/delete/?id=${id}`);
 
@@ -116,7 +68,7 @@ export const fetchDeleteLot = createAsyncThunk(
 
 export const fetchFinishLot = createAsyncThunk(
     '/api/lot/fetchFinishLot',
-    async ({ id }: TLotId, thunkAPI) => {
+    async ({ id }: ILotId, thunkAPI) => {
         try {
             const response = await customAxios.post(`api/lot/finish/?id=${id}`);
 

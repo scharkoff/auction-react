@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './LotCard.module.scss';
-import { ILotData } from 'redux/slices/lots';
+import { ILotData } from 'redux/slices/lot/types';
 import { AlertColor } from '@mui/material';
 import { LotCardEntity } from 'entities';
 

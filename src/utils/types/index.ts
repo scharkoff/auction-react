@@ -1,4 +1,4 @@
-import { ILotData } from '../../redux/slices/lots';
+import { ILotData } from '../../redux/slices/lot/types';
 
 export interface IResponse {
     message: string;

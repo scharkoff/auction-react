@@ -2,12 +2,13 @@ import React from 'react';
 import styles from './LotCardButtons.module.scss';
 import DeleteIcon from '@mui/icons-material/Clear';
 import handleInternalOrServerError from 'utils/functions/errors/handleInternalOrServerError';
-import { ILotData, fetchDeleteLot } from 'redux/slices/lots';
+import { fetchDeleteLot } from 'redux/slices/lot/lot';
 import { AlertColor, IconButton } from '@mui/material';
 import { IRejectedResponse, IResponse } from 'utils/types';
 import { TSetAlertOptions } from 'hooks/useAlertMessage';
 import { RootState, useAppDispatch } from 'redux/store';
 import { useSelector } from 'react-redux';
+import { ILotData } from 'redux/slices/lot/types';
 
 interface ILotCardButtons {
     lot: ILotData;

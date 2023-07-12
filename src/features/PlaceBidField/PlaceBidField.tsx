@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './PlaceBidField.module.scss';
 import { Button, TextField } from '@mui/material';
-import { ILotData } from 'redux/slices/lots';
+import { ILotData } from 'redux/slices/lot/types';
 
 interface IPlaceBidField {
     lot: ILotData;

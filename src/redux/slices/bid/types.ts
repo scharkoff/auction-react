@@ -1,5 +1,5 @@
 import { IUserData } from '../auth/types';
-import { ILotData } from '../lots';
+import { ILotData } from '../lot/types';
 
 export interface IBidData {
     id: number;

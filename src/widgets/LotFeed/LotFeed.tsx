@@ -3,7 +3,7 @@ import styles from './LotFeed.module.scss';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import { RootState, useAppDispatch } from 'redux/store';
 import { LotCard } from 'widgets/LotCard/LotCard';
-import { fetchGetAllLots } from 'redux/slices/lots';
+import { fetchGetAllLots } from 'redux/slices/lot/lot';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useAlertMessage } from 'hooks';

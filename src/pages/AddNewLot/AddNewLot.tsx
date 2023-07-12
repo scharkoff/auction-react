@@ -17,7 +17,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useSelector } from 'react-redux';
 import { selectIsAuth } from 'redux/slices/auth/auth';
 import { Navigate, useNavigate } from 'react-router-dom';
-import { fetchCreateLot } from 'redux/slices/lots';
+import { fetchCreateLot } from 'redux/slices/lot/lot';
 
 type TLotValues = {
     auctionId: number;

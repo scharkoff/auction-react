@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './LotInfo.module.scss';
-import { ILotData } from 'redux/slices/lots';
+import { ILotData } from 'redux/slices/lot/types';
 
 interface ILotInfo {
     lot: ILotData;

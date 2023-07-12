@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 import { authReducer } from './slices/auth/auth';
-import { lotsReducer } from './slices/lots';
+import { lotsReducer } from './slices/lot/lot';
 import { auctionReducer } from './slices/auction/auction';
 import { bidReducer } from './slices/bid/bid';
 

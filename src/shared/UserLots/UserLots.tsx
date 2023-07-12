@@ -2,7 +2,7 @@ import React from 'react';
 import Typography from '@mui/material/Typography';
 import styles from './UserLots.module.scss';
 import { RootState, useAppDispatch } from 'redux/store';
-import { fetchGetAllLots } from 'redux/slices/lots';
+import { fetchGetAllLots } from 'redux/slices/lot/lot';
 import { useSelector } from 'react-redux';
 import { SimpleTable } from 'shared/SimpleTable/SimpleTable';
 import { IUserData } from 'redux/slices/auth/types';

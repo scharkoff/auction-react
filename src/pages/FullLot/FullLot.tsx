@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from 'redux/store';
-import { fetchFinishLot, fetchGetLotById } from 'redux/slices/lots';
+import { fetchFinishLot, fetchGetLotById } from 'redux/slices/lot/lot';
 import { Link, useParams } from 'react-router-dom';
 import { LotSlider, PlaceBid } from 'widgets';
 import { Breadcrumbs, LotInfo, LotTableParticipants, Timer } from 'shared';

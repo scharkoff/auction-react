@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './LotCardEntity.module.scss';
 import { Link } from 'react-router-dom';
-import { ILotData } from 'redux/slices/lots';
+import { ILotData } from 'redux/slices/lot/types';
 import { LotCardButtons } from 'features';
 import { AlertColor } from '@mui/material';
 
