@@ -1,39 +1,8 @@
 import customAxios from 'configs/axios';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from 'redux/store';
-import { emptyUserData } from './data';
-
-export interface IUserData {
-    id: number;
-    username: string;
-    email: string;
-    first_name: string;
-    last_name: string;
-    is_superuser: boolean;
-    date_joined: string;
-    last_login: string;
-    is_active: boolean;
-}
-
-export interface IActionPayload {
-    message: string;
-    data: IUserData;
-}
-
-interface ISliceState {
-    data: IUserData;
-    loading: boolean;
-    errorData: Record<string, unknown>;
-    authorization: boolean;
-}
-
-export type TRegisterValues = {
-    username: string;
-    email: string;
-    password: string;
-};
-
-export type TLoginValues = Omit<TRegisterValues, 'email'>;
+import { emptyUserData } from '../data';
+import { IActionPayload, IRegisterValues, ISliceState, TLoginValues } from './types';
 
 export const fetchLogin = createAsyncThunk(
     '/api/auth/fetchLogin',
@@ -70,7 +39,7 @@ export const fetchLogout = createAsyncThunk('/api/auth/fetchLogout', async (_, t
 
 export const fetchRegister = createAsyncThunk(
     '/api/auth/fetchRegister',
-    async (params: TRegisterValues, thunkAPI) => {
+    async (params: IRegisterValues, thunkAPI) => {
         try {
             const response = await customAxios.post('api/auth/register/', params);
 

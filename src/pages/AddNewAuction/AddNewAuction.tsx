@@ -16,7 +16,7 @@ import { fetchCreateAuction } from 'redux/slices/auction/auction';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useSelector } from 'react-redux';
-import { selectIsAuth } from 'redux/slices/auth';
+import { selectIsAuth } from 'redux/slices/auth/auth';
 import { Navigate } from 'react-router-dom';
 
 type TAuctionValues = {

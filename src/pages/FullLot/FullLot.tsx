@@ -9,7 +9,7 @@ import { fetchFinishLot, fetchGetLotById } from 'redux/slices/lots';
 import { Link, useParams } from 'react-router-dom';
 import { LotSlider, PlaceBid } from 'widgets';
 import { Breadcrumbs, LotInfo, LotTableParticipants, Timer } from 'shared';
-import { selectIsAuth } from 'redux/slices/auth';
+import { selectIsAuth } from 'redux/slices/auth/auth';
 import { mockImages } from './data/data';
 import {
     fetchCreateBid,

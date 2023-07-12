@@ -7,7 +7,8 @@ import Avatar from '@mui/material/Avatar';
 import Container from '@mui/material/Container';
 import handleInternalOrServerError from 'utils/functions/errors/handleInternalOrServerError';
 import { useForm } from 'react-hook-form';
-import { TRegisterValues, fetchRegister } from 'redux/slices/auth';
+import { fetchRegister } from 'redux/slices/auth/auth';
+import { IRegisterValues } from 'redux/slices/auth/types';
 import { Link } from 'react-router-dom';
 import { useAlertMessage } from 'hooks';
 import { useAppDispatch } from 'redux/store';
@@ -20,7 +21,7 @@ export function Register() {
 
     const [alertVariables, setAlertOptions] = useAlertMessage();
 
-    const { register, handleSubmit, formState } = useForm<TRegisterValues>({
+    const { register, handleSubmit, formState } = useForm<IRegisterValues>({
         defaultValues: {
             username: '',
             email: '',
@@ -29,7 +30,7 @@ export function Register() {
         mode: 'onChange',
     });
 
-    const onSubmitRegister = async (values: TRegisterValues) => {
+    const onSubmitRegister = async (values: IRegisterValues) => {
         const response = await dispatch(fetchRegister(values));
 
         handleInternalOrServerError(

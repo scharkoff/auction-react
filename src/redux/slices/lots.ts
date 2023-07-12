@@ -1,9 +1,9 @@
 import customAxios from 'configs/axios';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from 'redux/store';
-import { IUserData } from './auth';
 import { IAuctionData } from './auction/types';
 import { emptyLotData } from './data';
+import { IUserData } from './auth/types';
 
 export interface ILotData {
     id: number;

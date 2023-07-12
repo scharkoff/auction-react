@@ -15,7 +15,7 @@ import { TSetAlertOptions } from 'hooks/useAlertMessage';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useSelector } from 'react-redux';
-import { selectIsAuth } from 'redux/slices/auth';
+import { selectIsAuth } from 'redux/slices/auth/auth';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { fetchCreateLot } from 'redux/slices/lots';
 

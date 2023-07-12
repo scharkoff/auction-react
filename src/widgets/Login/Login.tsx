@@ -7,12 +7,13 @@ import { useForm } from 'react-hook-form';
 import { Button, TextField } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { Link, Navigate } from 'react-router-dom';
-import { TLoginValues, fetchLogin, selectIsAuth } from 'redux/slices/auth';
+import { fetchLogin, selectIsAuth } from 'redux/slices/auth/auth';
 import { useAppDispatch } from 'redux/store';
 import { useAlertMessage } from 'hooks';
 import { TSetAlertOptions } from 'hooks/useAlertMessage';
 import { AlertMessage } from 'shared';
 import { IRejectedResponse, IResponse } from 'utils/types';
+import { TLoginValues } from 'redux/slices/auth/types';
 
 export function Login() {
     const dispatch = useAppDispatch();

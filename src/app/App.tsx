@@ -3,7 +3,7 @@ import { Footer, Header, Login, Register } from 'widgets';
 import { Route, Routes } from 'react-router-dom';
 import { AddNewAuction, AddNewLot, Auction, FullLot, Main, Profile } from 'pages';
 import { useAppDispatch } from 'redux/store';
-import { fetchAuth } from 'redux/slices/auth';
+import { fetchAuth } from 'redux/slices/auth/auth';
 
 interface IApp {
     toggleDarkMode: () => void;

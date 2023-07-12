@@ -6,7 +6,7 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from 'redux/store';
-import { fetchLogout } from 'redux/slices/auth';
+import { fetchLogout } from 'redux/slices/auth/auth';
 
 interface SpanProps extends React.HTMLAttributes<HTMLSpanElement> {}
 

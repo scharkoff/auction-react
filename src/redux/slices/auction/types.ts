@@ -1,4 +1,4 @@
-import { IUserData } from '../auth';
+import { IUserData } from '../auth/types';
 
 export interface IAuctionData {
     id: number;

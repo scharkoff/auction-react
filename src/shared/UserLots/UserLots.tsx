@@ -1,11 +1,11 @@
 import React from 'react';
 import Typography from '@mui/material/Typography';
 import styles from './UserLots.module.scss';
-import { IUserData } from 'redux/slices/auth';
 import { RootState, useAppDispatch } from 'redux/store';
 import { fetchGetAllLots } from 'redux/slices/lots';
 import { useSelector } from 'react-redux';
 import { SimpleTable } from 'shared/SimpleTable/SimpleTable';
+import { IUserData } from 'redux/slices/auth/types';
 
 interface IUserLots {
     user: IUserData;

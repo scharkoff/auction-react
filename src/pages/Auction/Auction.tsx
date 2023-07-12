@@ -10,7 +10,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Timer } from 'shared';
 import Button from '@mui/material/Button';
-import { selectIsAuth } from 'redux/slices/auth';
+import { selectIsAuth } from 'redux/slices/auth/auth';
 
 export function Auction() {
     const dispatch = useAppDispatch();
