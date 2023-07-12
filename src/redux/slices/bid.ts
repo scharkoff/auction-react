@@ -32,26 +32,26 @@ type TGetBidsByLotId = {
 
 export const fetchGetAllBids = createAsyncThunk(
     '/api/bid/fetchGetAllBids',
-    async ({ lotId = 0 }: TGetBidsByLotId) => {
+    async ({ lotId = 0 }: TGetBidsByLotId, thunkAPI) => {
         try {
             const response = await customAxios.get(`api/bid/getAll/?lot_id=${lotId}`);
 
             return response.data;
         } catch (error: any) {
-            throw new Error(error);
+            return thunkAPI.rejectWithValue('response' in error ? error.response.data : {});
         }
     },
 );
 
 export const fetchGetUserBidByLotId = createAsyncThunk(
     '/api/bid/fetchGetUserBidByLotId',
-    async ({ lotId = 0 }: TGetBidsByLotId) => {
+    async ({ lotId = 0 }: TGetBidsByLotId, thunkAPI) => {
         try {
             const response = await customAxios.get(`api/bid/getUserBidByLotId/?lot_id=${lotId}`);
 
             return response.data;
         } catch (error: any) {
-            throw new Error(error);
+            return thunkAPI.rejectWithValue('response' in error ? error.response.data : {});
         }
     },
 );
@@ -69,7 +69,7 @@ export const fetchCreateBid = createAsyncThunk(
 
             return response.data;
         } catch (error: any) {
-            return thunkAPI.rejectWithValue(error);
+            return thunkAPI.rejectWithValue('response' in error ? error.response.data : {});
         }
     },
 );
@@ -87,7 +87,7 @@ export const fetchUpdateBid = createAsyncThunk(
 
             return response.data;
         } catch (error: any) {
-            return thunkAPI.rejectWithValue(error);
+            return thunkAPI.rejectWithValue('response' in error ? error.response.data : {});
         }
     },
 );

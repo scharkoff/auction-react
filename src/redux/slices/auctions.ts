@@ -65,7 +65,7 @@ export const fetchGetAllAuctions = createAsyncThunk(
 
             return response.data;
         } catch (error: any) {
-            return thunkAPI.rejectWithValue(error);
+            return thunkAPI.rejectWithValue('response' in error ? error.response.data : {});
         }
     },
 );
@@ -78,7 +78,7 @@ export const fetchAuctionGetById = createAsyncThunk(
 
             return response.data;
         } catch (error: any) {
-            return thunkAPI.rejectWithValue(error);
+            return thunkAPI.rejectWithValue('response' in error ? error.response.data : {});
         }
     },
 );
@@ -95,7 +95,7 @@ export const fetchAuctionsBySearchQuery = createAsyncThunk(
 
             return response.data;
         } catch (error: any) {
-            return thunkAPI.rejectWithValue(error);
+            return thunkAPI.rejectWithValue('response' in error ? error.response.data : {});
         }
     },
 );
@@ -115,7 +115,7 @@ export const fetchCreateAuction = createAsyncThunk(
 
             return response.data;
         } catch (error: any) {
-            return thunkAPI.rejectWithValue(error);
+            return thunkAPI.rejectWithValue('response' in error ? error.response.data : {});
         }
     },
 );
@@ -128,7 +128,7 @@ export const fetchDeleteAuction = createAsyncThunk(
 
             return response.data;
         } catch (error: any) {
-            return thunkAPI.rejectWithValue(error);
+            return thunkAPI.rejectWithValue('response' in error ? error.response.data : {});
         }
     },
 );
@@ -141,7 +141,7 @@ export const fetchCloseAuction = createAsyncThunk(
 
             return response.data;
         } catch (error: any) {
-            return thunkAPI.rejectWithValue(error);
+            return thunkAPI.rejectWithValue('response' in error ? error.response.data : {});
         }
     },
 );

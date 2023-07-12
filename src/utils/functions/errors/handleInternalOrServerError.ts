@@ -6,7 +6,7 @@ const handleInternalOrServerError = (
     setAlertOptions: TSetAlertOptions,
 ) => {
     if ('error' in response) {
-        if (response.payload.response.status === 400) {
+        if (response.payload.response && response.payload.response.status === 400) {
             if ('non_field_errors' in response.payload.response.data.data) {
                 return setAlertOptions(
                     true,
@@ -26,7 +26,7 @@ const handleInternalOrServerError = (
             return setAlertOptions(true, 'error', 'Неправильный формат запроса');
         }
 
-        if (response.payload.response.status === 401) {
+        if (response.payload.response && response.payload.response.status === 401) {
             return setAlertOptions(
                 true,
                 'error',
@@ -34,11 +34,11 @@ const handleInternalOrServerError = (
             );
         }
 
-        if (response.payload.response.status === 404) {
+        if (response.payload.response && response.payload.response.status === 404) {
             return setAlertOptions(true, 'error', 'Запрашиваемый объект не найден (404)');
         }
 
-        if (response.payload.response.status === 500) {
+        if (response.payload.response && response.payload.response.status === 500) {
             return setAlertOptions(
                 true,
                 'error',

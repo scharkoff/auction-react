@@ -43,7 +43,7 @@ export const fetchLogin = createAsyncThunk(
 
             return response.data;
         } catch (error: any) {
-            return thunkAPI.rejectWithValue(error);
+            return thunkAPI.rejectWithValue('response' in error ? error.response.data : {});
         }
     },
 );
@@ -54,7 +54,7 @@ export const fetchAuth = createAsyncThunk('/api/auth/getSessionUserData', async 
 
         return response.data;
     } catch (error: any) {
-        return thunkAPI.rejectWithValue(error);
+        return thunkAPI.rejectWithValue('response' in error ? error.response.data : {});
     }
 });
 
@@ -64,7 +64,7 @@ export const fetchLogout = createAsyncThunk('/api/auth/fetchLogout', async (_, t
 
         return response.data;
     } catch (error: any) {
-        return thunkAPI.rejectWithValue(error);
+        return thunkAPI.rejectWithValue('response' in error ? error.response.data : {});
     }
 });
 
@@ -76,7 +76,7 @@ export const fetchRegister = createAsyncThunk(
 
             return response.data;
         } catch (error: any) {
-            return thunkAPI.rejectWithValue(error);
+            return thunkAPI.rejectWithValue('response' in error ? error.response.data : {});
         }
     },
 );
@@ -110,7 +110,7 @@ const authSlice = createSlice({
             )
             .addCase(fetchLogin.rejected, (state: ISliceState, action: any) => {
                 state.data = { ...emptyUserData };
-                state.errorData = action.payload?.response?.data?.data;
+                state.errorData = action.payload?.response?.data;
                 state.authorization = false;
                 state.loading = false;
             })

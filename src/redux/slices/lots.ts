@@ -47,7 +47,7 @@ type TGetAllLots = {
 
 export const fetchGetAllLots = createAsyncThunk(
     '/api/lot/fetchGetAllLots',
-    async ({ ownerId = 0, auctionId = 0 }: TGetAllLots) => {
+    async ({ ownerId = 0, auctionId = 0 }: TGetAllLots, thunkAPI) => {
         try {
             const response = await customAxios.get(
                 `api/lot/getAll/?owner_id=${ownerId}&auction_id=${auctionId}`,
@@ -55,7 +55,7 @@ export const fetchGetAllLots = createAsyncThunk(
 
             return response.data;
         } catch (error: any) {
-            throw new Error(error);
+            return thunkAPI.rejectWithValue('response' in error ? error.response.data : {});
         }
     },
 );
@@ -66,13 +66,13 @@ type TGetLotById = {
 
 export const fetchGetLotById = createAsyncThunk(
     '/api/lot/fetchGetLotById',
-    async ({ id = 0 }: TGetLotById) => {
+    async ({ id = 0 }: TGetLotById, thunkAPI) => {
         try {
             const response = await customAxios.get(`api/lot/getById/?id=${id}`);
 
             return response.data;
         } catch (error: any) {
-            throw new Error(error);
+            return thunkAPI.rejectWithValue('response' in error ? error.response.data : {});
         }
     },
 );
@@ -92,7 +92,7 @@ export const fetchCreateLot = createAsyncThunk(
 
             return response.data;
         } catch (error: any) {
-            return thunkAPI.rejectWithValue(error);
+            return thunkAPI.rejectWithValue('response' in error ? error.response.data : {});
         }
     },
 );
@@ -103,26 +103,26 @@ type TLotId = {
 
 export const fetchDeleteLot = createAsyncThunk(
     '/api/lot/fetchDeleteLot',
-    async ({ id }: TLotId) => {
+    async ({ id }: TLotId, thunkAPI) => {
         try {
             const response = await customAxios.delete(`api/lot/delete/?id=${id}`);
 
             return response.data;
         } catch (error: any) {
-            throw new Error(error);
+            return thunkAPI.rejectWithValue('response' in error ? error.response.data : {});
         }
     },
 );
 
 export const fetchFinishLot = createAsyncThunk(
     '/api/lot/fetchFinishLot',
-    async ({ id }: TLotId) => {
+    async ({ id }: TLotId, thunkAPI) => {
         try {
             const response = await customAxios.post(`api/lot/finish/?id=${id}`);
 
             return response.data;
         } catch (error: any) {
-            throw new Error(error);
+            return thunkAPI.rejectWithValue('response' in error ? error.response.data : {});
         }
     },
 );
