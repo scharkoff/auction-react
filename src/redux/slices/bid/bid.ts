@@ -1,38 +1,12 @@
 import customAxios from 'configs/axios';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from 'redux/store';
-import { ILotData } from './lots';
-import { emptyBidData } from './data';
-import { IUserData } from './auth/types';
-
-export interface IBidData {
-    id: number;
-    price: number;
-    owner_id: number;
-    owner: IUserData;
-    lot_id: number;
-    lot: ILotData;
-}
-
-export interface IActionPayload {
-    message: string;
-    data: IBidData[] | IBidData;
-}
-
-interface ISliceState {
-    data: IBidData[];
-    loading: boolean;
-    errorData: Record<string, unknown>;
-    currentBidData: IBidData;
-}
-
-type TGetBidsByLotId = {
-    lotId: number;
-};
+import { emptyBidData } from '../data';
+import { IActionPayload, ICreateBid, IGetBidsByLotId, ISliceState, IUpdateBid } from './types';
 
 export const fetchGetAllBids = createAsyncThunk(
     '/api/bid/fetchGetAllBids',
-    async ({ lotId = 0 }: TGetBidsByLotId, thunkAPI) => {
+    async ({ lotId = 0 }: IGetBidsByLotId, thunkAPI) => {
         try {
             const response = await customAxios.get(`api/bid/getAll/?lot_id=${lotId}`);
 
@@ -45,7 +19,7 @@ export const fetchGetAllBids = createAsyncThunk(
 
 export const fetchGetUserBidByLotId = createAsyncThunk(
     '/api/bid/fetchGetUserBidByLotId',
-    async ({ lotId = 0 }: TGetBidsByLotId, thunkAPI) => {
+    async ({ lotId = 0 }: IGetBidsByLotId, thunkAPI) => {
         try {
             const response = await customAxios.get(`api/bid/getUserBidByLotId/?lot_id=${lotId}`);
 
@@ -56,14 +30,9 @@ export const fetchGetUserBidByLotId = createAsyncThunk(
     },
 );
 
-type TCreateBid = {
-    lotId: number;
-    price: number;
-};
-
 export const fetchCreateBid = createAsyncThunk(
     '/api/bid/fetchCreateBid',
-    async (params: TCreateBid, thunkAPI) => {
+    async (params: ICreateBid, thunkAPI) => {
         try {
             const response = await customAxios.post('api/bid/create/', params);
 
@@ -74,14 +43,9 @@ export const fetchCreateBid = createAsyncThunk(
     },
 );
 
-type TUpdateBid = {
-    bidId: number;
-    price: number;
-};
-
 export const fetchUpdateBid = createAsyncThunk(
     '/api/bid/fetchUpdateBid',
-    async (params: TUpdateBid, thunkAPI) => {
+    async (params: IUpdateBid, thunkAPI) => {
         try {
             const response = await customAxios.patch('api/bid/update/', params);
 

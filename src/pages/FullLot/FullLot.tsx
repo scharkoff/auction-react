@@ -16,7 +16,7 @@ import {
     fetchGetAllBids,
     fetchGetUserBidByLotId,
     fetchUpdateBid,
-} from 'redux/slices/bid';
+} from 'redux/slices/bid/bid';
 
 export function FullLot() {
     const dispatch = useAppDispatch();

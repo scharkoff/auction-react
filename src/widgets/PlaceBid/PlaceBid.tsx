@@ -1,10 +1,8 @@
 import React from 'react';
 import styles from './PlaceBid.module.scss';
 import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
 import { ILotData } from 'redux/slices/lots';
-import { IBidData } from 'redux/slices/bid';
+import { IBidData } from 'redux/slices/bid/types';
 import { PlaceBidField } from 'features';
 
 interface IPlaceBid {

@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { authReducer } from './slices/auth/auth';
 import { lotsReducer } from './slices/lots';
 import { auctionReducer } from './slices/auction/auction';
-import { bidReducer } from './slices/bid';
+import { bidReducer } from './slices/bid/bid';
 
 const store = configureStore({
     reducer: {
