@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import { FilterList, SearchField, SortedList } from 'shared';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from 'redux/store';
-import { fetchAuctionsBySearchQuery, fetchGetAllAuctions } from 'redux/slices/auctions';
+import { fetchAuctionsBySearchQuery, fetchGetAllAuctions } from 'redux/slices/auction/auction';
 
 export function Main() {
     const dispatch = useAppDispatch();

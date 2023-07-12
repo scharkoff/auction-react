@@ -2,7 +2,7 @@ import customAxios from 'configs/axios';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from 'redux/store';
 import { IUserData } from './auth';
-import { IAuctionData } from './auctions';
+import { IAuctionData } from './auction/types';
 import { emptyLotData } from './data';
 
 export interface ILotData {

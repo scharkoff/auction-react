@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import { LotFeed } from 'widgets';
 import { RootState, useAppDispatch } from 'redux/store';
-import { fetchAuctionGetById, fetchCloseAuction } from 'redux/slices/auctions';
+import { fetchAuctionGetById, fetchCloseAuction } from 'redux/slices/auction/auction';
 import { Link, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Timer } from 'shared';

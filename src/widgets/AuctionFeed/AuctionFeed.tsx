@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './AuctionFeed.module.scss';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import { AuctionCard } from 'widgets';
-import { IAuctionData } from 'redux/slices/auctions';
+import { IAuctionData } from 'redux/slices/auction/types';
 import { useAlertMessage } from 'hooks';
 import { AlertMessage } from 'shared';
 

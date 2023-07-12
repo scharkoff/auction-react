@@ -1,53 +1,20 @@
 import customAxios from 'configs/axios';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from 'redux/store';
-import { IUserData } from './auth';
-import { emptyAuctionData } from './data';
-
-export interface IAuctionData {
-    id: number;
-    title: string;
-    description: string | null;
-    start_time: string;
-    end_time: string;
-    created: string;
-    is_closed: boolean;
-    owner_id: number;
-    owner: IUserData;
-}
-
-export interface IActionPayload {
-    message: string;
-    data: IAuctionData[] | IAuctionData;
-}
-
-interface IActionDeletePayload {
-    message: string;
-    data: {
-        id: number;
-    };
-}
-
-interface ISliceState {
-    data: IAuctionData[];
-    loading: boolean;
-    errorData: Record<string, unknown>;
-    currentAuctionData: IAuctionData;
-}
-
-type TGetAllAuctions = {
-    ownerId: number | null;
-    sort: string;
-    filter: string;
-};
-
-interface IAuctionId {
-    id: number;
-}
+import { emptyAuctionData } from '../data';
+import {
+    IActionDeletePayload,
+    IActionPayload,
+    IAuctionId,
+    ICreateAuction,
+    IGetAllAuctions,
+    IGetAuctionsBySearchQuery,
+    ISliceState,
+} from './types';
 
 export const fetchGetAllAuctions = createAsyncThunk(
     '/api/auction/fetchGetAllAuctions',
-    async ({ ownerId = null, sort = '', filter = '' }: TGetAllAuctions, thunkAPI) => {
+    async ({ ownerId = null, sort = '', filter = '' }: IGetAllAuctions, thunkAPI) => {
         try {
             let response = null;
 
@@ -83,13 +50,9 @@ export const fetchAuctionGetById = createAsyncThunk(
     },
 );
 
-type TGetAuctionsBySearchQuery = {
-    query: string;
-};
-
 export const fetchAuctionsBySearchQuery = createAsyncThunk(
     '/api/auction/fetchAuctionsBySearchQuery',
-    async ({ query }: TGetAuctionsBySearchQuery, thunkAPI) => {
+    async ({ query }: IGetAuctionsBySearchQuery, thunkAPI) => {
         try {
             const response = await customAxios.get(`api/auction/search/?query=${query}`);
 
@@ -100,16 +63,9 @@ export const fetchAuctionsBySearchQuery = createAsyncThunk(
     },
 );
 
-type TCreateAuction = {
-    title: string;
-    description: string;
-    startTime: Date | number | null;
-    endTime: Date | number | null;
-};
-
 export const fetchCreateAuction = createAsyncThunk(
     '/api/auction/fetchCreateAuction',
-    async (params: TCreateAuction, thunkAPI) => {
+    async (params: ICreateAuction, thunkAPI) => {
         try {
             const response = await customAxios.post('api/auction/create/', params);
 

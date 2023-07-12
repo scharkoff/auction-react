@@ -12,7 +12,7 @@ import { useAlertMessage } from 'hooks';
 import { useAppDispatch } from 'redux/store';
 import { IRejectedResponse, IResponse } from 'utils/types';
 import { TSetAlertOptions } from 'hooks/useAlertMessage';
-import { fetchCreateAuction } from 'redux/slices/auctions';
+import { fetchCreateAuction } from 'redux/slices/auction/auction';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useSelector } from 'react-redux';

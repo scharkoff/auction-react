@@ -3,7 +3,7 @@ import Typography from '@mui/material/Typography';
 import styles from './UserAuction.module.scss';
 import { IUserData } from 'redux/slices/auth';
 import { RootState, useAppDispatch } from 'redux/store';
-import { fetchGetAllAuctions } from 'redux/slices/auctions';
+import { fetchGetAllAuctions } from 'redux/slices/auction/auction';
 import { useSelector } from 'react-redux';
 import { SimpleTable } from 'shared/SimpleTable/SimpleTable';
 

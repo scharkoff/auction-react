@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 import { authReducer } from './slices/auth';
 import { lotsReducer } from './slices/lots';
-import { auctionReducer } from './slices/auctions';
+import { auctionReducer } from './slices/auction/auction';
 import { bidReducer } from './slices/bid';
 
 const store = configureStore({
