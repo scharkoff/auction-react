@@ -12,7 +12,11 @@ export const fetchLogin = createAsyncThunk(
 
             return response.data;
         } catch (error: any) {
-            return thunkAPI.rejectWithValue('response' in error ? error.response.data : {});
+            return thunkAPI.rejectWithValue(
+                'response' in error
+                    ? { ...error.response.data, status: error.response.status }
+                    : {},
+            );
         }
     },
 );
@@ -23,7 +27,9 @@ export const fetchAuth = createAsyncThunk('/api/auth/getSessionUserData', async 
 
         return response.data;
     } catch (error: any) {
-        return thunkAPI.rejectWithValue('response' in error ? error.response.data : {});
+        return thunkAPI.rejectWithValue(
+            'response' in error ? { ...error.response.data, status: error.response.status } : {},
+        );
     }
 });
 
@@ -33,7 +39,9 @@ export const fetchLogout = createAsyncThunk('/api/auth/fetchLogout', async (_, t
 
         return response.data;
     } catch (error: any) {
-        return thunkAPI.rejectWithValue('response' in error ? error.response.data : {});
+        return thunkAPI.rejectWithValue(
+            'response' in error ? { ...error.response.data, status: error.response.status } : {},
+        );
     }
 });
 
@@ -45,7 +53,11 @@ export const fetchRegister = createAsyncThunk(
 
             return response.data;
         } catch (error: any) {
-            return thunkAPI.rejectWithValue('response' in error ? error.response.data : {});
+            return thunkAPI.rejectWithValue(
+                'response' in error
+                    ? { ...error.response.data, status: error.response.status }
+                    : {},
+            );
         }
     },
 );

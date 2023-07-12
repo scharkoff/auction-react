@@ -12,7 +12,11 @@ export const fetchGetAllBids = createAsyncThunk(
 
             return response.data;
         } catch (error: any) {
-            return thunkAPI.rejectWithValue('response' in error ? error.response.data : {});
+            return thunkAPI.rejectWithValue(
+                'response' in error
+                    ? { ...error.response.data, status: error.response.status }
+                    : {},
+            );
         }
     },
 );
@@ -25,7 +29,11 @@ export const fetchGetUserBidByLotId = createAsyncThunk(
 
             return response.data;
         } catch (error: any) {
-            return thunkAPI.rejectWithValue('response' in error ? error.response.data : {});
+            return thunkAPI.rejectWithValue(
+                'response' in error
+                    ? { ...error.response.data, status: error.response.status }
+                    : {},
+            );
         }
     },
 );
@@ -38,7 +46,11 @@ export const fetchCreateBid = createAsyncThunk(
 
             return response.data;
         } catch (error: any) {
-            return thunkAPI.rejectWithValue('response' in error ? error.response.data : {});
+            return thunkAPI.rejectWithValue(
+                'response' in error
+                    ? { ...error.response.data, status: error.response.status }
+                    : {},
+            );
         }
     },
 );
@@ -51,7 +63,11 @@ export const fetchUpdateBid = createAsyncThunk(
 
             return response.data;
         } catch (error: any) {
-            return thunkAPI.rejectWithValue('response' in error ? error.response.data : {});
+            return thunkAPI.rejectWithValue(
+                'response' in error
+                    ? { ...error.response.data, status: error.response.status }
+                    : {},
+            );
         }
     },
 );

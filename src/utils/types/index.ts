@@ -12,10 +12,9 @@ export interface IResponse {
 export interface IRejectedResponse {
     error: any;
     payload: {
-        response: {
-            data: any;
-            status: number;
-        };
+        data: any;
+        message: any;
+        status: number;
     };
 }
 

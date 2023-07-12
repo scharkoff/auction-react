@@ -32,7 +32,11 @@ export const fetchGetAllAuctions = createAsyncThunk(
 
             return response.data;
         } catch (error: any) {
-            return thunkAPI.rejectWithValue('response' in error ? error.response.data : {});
+            return thunkAPI.rejectWithValue(
+                'response' in error
+                    ? { ...error.response.data, status: error.response.status }
+                    : {},
+            );
         }
     },
 );
@@ -45,7 +49,11 @@ export const fetchAuctionGetById = createAsyncThunk(
 
             return response.data;
         } catch (error: any) {
-            return thunkAPI.rejectWithValue('response' in error ? error.response.data : {});
+            return thunkAPI.rejectWithValue(
+                'response' in error
+                    ? { ...error.response.data, status: error.response.status }
+                    : {},
+            );
         }
     },
 );
@@ -58,7 +66,11 @@ export const fetchAuctionsBySearchQuery = createAsyncThunk(
 
             return response.data;
         } catch (error: any) {
-            return thunkAPI.rejectWithValue('response' in error ? error.response.data : {});
+            return thunkAPI.rejectWithValue(
+                'response' in error
+                    ? { ...error.response.data, status: error.response.status }
+                    : {},
+            );
         }
     },
 );
@@ -71,7 +83,11 @@ export const fetchCreateAuction = createAsyncThunk(
 
             return response.data;
         } catch (error: any) {
-            return thunkAPI.rejectWithValue('response' in error ? error.response.data : {});
+            return thunkAPI.rejectWithValue(
+                'response' in error
+                    ? { ...error.response.data, status: error.response.status }
+                    : {},
+            );
         }
     },
 );
@@ -84,7 +100,11 @@ export const fetchDeleteAuction = createAsyncThunk(
 
             return response.data;
         } catch (error: any) {
-            return thunkAPI.rejectWithValue('response' in error ? error.response.data : {});
+            return thunkAPI.rejectWithValue(
+                'response' in error
+                    ? { ...error.response.data, status: error.response.status }
+                    : {},
+            );
         }
     },
 );
@@ -97,7 +117,11 @@ export const fetchCloseAuction = createAsyncThunk(
 
             return response.data;
         } catch (error: any) {
-            return thunkAPI.rejectWithValue('response' in error ? error.response.data : {});
+            return thunkAPI.rejectWithValue(
+                'response' in error
+                    ? { ...error.response.data, status: error.response.status }
+                    : {},
+            );
         }
     },
 );

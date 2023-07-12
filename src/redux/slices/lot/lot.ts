@@ -22,7 +22,11 @@ export const fetchGetAllLots = createAsyncThunk(
 
             return response.data;
         } catch (error: any) {
-            return thunkAPI.rejectWithValue('response' in error ? error.response.data : {});
+            return thunkAPI.rejectWithValue(
+                'response' in error
+                    ? { ...error.response.data, status: error.response.status }
+                    : {},
+            );
         }
     },
 );
@@ -35,7 +39,11 @@ export const fetchGetLotById = createAsyncThunk(
 
             return response.data;
         } catch (error: any) {
-            return thunkAPI.rejectWithValue('response' in error ? error.response.data : {});
+            return thunkAPI.rejectWithValue(
+                'response' in error
+                    ? { ...error.response.data, status: error.response.status }
+                    : {},
+            );
         }
     },
 );
@@ -48,7 +56,11 @@ export const fetchCreateLot = createAsyncThunk(
 
             return response.data;
         } catch (error: any) {
-            return thunkAPI.rejectWithValue('response' in error ? error.response.data : {});
+            return thunkAPI.rejectWithValue(
+                'response' in error
+                    ? { ...error.response.data, status: error.response.status }
+                    : {},
+            );
         }
     },
 );
@@ -61,7 +73,11 @@ export const fetchDeleteLot = createAsyncThunk(
 
             return response.data;
         } catch (error: any) {
-            return thunkAPI.rejectWithValue('response' in error ? error.response.data : {});
+            return thunkAPI.rejectWithValue(
+                'response' in error
+                    ? { ...error.response.data, status: error.response.status }
+                    : {},
+            );
         }
     },
 );
@@ -74,7 +90,11 @@ export const fetchFinishLot = createAsyncThunk(
 
             return response.data;
         } catch (error: any) {
-            return thunkAPI.rejectWithValue('response' in error ? error.response.data : {});
+            return thunkAPI.rejectWithValue(
+                'response' in error
+                    ? { ...error.response.data, status: error.response.status }
+                    : {},
+            );
         }
     },
 );
