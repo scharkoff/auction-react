@@ -4,6 +4,7 @@ import { authReducer } from './slices/auth/auth';
 import { lotsReducer } from './slices/lot/lot';
 import { auctionReducer } from './slices/auction/auction';
 import { bidReducer } from './slices/bid/bid';
+import { mediaReducer } from './slices/utils/media';
 
 const store = configureStore({
     reducer: {
@@ -11,6 +12,7 @@ const store = configureStore({
         lots: lotsReducer,
         auctions: auctionReducer,
         bid: bidReducer,
+        media: mediaReducer,
     },
 });
 

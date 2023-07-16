@@ -16,6 +16,7 @@ export function Header() {
     const { authorization } = useSelector((state: RootState) => state.auth);
     const { data } = useSelector((state: RootState) => state.auth);
     const { username } = useSelector((state: RootState) => state.auth.data);
+    const { buttonSize } = useSelector((state: RootState) => state.media);
 
     const onClickLogout = () => {
         if (window.confirm('Вы действительно хотите выйти из аккаунта?')) {
@@ -29,7 +30,7 @@ export function Header() {
                 <div className={styles.wrapper}>
                     <div className={styles.logo}>
                         <Link to="/">
-                            <Button variant="text" color="primary" size="large">
+                            <Button variant="text" color="primary" size={buttonSize}>
                                 ONLINE AUCTION
                             </Button>
                         </Link>
@@ -39,7 +40,7 @@ export function Header() {
                         <ul className={styles.menu}>
                             <li className={styles.item}>
                                 <Link to={`/profile/${data.id}`}>
-                                    <Button variant="text" color="primary" size="medium">
+                                    <Button variant="text" color="primary" size={buttonSize}>
                                         {username}
                                     </Button>
                                 </Link>
@@ -50,7 +51,7 @@ export function Header() {
                                     <Button
                                         variant="contained"
                                         color="primary"
-                                        size="medium"
+                                        size={buttonSize}
                                         startIcon={<AddBoxIcon fontSize="small" />}
                                     >
                                         Создать аукцион
@@ -72,7 +73,7 @@ export function Header() {
                         <ul className={styles.menu}>
                             <li className={styles.item}>
                                 <Link to="/login">
-                                    <Button variant="outlined" color="primary" size="medium">
+                                    <Button variant="outlined" color="primary" size={buttonSize}>
                                         Войти
                                     </Button>
                                 </Link>
@@ -80,7 +81,7 @@ export function Header() {
 
                             <li className={styles.item}>
                                 <Link to="/register">
-                                    <Button variant="contained" color="primary">
+                                    <Button variant="contained" color="primary" size={buttonSize}>
                                         Регистрация
                                     </Button>
                                 </Link>
