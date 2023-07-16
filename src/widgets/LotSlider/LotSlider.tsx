@@ -24,22 +24,24 @@ export function LotSlider({ images }: ISlider) {
     };
 
     return (
-        <div className={styles.slider}>
-            <div className={styles.images}>
-                {images.length ? (
-                    images.map((image, index) => (
-                        <img
-                            key={uuid()}
-                            src={image}
-                            alt={`Slide ${index}`}
-                            className={classNames(styles.sliderImage, {
-                                [styles.active]: index === currentIndex,
-                            })}
-                        />
-                    ))
-                ) : (
-                    <div></div>
-                )}
+        <>
+            <div className={styles.slider}>
+                <div className={styles.images}>
+                    {images.length ? (
+                        images.map((image, index) => (
+                            <img
+                                key={uuid()}
+                                src={image}
+                                alt={`Slide ${index}`}
+                                className={classNames(styles.sliderImage, {
+                                    [styles.active]: index === currentIndex,
+                                })}
+                            />
+                        ))
+                    ) : (
+                        <div></div>
+                    )}
+                </div>
             </div>
 
             <div className={styles.buttonsWrapper}>
@@ -55,6 +57,6 @@ export function LotSlider({ images }: ISlider) {
                     </div>
                 </IconButton>
             </div>
-        </div>
+        </>
     );
 }

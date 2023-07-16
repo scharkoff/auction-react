@@ -52,9 +52,17 @@ export function Header() {
                                         variant="contained"
                                         color="primary"
                                         size={buttonSize}
-                                        startIcon={<AddBoxIcon fontSize="small" />}
+                                        startIcon={
+                                            buttonSize === 'small' ? null : (
+                                                <AddBoxIcon fontSize="small" />
+                                            )
+                                        }
                                     >
-                                        Создать аукцион
+                                        {buttonSize === 'small' ? (
+                                            <AddBoxIcon fontSize="small" />
+                                        ) : (
+                                            'Создать аукцион'
+                                        )}
                                     </Button>
                                 </Link>
                             </li>
@@ -63,6 +71,7 @@ export function Header() {
                                 <Button
                                     variant="outlined"
                                     color="error"
+                                    size={buttonSize}
                                     onClick={() => onClickLogout()}
                                 >
                                     Выйти
