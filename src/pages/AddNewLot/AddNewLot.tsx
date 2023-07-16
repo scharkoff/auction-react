@@ -57,7 +57,7 @@ export function AddNewLot() {
             setAlertOptions as TSetAlertOptions,
         );
 
-        if (response?.payload?.data && !Array.isArray(response?.payload?.data)) {
+        if (!('error' in response)) {
             navigate(`/lot/${response?.payload?.data?.id}`);
         }
     };

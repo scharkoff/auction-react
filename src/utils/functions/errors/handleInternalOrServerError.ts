@@ -6,7 +6,6 @@ const handleInternalOrServerError = (
     setAlertOptions: TSetAlertOptions,
 ) => {
     if ('error' in response) {
-        console.log(response);
         if (response.payload && response.payload.status === 400) {
             if ('non_field_errors' in response.payload.data) {
                 return setAlertOptions(true, 'error', response.payload.data.non_field_errors[0]);

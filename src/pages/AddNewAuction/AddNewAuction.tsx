@@ -17,7 +17,7 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useSelector } from 'react-redux';
 import { selectIsAuth } from 'redux/slices/auth/auth';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 type TAuctionValues = {
     title: string;
@@ -28,6 +28,8 @@ type TAuctionValues = {
 
 export function AddNewAuction() {
     const dispatch = useAppDispatch();
+
+    const navigate = useNavigate();
 
     const isAuth = useSelector(selectIsAuth);
 
@@ -50,6 +52,10 @@ export function AddNewAuction() {
             response as unknown as IResponse | IRejectedResponse,
             setAlertOptions as TSetAlertOptions,
         );
+
+        if (!('error' in response)) {
+            navigate(`/auction/${response?.payload?.data?.id}`);
+        }
     };
 
     if (!isAuth) {
