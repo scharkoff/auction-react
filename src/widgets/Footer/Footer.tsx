@@ -10,7 +10,10 @@ export function Footer() {
                     <div className={styles.title}>Online auction 2023</div>
                     <div>All rights reversed</div>
                     <div className={styles.developer}>
-                        Developed by <span>Sharkoff</span>
+                        Developed by{' '}
+                        <a href="https://github.com/scharkoff" target="_blank" rel="noreferrer">
+                            Sharkoff
+                        </a>
                     </div>
                 </div>
             </Container>

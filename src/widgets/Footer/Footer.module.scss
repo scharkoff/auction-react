@@ -14,8 +14,12 @@
 }
 
 .developer {
-    span {
+    a {
         color: $primary-main-color;
+
+        &:hover {
+            color: $primary-dark-color;
+        }
     }
 }
 
