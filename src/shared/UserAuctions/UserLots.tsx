@@ -24,6 +24,7 @@ export function UserAuctions({ user }: IUserLots) {
     const dispatch = useAppDispatch();
 
     const auctions = useSelector((state: RootState) => state.auctions.data);
+    const { loading } = useSelector((state: RootState) => state.auctions);
 
     const [rows, setRows] = React.useState<ILotsTableData[]>([]);
 
@@ -43,7 +44,7 @@ export function UserAuctions({ user }: IUserLots) {
             </Typography>
 
             <div className={styles.table}>
-                <SimpleTable rows={rows} type="auction" />
+                <SimpleTable rows={rows} type="auction" loading={loading} />
             </div>
         </div>
     );

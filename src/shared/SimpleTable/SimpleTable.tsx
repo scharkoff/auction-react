@@ -12,9 +12,10 @@ import { Link } from 'react-router-dom';
 interface ISimpleTable {
     rows: ILotsTableData[];
     type: string;
+    loading: boolean;
 }
 
-export function SimpleTable({ rows, type }: ISimpleTable) {
+export function SimpleTable({ rows, type, loading }: ISimpleTable) {
     return (
         <TableContainer sx={{ margin: '20px 0', border: '1px solid #eee' }}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -25,18 +26,26 @@ export function SimpleTable({ rows, type }: ISimpleTable) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows.map((row) => (
-                        <TableRow key={row?.id}>
+                    {loading ? (
+                        <TableRow key={0}>
                             <TableCell component="th" scope="row">
-                                {row?.id}
-                            </TableCell>
-                            <TableCell>
-                                <Link to={`/${type}/${row?.id}`}>
-                                    <span className={styles.link}>{row?.title}</span>
-                                </Link>
+                                <p>Загрузка...</p>
                             </TableCell>
                         </TableRow>
-                    ))}
+                    ) : (
+                        rows.map((row) => (
+                            <TableRow key={row?.id}>
+                                <TableCell component="th" scope="row">
+                                    {row?.id}
+                                </TableCell>
+                                <TableCell>
+                                    <Link to={`/${type}/${row?.id}`}>
+                                        <span className={styles.link}>{row?.title}</span>
+                                    </Link>
+                                </TableCell>
+                            </TableRow>
+                        ))
+                    )}
                 </TableBody>
             </Table>
         </TableContainer>

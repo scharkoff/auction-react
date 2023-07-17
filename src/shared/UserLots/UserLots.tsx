@@ -24,6 +24,7 @@ export function UserLots({ user }: IUserLots) {
     const dispatch = useAppDispatch();
 
     const lots = useSelector((state: RootState) => state.lots.data);
+    const { loading } = useSelector((state: RootState) => state.lots);
 
     const [rows, setRows] = React.useState<ILotsTableData[]>([]);
 
@@ -43,7 +44,7 @@ export function UserLots({ user }: IUserLots) {
             </Typography>
 
             <div className={styles.table}>
-                <SimpleTable rows={rows} type="lot" />
+                <SimpleTable rows={rows} type="lot" loading={loading} />
             </div>
         </div>
     );

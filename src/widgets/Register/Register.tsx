@@ -11,7 +11,7 @@ import { fetchLogin, fetchRegister, selectIsAuth } from 'redux/slices/auth/auth'
 import { IRegisterValues } from 'redux/slices/auth/types';
 import { Link, Navigate } from 'react-router-dom';
 import { useAlertMessage } from 'hooks';
-import { useAppDispatch } from 'redux/store';
+import { RootState, useAppDispatch } from 'redux/store';
 import { AlertMessage } from 'shared';
 import { IRejectedResponse, IResponse } from 'utils/types';
 import { TSetAlertOptions } from 'hooks/useAlertMessage';
@@ -21,6 +21,8 @@ export function Register() {
     const dispatch = useAppDispatch();
 
     const isAuth = useSelector(selectIsAuth);
+
+    const { loading } = useSelector((state: RootState) => state.auth);
 
     const [alertVariables, setAlertOptions] = useAlertMessage();
 
@@ -113,7 +115,7 @@ export function Register() {
                         />
 
                         <Button
-                            disabled={!formState.isValid}
+                            disabled={!formState.isValid || loading}
                             type="submit"
                             size="large"
                             variant="contained"
@@ -121,6 +123,8 @@ export function Register() {
                         >
                             Зарегистрироваться
                         </Button>
+
+                        {loading && <p className={styles.warn}>Пожалуйста, подождите...</p>}
 
                         <div className={styles.haveAccount}>
                             Есть аккаунт?{' '}

@@ -17,6 +17,7 @@ export function LotFeed() {
     const { id } = useParams();
 
     const lots = useSelector((state: RootState) => state.lots.data);
+    const { loading } = useSelector((state: RootState) => state.lots);
 
     React.useEffect(() => {
         if (id) {
@@ -28,15 +29,21 @@ export function LotFeed() {
         <div className={styles.wrapper}>
             <AlertMessage {...alertVariables} />
 
-            {lots.length ? (
-                lots?.map((lot) => (
-                    <LotCard lot={lot} key={lot?.id} setAlertOptions={setAlertOptions} />
-                ))
+            {loading ? (
+                <p style={{ marginTop: 20 }}>Загрузка лотов...</p>
             ) : (
-                <div className={styles.empty}>
-                    <span>В данном аукционе отсутствуют лоты...</span>
-                    <SentimentVeryDissatisfiedIcon fontSize="medium" />
-                </div>
+                <>
+                    {lots.length ? (
+                        lots?.map((lot) => (
+                            <LotCard lot={lot} key={lot?.id} setAlertOptions={setAlertOptions} />
+                        ))
+                    ) : (
+                        <div className={styles.empty}>
+                            <span>В данном аукционе отсутствуют лоты...</span>
+                            <SentimentVeryDissatisfiedIcon fontSize="medium" />
+                        </div>
+                    )}
+                </>
             )}
         </div>
     );
