@@ -15,6 +15,7 @@ export function AlertMessage({ open, alertText, alertType, setOpen }: IAlertMess
         <Alert
             style={{
                 display: !open ? 'none' : 'flex',
+                margin: '0 0 20px 0',
             }}
             severity={alertType}
             action={

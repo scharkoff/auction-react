@@ -7,17 +7,20 @@ import Avatar from '@mui/material/Avatar';
 import Container from '@mui/material/Container';
 import handleInternalOrServerError from 'utils/functions/errors/handleInternalOrServerError';
 import { useForm } from 'react-hook-form';
-import { fetchRegister } from 'redux/slices/auth/auth';
+import { fetchLogin, fetchRegister, selectIsAuth } from 'redux/slices/auth/auth';
 import { IRegisterValues } from 'redux/slices/auth/types';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { useAlertMessage } from 'hooks';
 import { useAppDispatch } from 'redux/store';
 import { AlertMessage } from 'shared';
 import { IRejectedResponse, IResponse } from 'utils/types';
 import { TSetAlertOptions } from 'hooks/useAlertMessage';
+import { useSelector } from 'react-redux';
 
 export function Register() {
     const dispatch = useAppDispatch();
+
+    const isAuth = useSelector(selectIsAuth);
 
     const [alertVariables, setAlertOptions] = useAlertMessage();
 
@@ -37,11 +40,19 @@ export function Register() {
             response as unknown as IResponse | IRejectedResponse,
             setAlertOptions as TSetAlertOptions,
         );
+
+        if (!('error' in response)) {
+            await dispatch(fetchLogin({ username: values.username, password: values.password }));
+        }
     };
 
     React.useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
+
+    if (isAuth) {
+        return <Navigate to="/" />;
+    }
 
     return (
         <section className={styles.wrapper}>

@@ -119,14 +119,10 @@ const authSlice = createSlice({
                 state.loading = true;
                 state.authorization = false;
             })
-            .addCase(
-                fetchRegister.fulfilled,
-                (state: ISliceState, action: PayloadAction<IActionPayload>) => {
-                    // state.data = action.payload?.data;
-                    state.loading = false;
-                    state.authorization = false;
-                },
-            )
+            .addCase(fetchRegister.fulfilled, (state: ISliceState) => {
+                state.loading = false;
+                state.authorization = false;
+            })
             .addCase(fetchRegister.rejected, (state: ISliceState, action: any) => {
                 state.data = { ...emptyUserData };
                 state.errorData = action.payload?.response?.data;

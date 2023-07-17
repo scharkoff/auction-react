@@ -4,15 +4,11 @@
     background-color: #fff;
     max-width: 500px;
     border-radius: 5px;
-    margin-top: 20px;
+    margin-bottom: 20px;
     position: relative;
 
     &:hover {
         background-color: #fafafa;
-    }
-
-    &:first-child {
-        margin-top: 0;
     }
 }
 
