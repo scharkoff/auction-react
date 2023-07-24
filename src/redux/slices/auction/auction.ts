@@ -168,12 +168,28 @@ const auctionSlice = createSlice({
                     if (!Array.isArray(action.payload?.data)) {
                         state.currentAuctionData = action.payload?.data;
                     }
-
                     state.loading = false;
                 },
             )
             .addCase(fetchAuctionGetById.rejected, (state: ISliceState, action: any) => {
                 state.currentAuctionData = { ...emptyAuctionData };
+                state.errorData = action.payload?.response?.data;
+                state.loading = false;
+            })
+
+            .addCase(fetchCloseAuction.pending, (state: ISliceState) => {
+                state.loading = true;
+            })
+            .addCase(
+                fetchCloseAuction.fulfilled,
+                (state: ISliceState, action: PayloadAction<IActionPayload>) => {
+                    if (!Array.isArray(action.payload?.data)) {
+                        state.currentAuctionData = action.payload?.data;
+                    }
+                    state.loading = false;
+                },
+            )
+            .addCase(fetchCloseAuction.rejected, (state: ISliceState, action: any) => {
                 state.errorData = action.payload?.response?.data;
                 state.loading = false;
             })
