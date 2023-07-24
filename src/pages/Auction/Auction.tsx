@@ -14,7 +14,6 @@ import { selectIsAuth } from 'redux/slices/auth/auth';
 
 export function Auction() {
     const dispatch = useAppDispatch();
-
     const isAuth = useSelector(selectIsAuth);
 
     const { id } = useParams();
@@ -84,6 +83,7 @@ export function Auction() {
                                     <Button
                                         variant="contained"
                                         color="primary"
+                                        disabled={currentAuctionData?.is_closed}
                                         startIcon={<AddBoxIcon fontSize="small" />}
                                     >
                                         Добавить лот
@@ -100,7 +100,11 @@ export function Auction() {
                                 </Button>
                             )}
 
-                            {!isAuth && <p className={styles.warn}>Необходимо авторизоваться</p>}
+                            {currentAuctionData?.is_closed ? (
+                                <p className={styles.warn}>Аукцион закрыт</p>
+                            ) : (
+                                !isAuth && <p className={styles.warn}>Необходимо авторизоваться</p>
+                            )}
                         </div>
                     </div>
                 </div>
