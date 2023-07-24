@@ -6,7 +6,7 @@ import TextField from '@mui/material/TextField';
 import handleInternalOrServerError from 'utils/functions/errors/handleInternalOrServerError';
 import Button from '@mui/material/Button';
 import dayjs from 'dayjs';
-import { AlertMessage } from 'shared';
+import { AlertMessage, DatesPicker } from 'shared';
 import { Controller, useForm } from 'react-hook-form';
 import { useAlertMessage } from 'hooks';
 import { useAppDispatch } from 'redux/store';
@@ -19,12 +19,12 @@ import { useSelector } from 'react-redux';
 import { selectIsAuth } from 'redux/slices/auth/auth';
 import { Navigate, useNavigate } from 'react-router-dom';
 
-type TAuctionValues = {
+export interface IAuctionValues {
     title: string;
     description: string;
     startTime: number;
     endTime: number;
-};
+}
 
 export function AddNewAuction() {
     const dispatch = useAppDispatch();
@@ -35,7 +35,7 @@ export function AddNewAuction() {
 
     const [alertVariables, setAlertOptions] = useAlertMessage();
 
-    const { register, handleSubmit, formState, control } = useForm<TAuctionValues>({
+    const { register, handleSubmit, formState, control } = useForm<IAuctionValues>({
         defaultValues: {
             title: '',
             description: '',
@@ -45,7 +45,7 @@ export function AddNewAuction() {
         mode: 'onChange',
     });
 
-    const onSubmitAuctionForm = async (values: TAuctionValues) => {
+    const onSubmitAuctionForm = async (values: IAuctionValues) => {
         const response = await dispatch(fetchCreateAuction(values));
 
         handleInternalOrServerError(
@@ -104,53 +104,7 @@ export function AddNewAuction() {
                             })}
                         />
 
-                        <div className={styles.dates}>
-                            <Controller
-                                control={control}
-                                name="startTime"
-                                render={({ field }) => (
-                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                        <DatePicker
-                                            className={styles.field}
-                                            label="Время начала"
-                                            onChange={(value: Date | null) => {
-                                                if (value) {
-                                                    const startTimeInMillis =
-                                                        dayjs(value).valueOf();
-                                                    field.onChange(startTimeInMillis);
-                                                }
-                                            }}
-                                            value={
-                                                field.value ? new Date(Number(field.value)) : null
-                                            }
-                                        />
-                                    </LocalizationProvider>
-                                )}
-                            />
-
-                            <Controller
-                                control={control}
-                                name="endTime"
-                                render={({ field }) => (
-                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                        <DatePicker
-                                            className={styles.field}
-                                            label="Время окончания"
-                                            onChange={(value: Date | null) => {
-                                                if (value) {
-                                                    const startTimeInMillis =
-                                                        dayjs(value).valueOf();
-                                                    field.onChange(startTimeInMillis);
-                                                }
-                                            }}
-                                            value={
-                                                field.value ? new Date(Number(field.value)) : null
-                                            }
-                                        />
-                                    </LocalizationProvider>
-                                )}
-                            />
-                        </div>
+                        <DatesPicker control={control} />
 
                         <div className={styles.buttonWrapper}>
                             <Button
