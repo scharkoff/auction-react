@@ -127,7 +127,6 @@ const lotsSlice = createSlice({
                 },
             )
             .addCase(fetchFinishLot.rejected, (state: ISliceState, action: any) => {
-                state.currentLotData = { ...emptyLotData };
                 state.errorData = action.payload?.response?.data;
                 state.loading = false;
             })
