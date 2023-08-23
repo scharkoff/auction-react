@@ -126,6 +126,23 @@ export const fetchCloseAuction = createAsyncThunk(
     },
 );
 
+export const fetchCheckAuctionStatus = createAsyncThunk(
+    '/api/auction/fetchCheckAuctionStatus',
+    async ({ id }: IAuctionId, thunkAPI) => {
+        try {
+            const response = await customAxios.get(`api/auction/checkStatus/?id=${id}`);
+
+            return response.data;
+        } catch (error: any) {
+            return thunkAPI.rejectWithValue(
+                'response' in error
+                    ? { ...error.response.data, status: error.response.status }
+                    : {},
+            );
+        }
+    },
+);
+
 const initialState: ISliceState = {
     data: [],
     loading: false,
@@ -190,6 +207,23 @@ const auctionSlice = createSlice({
                 },
             )
             .addCase(fetchCloseAuction.rejected, (state: ISliceState, action: any) => {
+                state.errorData = action.payload?.response?.data;
+                state.loading = false;
+            })
+
+            .addCase(fetchCheckAuctionStatus.pending, (state: ISliceState) => {
+                state.loading = true;
+            })
+            .addCase(
+                fetchCheckAuctionStatus.fulfilled,
+                (state: ISliceState, action: PayloadAction<IActionPayload>) => {
+                    if (!Array.isArray(action.payload?.data)) {
+                        state.currentAuctionData = action.payload?.data;
+                    }
+                    state.loading = false;
+                },
+            )
+            .addCase(fetchCheckAuctionStatus.rejected, (state: ISliceState, action: any) => {
                 state.errorData = action.payload?.response?.data;
                 state.loading = false;
             })
