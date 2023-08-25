@@ -45,13 +45,15 @@ export function PlaceBid({
                         setCurrentUserBid={setCurrentUserBid}
                     />
 
-                    {currentUserBid <= lot?.price && !lot?.winner_id && (
+                    {currentUserBid <= lot?.price && !lot?.winner_id && !lot?.is_closed && (
                         <p className={styles.warn}>
                             Ставка не может быть меньше или равной текущей
                         </p>
                     )}
 
                     {lot?.winner_id && <p className={styles.warn}>Победитель уже определен</p>}
+
+                    {lot?.is_closed && !lot?.winner && <p className={styles.warn}>Лот закрыт</p>}
 
                     {Number.isNaN(currentUserBid) && !lot?.winner_id && (
                         <p className={styles.warn}>Значение должно быть числом</p>

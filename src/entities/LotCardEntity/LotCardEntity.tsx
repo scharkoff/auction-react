@@ -40,8 +40,8 @@ export function LotCardEntity({ lot, setAlertOptions }: ILotCardModel) {
                         {lot?.end_time.replace(/T(\d{2}:\d{2}:\d{2}).*/, ' $1')}
                     </div>
                     <div className={styles.status}>
-                        {lot?.winner_id ? (
-                            <span className={styles.closed}>Победитель найден</span>
+                        {lot?.is_closed ? (
+                            <span className={styles.closed}>Закрыт</span>
                         ) : (
                             <span className={styles.active}>Активный</span>
                         )}

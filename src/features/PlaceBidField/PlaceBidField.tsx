@@ -21,6 +21,7 @@ export function PlaceBidField({
             <TextField
                 label="Повысить ставку"
                 value={currentUserBid}
+                disabled={Boolean(lot?.winner_id) || Boolean(lot?.is_closed)}
                 onChange={(e) => setCurrentUserBid(+e.target.value)}
             />
 
@@ -28,6 +29,7 @@ export function PlaceBidField({
                 disabled={
                     currentUserBid <= lot?.price ||
                     Boolean(lot?.winner_id) ||
+                    Boolean(lot?.is_closed) ||
                     Number.isNaN(currentUserBid)
                 }
                 onClick={() => onSubmitNewBid()}

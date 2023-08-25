@@ -8,6 +8,7 @@ export interface ILotData {
     price: number;
     start_time: string;
     end_time: string;
+    is_closed: Boolean;
     owner_id: number;
     owner: IUserData;
     auction_id: number;

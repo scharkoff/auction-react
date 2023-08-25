@@ -5,9 +5,10 @@ import { Control, Controller } from 'react-hook-form';
 import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { IAuctionValues } from 'pages/AddNewAuction/AddNewAuction';
+import { ILotValues } from 'pages/AddNewLot/AddNewLot';
 
 interface IDatesPicker {
-    control: Control<IAuctionValues, any>;
+    control: Control<IAuctionValues | ILotValues, any>;
 }
 
 export function DatesPicker({ control }: IDatesPicker) {

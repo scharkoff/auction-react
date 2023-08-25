@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useSelector } from 'react-redux';
 import { RootState, useAppDispatch } from 'redux/store';
-import { fetchFinishLot, fetchGetLotById } from 'redux/slices/lot/lot';
+import { fetchCheckLotStatus, fetchFinishLot, fetchGetLotById } from 'redux/slices/lot/lot';
 import { Link, useParams } from 'react-router-dom';
 import { LotSlider, PlaceBid } from 'widgets';
 import { Breadcrumbs, LotInfo, LotTableParticipants, Timer } from 'shared';
@@ -46,7 +46,7 @@ export function FullLot() {
 
     React.useEffect(() => {
         if (timesUp) {
-            dispatch(fetchFinishLot({ id: lot?.id }));
+            dispatch(fetchCheckLotStatus({ id: lot?.id }));
         }
     }, [timesUp]);
 
@@ -124,25 +124,23 @@ export function FullLot() {
                                     <Button
                                         variant="contained"
                                         color="primary"
-                                        disabled={Boolean(!bids.length) || Boolean(lot?.winner_id)}
+                                        disabled={
+                                            Boolean(!bids.length) ||
+                                            Boolean(lot?.winner_id) ||
+                                            Boolean(lot?.is_closed)
+                                        }
                                         onClick={() => onSubmitFinish()}
                                     >
                                         Завершить продажу
                                     </Button>
 
-                                    {!bids.length ? (
+                                    {!bids.length && !lot?.is_closed && (
                                         <p className={styles.warn}>
                                             Нельзя завершить аукцион досрочно без единой ставки
                                         </p>
-                                    ) : (
-                                        <>
-                                            {lot?.winner_id ? (
-                                                <p className={styles.warn}>Лот закрыт</p>
-                                            ) : (
-                                                ''
-                                            )}
-                                        </>
                                     )}
+
+                                    {lot?.is_closed && <p className={styles.warn}>Лот закрыт</p>}
                                 </>
                             )}
                         </>

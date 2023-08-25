@@ -99,6 +99,23 @@ export const fetchFinishLot = createAsyncThunk(
     },
 );
 
+export const fetchCheckLotStatus = createAsyncThunk(
+    '/api/lot/fetchCheckLotStatus',
+    async ({ id }: ILotId, thunkAPI) => {
+        try {
+            const response = await customAxios.get(`api/lot/checkStatus/?id=${id}`);
+
+            return response.data;
+        } catch (error: any) {
+            return thunkAPI.rejectWithValue(
+                'response' in error
+                    ? { ...error.response.data, status: error.response.status }
+                    : {},
+            );
+        }
+    },
+);
+
 const initialState: ISliceState = {
     data: [],
     loading: false,
@@ -127,6 +144,23 @@ const lotsSlice = createSlice({
                 },
             )
             .addCase(fetchFinishLot.rejected, (state: ISliceState, action: any) => {
+                state.errorData = action.payload?.response?.data;
+                state.loading = false;
+            })
+
+            .addCase(fetchCheckLotStatus.pending, (state: ISliceState) => {
+                state.loading = true;
+            })
+            .addCase(
+                fetchCheckLotStatus.fulfilled,
+                (state: ISliceState, action: PayloadAction<IActionPayload>) => {
+                    if (!Array.isArray(action.payload?.data)) {
+                        state.currentLotData = action.payload?.data;
+                    }
+                    state.loading = false;
+                },
+            )
+            .addCase(fetchCheckLotStatus.rejected, (state: ISliceState, action: any) => {
                 state.errorData = action.payload?.response?.data;
                 state.loading = false;
             })

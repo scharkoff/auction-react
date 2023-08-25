@@ -31,6 +31,7 @@ export const emptyLotData = {
     price: 0,
     start_time: '',
     end_time: '',
+    is_closed: false,
     owner_id: 0,
     owner: {
         ...emptyUserData,
